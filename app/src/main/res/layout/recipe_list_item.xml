@@ -7,6 +7,7 @@
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@color/colorBackground2"
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,11 +17,27 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:background="#FFFBD5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_main_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="left"
+            android:text="@string/main_title"
+            android:textColor="@color/black"
+            android:textColorHighlight="@color/colorLightYellow"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/tv_recipe_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/tv_recipe_title"
@@ -28,13 +45,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginLeft="4dp"
-            android:layout_marginTop="8dp"
             android:text="@string/tv_title"
             android:textColor="#000000"
+            android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/img"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_main_title" />
 
         <ImageView
             android:id="@+id/img"
@@ -58,12 +75,16 @@
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:background="#F1F4CD"
             android:text="@string/tv_content"
+            android:textColor="@color/black"
+            android:textColorHighlight="@color/colorLightYellow"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/img"
             app:layout_constraintStart_toStartOf="@+id/img"
             app:layout_constraintTop_toBottomOf="@+id/img" />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

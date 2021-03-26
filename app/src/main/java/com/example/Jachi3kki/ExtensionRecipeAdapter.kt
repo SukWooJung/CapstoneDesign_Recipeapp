@@ -30,12 +30,16 @@ class RecipeAdapter(
     }
 
     override fun onBindViewHolder(holder: ExtensionViewHolder, position: Int) {
-        holder.bind(items[position], context)
+        holder.bind(items[position], context, position)
+
     }
 
-    inner class ExtensionViewHolder(override val containerView: View, itemSelect: (Recipe) -> Unit) :
+    inner class ExtensionViewHolder(
+        override val containerView: View,
+        itemSelect: (Recipe) -> Unit
+    ) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
-        fun bind(recipe: Recipe, context: Context) {
+        fun bind(recipe: Recipe, context: Context, position: Int) {
             if (recipe.img != "") {
                 val resourceId = context.resources.getIdentifier(
                     recipe.img,
@@ -48,7 +52,12 @@ class RecipeAdapter(
             }
             tv_recipe_title.text = recipe.title
             tv_content.text = recipe.content
-
+            tv_main_title.text = when(position){
+                0-> "오늘의 핫 레시피"
+                1-> "오늘의 추천 레시피"
+                2-> "오늘의 영양소에 따른 레시피"
+                else -> "이게 나올리 없음"
+            }
             itemView.setOnClickListener() { itemSelect(recipe) }
         }
     }
