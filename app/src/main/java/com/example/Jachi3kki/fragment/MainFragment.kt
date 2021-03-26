@@ -10,10 +10,8 @@ import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.Jachi3kki.MainActivity
 import com.example.Jachi3kki.R
 import com.example.Jachi3kki.Recipe
-import com.example.Jachi3kki.RecipeAdapter
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : Fragment() {

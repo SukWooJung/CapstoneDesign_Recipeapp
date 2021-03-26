@@ -3,10 +3,43 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainFragment2">
+    app:startDestination="@id/mainFragment">
     <fragment
-        android:id="@+id/mainFragment2"
+        android:id="@+id/mainFragment"
         android:name="com.example.Jachi3kki.fragment.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+        <action
+            android:id="@+id/action_mainFragment_to_ingredientFragment"
+            app:destination="@id/ingredientFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_vitaminFragment2"
+            app:destination="@id/vitaminFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_bookmarkFragment"
+            app:destination="@id/bookmarkFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_fridgeFragment"
+            app:destination="@id/fridgeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookmarkFragment"
+        android:name="com.example.Jachi3kki.fragment.BookmarkFragment"
+        android:label="fragment_bookmark"
+        tools:layout="@layout/fragment_bookmark" />
+    <fragment
+        android:id="@+id/ingredientFragment"
+        android:name="com.example.Jachi3kki.fragment.IngredientFragment"
+        android:label="fragment_ingredient"
+        tools:layout="@layout/fragment_ingredient" />
+    <fragment
+        android:id="@+id/fridgeFragment"
+        android:name="com.example.Jachi3kki.fragment.FridgeFragment"
+        android:label="fragment_fridge"
+        tools:layout="@layout/fragment_fridge" />
+    <fragment
+        android:id="@+id/vitaminFragment"
+        android:name="com.example.Jachi3kki.fragment.VitaminFragment"
+        android:label="fragment_vitamin"
+        tools:layout="@layout/fragment_vitamin" />
 </navigation>

@@ -1,10 +1,12 @@
-package com.example.Jachi3kki
+package com.example.Jachi3kki.fragment
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.Jachi3kki.R
+import com.example.Jachi3kki.Recipe
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recipe_list_item.*
 
@@ -20,7 +22,7 @@ class RecipeAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): RecipeAdapter.ExtensionViewHolder {
+    ): ExtensionViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(
             R.layout.recipe_list_item,
             parent,
