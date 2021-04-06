@@ -7,20 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.Jachi3kki.Bookmark
 import com.example.Jachi3kki.R
 import com.example.Jachi3kki.Recipe
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_bookmark.*
+import kotlinx.android.synthetic.main.fragment_main.rv_data_list
+import kotlinx.android.synthetic.main.fragment_recipe.*
+import kotlinx.android.synthetic.main.fragment_recipe.rc_count
 
-class BookmarkFragment : Fragment() {
-
-    val bookmarkList = arrayListOf<Bookmark>()
+class RecipeFragment : Fragment() {
+    val recipeList = arrayListOf<Recipe>()
     lateinit var navController: NavController
 
     override fun onCreateView(
@@ -28,15 +27,18 @@ class BookmarkFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_bookmark, container, false)
+        return inflater.inflate(R.layout.fragment_recipe, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navController = nav_host_fragment.findNavController()
-        addBookmarkArray()
+        navController = Navigation.findNavController(view)
+
+        // 데이터 집어넣기
+        if(recipeList.isEmpty()) addRecipeArray()
+
         // 조회된 레시피 수 출력
-        rc_count.text = "${bookmarkList.count()}건"
+        rc_count.text = "${recipeList.count()}건"
 
         // recyclerView에 layout Manger 설정
         rv_data_list.layoutManager = LinearLayoutManager(
@@ -49,38 +51,44 @@ class BookmarkFragment : Fragment() {
         rv_data_list.setHasFixedSize(true)
 
         // 아이템간의 구분선 추가
-        activity?.let {VerticalItemDecorator(it, R.drawable.line_divider, 0, 0) }?.let {
+        activity?.let { VerticalItemDecorator(it, R.drawable.line_divider, 0, 0) }?.let {
             rv_data_list.addItemDecoration(
                 it
             )
         }
 
-        // 리사이클러 뷰 출력을 위한 adapter 설정
         rv_data_list.adapter = activity?.let {
-            BookmarkAdapter(bookmarkList, it) {
+            RecipeAdapter(recipeList, it) {
                 Toast.makeText(activity, "메인 메뉴에 있는 레시피가 클릭되었다.", Toast.LENGTH_SHORT).show()
             }
         }
 
+        btn_alignment.setOnClickListener {
+            navController.navigate(R.id.action_recipeFragment_to_alignmentFragment)
+        }
+        btn_detail.setOnClickListener {
+            navController.navigate(R.id.action_recipeFragment_to_detailFragment)
+        }
+
     }
 
-    private fun addBookmarkArray() {
-        bookmarkList.add(
-           Bookmark(
+    private fun addRecipeArray() {
+        recipeList.add(
+            Recipe(
                 "김치찌개",
                 "김개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 ",
                 "kimchi"
             )
         )
-        bookmarkList.add(
-            Bookmark(
+        recipeList.add(
+            Recipe(
                 "된장찌개",
                 "김개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 ",
                 "gogi"
             )
         )
-        bookmarkList.add(
-            Bookmark(
+        recipeList.add(
+            Recipe(
                 "참치찌개",
                 "김개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 ",
                 "mamuri"
@@ -88,4 +96,6 @@ class BookmarkFragment : Fragment() {
         )
 
     }
+
+
 }

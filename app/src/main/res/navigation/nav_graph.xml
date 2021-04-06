@@ -8,7 +8,7 @@
         android:id="@+id/mainFragment"
         android:name="com.example.Jachi3kki.fragment.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" >
+        tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_mainFragment_to_ingredientFragment"
             app:destination="@id/ingredientFragment" />
@@ -22,6 +22,7 @@
             android:id="@+id/action_mainFragment_to_fridgeFragment"
             app:destination="@id/fridgeFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/bookmarkFragment"
         android:name="com.example.Jachi3kki.fragment.BookmarkFragment"
@@ -31,7 +32,13 @@
         android:id="@+id/ingredientFragment"
         android:name="com.example.Jachi3kki.fragment.IngredientFragment"
         android:label="fragment_ingredient"
-        tools:layout="@layout/fragment_ingredient" />
+        tools:layout="@layout/fragment_ingredient">
+
+        <action
+            android:id="@+id/action_ingredientFragment_to_recipeFragment"
+            app:destination="@id/recipeFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/fridgeFragment"
         android:name="com.example.Jachi3kki.fragment.FridgeFragment"
@@ -42,4 +49,38 @@
         android:name="com.example.Jachi3kki.fragment.VitaminFragment"
         android:label="fragment_vitamin"
         tools:layout="@layout/fragment_vitamin" />
+    <fragment
+        android:id="@+id/recipeFragment"
+        android:name="com.example.Jachi3kki.fragment.RecipeFragment"
+        android:label="fragment_recipe"
+        tools:layout="@layout/fragment_recipe" >
+        <action
+            android:id="@+id/action_recipeFragment_to_alignmentFragment"
+            app:destination="@id/alignmentFragment"
+            app:popUpTo="@id/alignmentFragment"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_recipeFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/alignmentFragment"
+        android:name="com.example.Jachi3kki.fragment.AlignmentFragment"
+        android:label="fragment_alignment"
+        tools:layout="@layout/fragment_alignment"
+        app:startDestination="@id/action_alignmentFragment_to_recipeFragment">
+        <action
+            android:id="@+id/action_alignmentFragment_to_recipeFragment"
+            app:destination="@id/recipeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.Jachi3kki.fragment.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail" >
+        <action
+            android:id="@+id/action_detailFragment_to_recipeFragment"
+            app:destination="@id/recipeFragment" />
+    </fragment>
+
 </navigation>

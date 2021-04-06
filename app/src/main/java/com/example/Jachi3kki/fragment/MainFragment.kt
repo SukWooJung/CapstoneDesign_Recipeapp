@@ -8,14 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.Jachi3kki.R
 import com.example.Jachi3kki.Recipe
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : Fragment() {
     val recipeList = arrayListOf<Recipe>()
+
     lateinit var navController: NavController
 
     override fun onCreateView(
@@ -29,6 +33,7 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        navController = Navigation.findNavController(view)
         addRecipeArray()
 
         // recyclerView에 layout Manger 설정
@@ -67,14 +72,14 @@ class MainFragment : Fragment() {
         recipeList.add(
             Recipe(
                 "된장찌개",
-                "김개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 ",
+                "된장찌개는 어쩌구 저쩌구 된장찌개는 어쩌구 저쩌구 된장찌개는 어쩌구 저쩌구 된장찌개는 어쩌구 저쩌구",
                 "gogi"
             )
         )
         recipeList.add(
             Recipe(
                 "참치찌개",
-                "김개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 ",
+                "참치찌개는 어쩌구 저쩌구 참치찌개는 어쩌구 저쩌구 참치찌개는 어쩌구 저쩌구 ",
                 "mamuri"
             )
         )
