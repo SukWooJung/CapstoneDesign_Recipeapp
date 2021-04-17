@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.Jachi3kki.R
 import com.example.Jachi3kki.Recipe
+import com.example.Jachi3kki.databinding.FragmentRecipeBinding
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.recipe_list_item.*
 
@@ -48,9 +49,9 @@ class RecipeAdapter(
                     "drawable",
                     context.packageName
                 )
-                img?.setImageResource(resourceId)
+                img_recipe?.setImageResource(resourceId)
             } else {
-                img?.setImageResource(R.mipmap.ic_launcher)
+                img_recipe?.setImageResource(R.mipmap.ic_launcher)
             }
             tv_recipe_title.text = recipe.title
             tv_content.text = recipe.content

@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -17,12 +16,13 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/img"
+            android:id="@+id/img_bookmark_picture"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="250dp"
             android:adjustViewBounds="true"
             android:background="#FFFFFF"
             android:contentDescription="@string/todo"
+            android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="@+id/tv_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,44 +30,48 @@
             app:srcCompat="@drawable/kimchi" />
 
         <TextView
-            android:id="@+id/bk_title"
+            android:id="@+id/tv_bookmark_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:text="레시피 제목"
             android:textColor="@color/white"
             android:textColorHighlight="@color/colorLightYellow"
             android:textSize="17sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/bk_content"
-            app:layout_constraintEnd_toEndOf="@+id/img"/>
-            />
+            app:layout_constraintBottom_toTopOf="@id/tv_bookmark_content"
+            app:layout_constraintEnd_toEndOf="@+id/img"
+            app:layout_constraintStart_toStartOf="parent" />
+        />
 
         <TextView
-            android:id="@+id/bk_content"
+            android:id="@+id/tv_bookmark_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:text="@string/tv_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:textColor="@color/white"
             android:textColorHighlight="@color/colorLightYellow"
             android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/img"/>
+            app:layout_constraintEnd_toEndOf="@+id/img_bookmark_picture"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
-            android:layout_width="45dp"
-            android:layout_height="45dp"
+            android:id="@+id/img_bookmark_icon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:adjustViewBounds="false"
-            android:backgroundTint="@color/white"
             android:background="@drawable/background_rounding"
+            android:backgroundTint="@color/white"
             android:contentDescription="북마크 추가"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon_bookmark"
+            android:src="@drawable/icon_bookmark_check"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

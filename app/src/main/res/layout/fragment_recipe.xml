@@ -16,6 +16,16 @@
             android:layout_width="match_parent"
             android:layout_height="51dp">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_selected_item"
+                android:layout_width="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btn_detail"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
             <Button
                 android:id="@+id/btn_detail"
                 android:layout_width="93dp"

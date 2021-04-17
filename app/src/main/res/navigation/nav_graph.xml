@@ -34,6 +34,10 @@
         android:label="fragment_ingredient"
         tools:layout="@layout/fragment_ingredient">
 
+        <argument
+            android:name="item"
+            app:argType="com.example.Jachi3kki.SelectedItems"/>
+
         <action
             android:id="@+id/action_ingredientFragment_to_recipeFragment"
             app:destination="@id/recipeFragment" />
@@ -48,7 +52,11 @@
         android:id="@+id/vitaminFragment"
         android:name="com.example.Jachi3kki.fragment.VitaminFragment"
         android:label="fragment_vitamin"
-        tools:layout="@layout/fragment_vitamin" />
+        tools:layout="@layout/fragment_vitamin" >
+        <action
+            android:id="@+id/action_vitaminFragment_to_ingredientFragment"
+            app:destination="@id/ingredientFragment" />
+    </fragment>
     <fragment
         android:id="@+id/recipeFragment"
         android:name="com.example.Jachi3kki.fragment.RecipeFragment"

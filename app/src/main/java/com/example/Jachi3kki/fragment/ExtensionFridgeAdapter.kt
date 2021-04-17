@@ -5,22 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.Jachi3kki.Bookmark
 import com.example.Jachi3kki.R
+import com.example.Jachi3kki.Ingredient
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.bookmark_list_item.*
-import kotlinx.android.synthetic.main.bookmark_list_item.constraintLayout
-import kotlinx.android.synthetic.main.bookmark_list_item.img
-import kotlinx.android.synthetic.main.recipe_list_item.*
+import kotlinx.android.synthetic.main.test_list_item.*
 
-
-class BookmarkAdapter(
-    val items: ArrayList<Bookmark>,
+class FridgeAdapter(
+    val item: ArrayList<Ingredient>,
     val context: Context,
-    val itemSelect: (Bookmark) -> Unit
-) : RecyclerView.Adapter<BookmarkAdapter.ExtensionViewHolder>() {
+    val itemSelect: (Ingredient) -> Unit
+) : RecyclerView.Adapter<FridgeAdapter.ExtensionViewHolder>() {
     override fun getItemCount(): Int {
-        return items.size
+        return item.size
     }
 
     override fun onCreateViewHolder(
@@ -28,7 +24,7 @@ class BookmarkAdapter(
         viewType: Int
     ): ExtensionViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(
-            R.layout.bookmark_list_item,
+            R.layout.test_list_item,
             parent,
             false
         )
@@ -36,29 +32,28 @@ class BookmarkAdapter(
     }
 
     override fun onBindViewHolder(holder: ExtensionViewHolder, position: Int) {
-        holder.bind(items[position], context, position)
+        holder.bind(item[position], context, position)
 
     }
 
     inner class ExtensionViewHolder(
         override val containerView: View,
-        itemSelect: (Bookmark) -> Unit
+        itemSelect: (Ingredient) -> Unit
     ) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
-        fun bind(bookmark: Bookmark, context: Context, position: Int) {
-            if (bookmark.img != "") {
+        fun bind(ingredient: Ingredient, context: Context, position: Int) {
+            if (ingredient.cook_Img != "") {
                 val resourceId = context.resources.getIdentifier(
-                    bookmark.img,
+                    ingredient.cook_Img,
                     "drawable",
                     context.packageName
                 )
-                img?.setImageResource(resourceId)
+                cook_Img?.setImageResource(resourceId)
             } else {
-                img?.setImageResource(R.mipmap.ic_launcher)
+                cook_Img?.setImageResource(R.mipmap.ic_launcher)
             }
-            bk_title.text = bookmark.title
-            bk_content.text = bookmark.content
-            itemView.setOnClickListener() { itemSelect(bookmark) }
+            payTxt.text = ingredient.payTxt
+            itemView.setOnClickListener() { itemSelect(ingredient) }
         }
     }
 

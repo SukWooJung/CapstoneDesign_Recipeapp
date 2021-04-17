@@ -13,7 +13,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -29,6 +29,14 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+
+    androidExtensions {
+        experimental = true
     }
 }
 
@@ -51,8 +59,10 @@ dependencies {
 
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation 'com.squareup.okhttp3:okhttp:3.6.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
 }
 
-androidExtensions{
+androidExtensions {
     experimental = true
 }
