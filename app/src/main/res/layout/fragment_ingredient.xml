@@ -4,13 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
+    android:background="#e4e4e4"
     tools:context=".fragment.IngredientFragment">
 
-
     <LinearLayout
+
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:id="@+id/view_category_title"
         android:layout_width="0dp"
+        android:background="@drawable/border_layout_top"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingTop="10dp"
@@ -52,14 +56,19 @@
     </LinearLayout>
 
     <View
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:id="@+id/top_border"
         android:layout_width="match_parent"
         android:layout_height="1.5dp"
-        android:background="#787878"
+        android:background="#e4e4e4"
         app:layout_constraintTop_toBottomOf="@+id/view_category_title" />
 
 
     <LinearLayout
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="@drawable/border_layout_bottom"
         android:id="@+id/view_category_content"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -84,7 +93,7 @@
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="#787878" />
+            android:background="#e4e4e4" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_middle_category"
@@ -98,7 +107,7 @@
         <View
             android:layout_width="1dp"
             android:layout_height="match_parent"
-            android:background="#787878" />
+            android:background="#e4e4e4" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_subject_category"
@@ -111,13 +120,19 @@
     </LinearLayout>
 
     <View
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:id="@+id/list_bottom_border"
         android:layout_width="match_parent"
         android:layout_height="1.5dp"
-        android:background="#787878"
+        android:background="#e4e4e4"
         app:layout_constraintBottom_toTopOf="@+id/view_selected_list" />
 
     <LinearLayout
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/border_layout"
         android:id="@+id/view_selected_list"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -140,10 +155,10 @@
         android:id="@+id/view_selected"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:background="#ababab"
+        android:background="#e4e4e4"
         android:orientation="horizontal"
         android:gravity="center_horizontal"
-        android:paddingTop="10dp"
+        android:paddingTop="5dp"
         android:paddingBottom="10dp"
 
         app:layout_constraintBottom_toBottomOf="parent"
@@ -152,11 +167,13 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_goRecipe"
-            android:layout_width="wrap_content"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
             android:text="선택완료"
-            android:textColor="@color/white"
-            android:background="@color/colorPrimary"
-            android:layout_height="wrap_content"/>
+            android:textColor="@color/black"
+            android:background="@drawable/border_layout_button"
+            style="?android:attr/borderlessButtonStyle"
+            />
 
     </LinearLayout>
 

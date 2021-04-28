@@ -36,7 +36,7 @@
 
         <argument
             android:name="item"
-            app:argType="com.example.Jachi3kki.SelectedItems"/>
+            app:argType="com.example.Jachi3kki.Class.SelectedItems"/>
 
         <action
             android:id="@+id/action_ingredientFragment_to_recipeFragment"
@@ -45,9 +45,12 @@
 
     <fragment
         android:id="@+id/fridgeFragment"
-        android:name="com.example.Jachi3kki.fragment.FridgeFragment"
+        android:name="com.example.Jachi3kki.fragment.fridgeFragment"
         android:label="fragment_fridge"
         tools:layout="@layout/fragment_fridge" />
+        <action
+            android:id="@+id/action_fridgeFragment_to_addFragment"
+            app:destination="@id/addFragment" />
     <fragment
         android:id="@+id/vitaminFragment"
         android:name="com.example.Jachi3kki.fragment.VitaminFragment"
@@ -72,6 +75,16 @@
             app:destination="@id/detailFragment" />
     </fragment>
     <fragment
+        android:id="@+id/addFragment"
+        android:name="com.example.Jachi3kki.fragment.AddFragment"
+        android:label="fragment_add"
+        tools:layout="@layout/fragment_add"
+        app:startDestination="@id/action_alignmentFragment_to_recipeFragment">
+        <action
+            android:id="@+id/action_addFragment_to_fridgeFragment"
+            app:destination="@id/fridgeFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/alignmentFragment"
         android:name="com.example.Jachi3kki.fragment.AlignmentFragment"
         android:label="fragment_alignment"
@@ -90,5 +103,25 @@
             android:id="@+id/action_detailFragment_to_recipeFragment"
             app:destination="@id/recipeFragment" />
     </fragment>
+    <action
+        android:id="@+id/action_global_mainFragment"
+        app:destination="@id/mainFragment"
+        app:popUpTo="@id/nav_graph" />
+    <action
+        android:id="@+id/action_global_bookmarkFragment"
+        app:destination="@id/bookmarkFragment"
+        app:popUpTo="@id/mainFragment" />
+    <action
+        android:id="@+id/action_global_fridgeFragment"
+        app:destination="@id/fridgeFragment"
+        app:popUpTo="@id/mainFragment" />
+    <action
+        android:id="@+id/action_global_vitaminFragment"
+        app:destination="@id/vitaminFragment"
+        app:popUpTo="@id/mainFragment" />
+    <action
+        android:id="@+id/action_global_ingredientFragment"
+        app:destination="@id/ingredientFragment"
+        app:popUpTo="@id/mainFragment" />
 
 </navigation>

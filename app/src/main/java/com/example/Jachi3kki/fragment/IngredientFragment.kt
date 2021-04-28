@@ -1,7 +1,5 @@
 package com.example.Jachi3kki.fragment
 
-import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,20 +8,24 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.navigation.Navigation.*
-import androidx.recyclerview.widget.RecyclerView
+import com.example.Jachi3kki.Adapter.ClassListAdapter
+import com.example.Jachi3kki.Adapter.SelectedListAdapter
 import com.example.Jachi3kki.Category
+import com.example.Jachi3kki.Class.CategoryListItem
 import com.example.Jachi3kki.L
 import com.example.Jachi3kki.R
-import com.example.Jachi3kki.SelectedListItem
-import com.example.Jachi3kki.databinding.CategoryGroupListItemBinding
-import com.example.Jachi3kki.databinding.CategorySelectedListItemBinding
+import com.example.Jachi3kki.Class.SelectedListItem
 import com.example.Jachi3kki.databinding.FragmentIngredientBinding
 import kotlinx.android.synthetic.main.fragment_ingredient.*
 
 class IngredientFragment : Fragment() {
     private lateinit var navController: NavController
     private lateinit var binding: FragmentIngredientBinding
+
+    // 비타민에서 전달한 데이터
+    private val selectedVitaminItem by lazy { arguments?.getParcelableArrayList<SelectedListItem>("vitaminItem") }
+    private var fromVitamin: Boolean = false
+    private lateinit var nowVitamin: CategoryListItem
 
     //대분류 중분류 소분류 선택 리사이클러뷰의 어뎁터
     private lateinit var MainCategoryAdapter: ClassListAdapter
@@ -38,24 +40,50 @@ class IngredientFragment : Fragment() {
     //대분류 디폴트 데이터
     private val deFaultClass1 by lazy {
         arrayListOf<CategoryListItem>().also { list ->
-            val class1 = Category.CLASS1
+            // 메인 -> 재료 선택인 경우
+            if (!fromVitamin) {
+                val class1 = Category.CLASS1
 
-            class1.forEach {
-                if (it.key == "육류") {
-                    list.add(CategoryListItem(it.key, true))
-                } else {
-                    list.add(CategoryListItem(it.key, false))
+                class1.forEach {
+                    if (it.key == "육류") {
+                        list.add(CategoryListItem(it.key, true))
+                    } else {
+                        list.add(CategoryListItem(it.key, false))
+                    }
                 }
+            } else {
+                // 메인 -> 비타민 -> 재료선택 인 경우
+                nowVitamin = CategoryListItem(selectedVitaminItem?.get(0)!!.data, true)
+                selectedVitaminItem?.forEach {
+                    if (it.data == nowVitamin.data) {
+                        list.add(CategoryListItem(it.data, true))
+                    } else {
+                        list.add(CategoryListItem(it.data, false))
+                    }
+                }
+
             }
+
         }
     }
 
     //중분류 디폴트데이터 육류
     private val deFaultClass2 by lazy {
+
         arrayListOf<CategoryListItem>().also { list ->
-            val class2 = Category.CLASS2
-            requireNotNull(class2["육류"]).src.forEach {
-                list.add(CategoryListItem(it, false))
+            // 비타민으로부터 온게 아닌경우
+            if (!fromVitamin) {
+                val class2 = Category.CLASS2
+                requireNotNull(class2["육류"]).src.forEach {
+                    list.add(CategoryListItem(it, false))
+                }
+                binding.tvMiddleCategory.text = "육류"
+            } else {
+                val middleData = findMiddleData(Category.GETINGREDIENT[nowVitamin.data]?.src)
+                middleData.forEach {
+                    list.add(CategoryListItem(it, false))
+                }
+                binding.tvMiddleCategory.text = nowVitamin.data
             }
         }
     }
@@ -66,6 +94,9 @@ class IngredientFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        if (selectedVitaminItem != null) {
+            fromVitamin = true;
+        }
         binding = FragmentIngredientBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -78,7 +109,11 @@ class IngredientFragment : Fragment() {
 
             val selectedDataSet = arrayListOf<SelectedListItem>() //arraylistof로 아이템을 담아서
             selectedCategorys.entries.map {
-                selectedDataSet.add(SelectedListItem(it.key))
+                selectedDataSet.add(
+                    SelectedListItem(
+                        it.key
+                    )
+                )
             }
             navController.navigate(
                 R.id.action_ingredientFragment_to_recipeFragment,
@@ -94,7 +129,6 @@ class IngredientFragment : Fragment() {
             override fun onItemClick(index: Int, item: CategoryListItem) {
                 //대분류에서 항목설정시 이벤트가 떨어진다.
                 binding.tvMiddleCategory.text = item.data
-                val class2 = Category.CLASS2
 
                 MiddleCategoryAdapter.clearItems()
                 SubjectCategoryAdapter.clearItems()
@@ -107,17 +141,30 @@ class IngredientFragment : Fragment() {
                         item.data
                     )
                 )
-
-                if (class2.containsKey(item.data)) {
-                    val dataSet = arrayListOf<CategoryListItem>().also { list ->
-                        class2[item.data]!!.src.forEach {
-                            list.add(CategoryListItem(it, false))
+                // 비타민에서 온 경우가 아니면
+                if (!fromVitamin) {
+                    val class2 = Category.CLASS2
+                    if (class2.containsKey(item.data)) {
+                        val dataSet = arrayListOf<CategoryListItem>().also { list ->
+                            class2[item.data]!!.src.forEach {
+                                list.add(CategoryListItem(it, false))
+                            }
+                        }
+                        MiddleCategoryAdapter.replaceAll(dataSet)
+                    }
+                } else {
+                    nowVitamin = item
+                    val dataSet by lazy {
+                        arrayListOf<CategoryListItem>().also { list ->
+                            val middleData =
+                                findMiddleData(Category.GETINGREDIENT[nowVitamin.data]?.src)
+                            middleData.forEach {
+                                list.add(CategoryListItem(it, false))
+                            }
                         }
                     }
                     MiddleCategoryAdapter.replaceAll(dataSet)
                 }
-
-
             }
         }
         MiddleCategoryAdapter = object : ClassListAdapter(requireContext()) {
@@ -125,23 +172,53 @@ class IngredientFragment : Fragment() {
                 //중분류에서 항목설정시 이벤트가 떨어진다.
                 binding.tvSubjectCategory.text = item.data
 
-                val class3 = Category.CLASS3
                 MiddleCategoryAdapter.replaceAll(
                     changeSelectedState(
                         MiddleCategoryAdapter.getItemList(),
                         item.data
                     )
                 )
-                if (class3.containsKey(item.data)) {
+                // 메인 -> 재료
+                if (!fromVitamin) {
+                    val class3 = Category.CLASS3
+                    if (class3.containsKey(item.data)) {
+                        val dataSet = arrayListOf<CategoryListItem>().also { list ->
+                            class3[item.data]!!.src.forEach {
+                                list.add(CategoryListItem(it, false))
+                            }
+                        }
+                        SubjectCategoryAdapter.replaceAll(dataSet)
+                    } else {
+                        SubjectCategoryAdapter.clearItems()
+                    }
 
+                } else { // 메인 -> 비타민 -> 재료
+                    val class2Array = Category.CLASS2[item.data]
+                    // allIngredient: 대분류 범주에 해당되는 모든 소분류 아이템 담기
+                    val allIngredient by lazy {
+                        arrayListOf<String>().also { list ->
+                            class2Array?.src?.forEach {
+                                Category.CLASS3[it]?.src?.forEach {
+                                    list.add(it)
+                                }
+                            }
+                        }
+                    }
+                    // GETINGREDIENT는 비타민 - 재료 매핑된 데이터 형태
+                    val getIngredient = Category.GETINGREDIENT
+
+                    // 1.우리가 찾는 비타민에 포함된 재료와 2.선택한 대분류에 포함된 재료중 공통된 재료찾기
                     val dataSet = arrayListOf<CategoryListItem>().also { list ->
-                        class3[item.data]!!.src.forEach {
-                            list.add(CategoryListItem(it, false))
+                        getIngredient[nowVitamin.data]?.src?.forEach {
+                            if (allIngredient.contains(it)) list.add(
+                                CategoryListItem(
+                                    it,
+                                    false
+                                )
+                            )
                         }
                     }
                     SubjectCategoryAdapter.replaceAll(dataSet)
-                } else {
-                    SubjectCategoryAdapter.clearItems()
                 }
             }
         }
@@ -178,22 +255,22 @@ class IngredientFragment : Fragment() {
             }
         }
 
-        binding.rvMainCategory.run {
+        binding.rvMainCategory.run{
             setHasFixedSize(true)
             adapter = MainCategoryAdapter
         }
 
-        binding.rvMiddleCategory.run {
+        binding.rvMiddleCategory.run{
             setHasFixedSize(true)
             adapter = MiddleCategoryAdapter
         }
 
-        binding.rvSubjectCategory.run {
+        binding.rvSubjectCategory.run{
             setHasFixedSize(true)
             adapter = SubjectCategoryAdapter
         }
 
-        binding.rvSelectedCategory.run {
+        binding.rvSelectedCategory.run{
             setHasFixedSize(true)
             adapter = SelectedCategoryAdapter
         }
@@ -207,7 +284,7 @@ class IngredientFragment : Fragment() {
     }
 
 
-    private fun reLoadSelectedCategory(){
+    private fun reLoadSelectedCategory() {
         //다시 카테고리 화면 돌아올시.. 선택한 메뉴들 ListUp 오른쪽에 back화살표 모양
         val selectedDataSet = arrayListOf<CategoryListItem>()
         selectedCategorys.entries.forEach {
@@ -230,129 +307,24 @@ class IngredientFragment : Fragment() {
         }?.toList()
     }
 
-    //리스트뷰 의 각 Item 클래스
-    private data class CategoryListItem(val data: String, var selected: Boolean)
-
-    // 대분류 중분류 소분류의 리사이클러뷰의 어뎁터를 만들기 위한 inner class
-    // 대분류 중분류 소분류의 어뎁터가 이 클래스를 참조한다.
-    private abstract inner class ClassListAdapter(private val context: Context) :
-        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-        abstract fun onItemClick(index: Int, data: CategoryListItem)
-
-        var items = mutableListOf<CategoryListItem>()
-
-        // 만들어진 View가 없는 경우 xml 파일을 inflate해서 ViewHolder 생성
-        // ViewHolder는 뷰를 보관하는 객체, 여러개 보관가능
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            return CategoryGroupListItemViewHolder(
-                CategoryGroupListItemBinding.inflate(
-                    layoutInflater,
-                    parent,
-                    false
-                )
-            )
-        }
-
-        fun clearItems() {
-            items.clear()
-            notifyDataSetChanged()
-        }
-
-        fun replaceAll(items: List<CategoryListItem>?) {
-            items?.let {
-                this.items.run {
-                    clear()
-                    addAll(it)
-                    notifyDataSetChanged()
+    private fun findMiddleData(vitaminArr: Array<String>?): MutableList<String> {
+        var tempMiddleList = mutableSetOf<String>()
+        Category.CLASS3.entries.map {
+            if (vitaminArr != null) {
+                for (ingredient in vitaminArr) {
+                    if (it.value.src.contains(ingredient)) tempMiddleList.add(it.key)
                 }
             }
         }
 
-        fun getItemList(): List<CategoryListItem> {
-            return items
-        }
-
-        override fun getItemCount(): Int = items.size
-
-        // 만들어진 뷰와 실제 입력되는 각각의 데이터를 연결한다.
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            if (holder is CategoryGroupListItemViewHolder) {
-                val title = items[position].data
-                val isSelected = items[position].selected
-                holder.binding.root.text = title
-
-                //클릭시 텍스트뷰의 배경과 글씨색상을 변경한다. isSelected true 시 클릭
-                if (isSelected) {
-                    holder.binding.root.setBackgroundColor(Color.parseColor("#e8b943"))
-                    holder.binding.root.setTextColor(Color.parseColor("#fed966"))
-                } else {
-                    holder.binding.root.setBackgroundColor(Color.parseColor("#ffffff"))
-                    holder.binding.root.setTextColor(Color.parseColor("#252525"))
-                }
-                holder.itemView.setOnClickListener {
-                    onItemClick(position, items[position])
+        var MiddleList = mutableSetOf<String>()
+        Category.CLASS2.entries.map {
+            if (tempMiddleList != null) {
+                for (ingredient in tempMiddleList) {
+                    if (it.value.src.contains(ingredient)) MiddleList.add(it.key)
                 }
             }
         }
-
-        // Data binding
-        // layout 이름을 category_group_list_item으로 정의했다면 DataBinding에 의해 생성된 데이터는 CategoryGroupListItemBinding.java 이다.
-        // 실제 DataBinding 해야 할 객체는 CategoryGroupListItemBinding을 초기화 해야한다. root(view)를 뷰 홀더에 넘겨주자
-        // https://thdev.tech/androiddev/2020/05/25/Android-RecyclerView-Adapter-Use-DataBinding/
-        inner class CategoryGroupListItemViewHolder(val binding: CategoryGroupListItemBinding) :
-            RecyclerView.ViewHolder(binding.root)
-    }
-
-    private abstract inner class SelectedListAdapter(private val context: Context) :
-        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-        abstract fun onItemClick(index: Int, data: CategoryListItem)
-
-        var items = mutableListOf<CategoryListItem>()
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            return CategotySelectedListViewHolder(
-                CategorySelectedListItemBinding.inflate(
-                    layoutInflater,
-                    parent,
-                    false
-                )
-            )
-        }
-
-        fun replaceAll(items: List<CategoryListItem>?) {
-            items?.let {
-                this.items.run {
-                    clear()
-                    addAll(it)
-                    notifyDataSetChanged()
-                }
-            }
-        }
-
-        fun removeItem(position: Int) {
-            if (position < this.items.size) {
-                items.removeAt(position)
-                notifyItemRemoved(position)
-                notifyItemRangeChanged(position, items.size)
-            }
-        }
-
-        override fun getItemCount(): Int = items.size
-
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            if (holder is CategotySelectedListViewHolder) {
-                val title = items[position].data
-                holder.binding.tvSelectedTitle.text = title
-                holder.itemView.setOnClickListener {
-                    onItemClick(position, items[position])
-                }
-            }
-        }
-
-        inner class CategotySelectedListViewHolder(val binding: CategorySelectedListItemBinding) :
-            RecyclerView.ViewHolder(binding.root)
-
+        return MiddleList.toMutableList()
     }
 }

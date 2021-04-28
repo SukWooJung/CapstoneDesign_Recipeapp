@@ -9,26 +9,34 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.fragment.app.FragmentTransaction
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.Jachi3kki.Adapter.RecipeAdapter
+import com.example.Jachi3kki.Adapter.SelectedListAdapter
+import com.example.Jachi3kki.Category
+import com.example.Jachi3kki.Class.CategoryListItem
 import com.example.Jachi3kki.L
 import com.example.Jachi3kki.R
-import com.example.Jachi3kki.Recipe
-import com.example.Jachi3kki.SelectedListItem
+import com.example.Jachi3kki.Class.Recipe
+import com.example.Jachi3kki.Class.SelectedListItem
 import com.example.Jachi3kki.databinding.CategorySelectedListItemBinding
+import com.example.Jachi3kki.recipeInfo
 import kotlinx.android.synthetic.main.fragment_main.rv_data_list
 import kotlinx.android.synthetic.main.fragment_recipe.*
 import kotlinx.android.synthetic.main.fragment_recipe.rc_count
 
 class RecipeFragment : Fragment() {
-    val recipeList = arrayListOf<Recipe>()
+    lateinit var recipeList : ArrayList<Recipe>
     lateinit var navController: NavController
+    var selectedMenuItems = mutableSetOf<String>()
 
     private lateinit var selectedAdapter: SelectedListAdapter
     private val selectedMenuItem  by lazy { arguments?.getParcelableArrayList<SelectedListItem>("item")}
+    private val selectedAlignItem by lazy{arguments?.getParcelableArrayList<SelectedListItem>("alignmentItem")}
+    private val selectedDetailItem by lazy{arguments?.getParcelableArrayList<SelectedListItem>("detailItem")}
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,10 +50,52 @@ class RecipeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
 
-
         L.i("::::intent " + selectedMenuItem)
-        // 데이터 집어넣기
-        if (recipeList.isEmpty()) addRecipeArray()
+
+        // 상세조건 버튼클릭
+        btn_detail.setOnClickListener {
+            val selectedDataSet by lazy{
+                ArrayList<SelectedListItem>().also { list->
+                    selectedMenuItems.forEach{
+                        list.add(SelectedListItem(it))
+                    }
+                }
+            }
+            navController.navigate(R.id.action_recipeFragment_to_detailFragment, bundleOf("item" to selectedDataSet))
+        }
+
+        // 정렬조건 버튼클릭
+        btn_alignment.setOnClickListener {
+            val selectedDataSet by lazy{
+                ArrayList<SelectedListItem>().also { list->
+                    selectedMenuItems.forEach{
+                        list.add(SelectedListItem(it))
+                    }
+                }
+            }
+            navController.navigate(R.id.action_recipeFragment_to_alignmentFragment, bundleOf("item" to selectedDataSet))
+        }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        // 선택된 재료로 레시피 검색, 편의를 위한 데이터 형변환
+
+        selectedMenuItem?.forEach{
+            selectedMenuItems.add(it.data)
+        }
+
+
+        // 레시피 검색
+        // DB에 레시피 데이터가 있어야됨
+        recipeList = findRecipe(selectedMenuItems.toMutableList() as ArrayList<String>)
+
+        // 정렬 조건 반영
+        println("test" + selectedAlignItem)
+
+        // 필터 조건 반영
+        println("test" + selectedDetailItem)
 
         // 조회된 레시피 수 출력
         rc_count.text = "${recipeList.count()}건"
@@ -66,36 +116,31 @@ class RecipeFragment : Fragment() {
                 it
             )
         }
-        rv_data_list.adapter = RecipeAdapter(recipeList, requireContext()) {
+
+        rv_data_list.adapter = RecipeAdapter(
+            recipeList,
+            requireContext()
+        ) {
             Toast.makeText(activity, "메인 메뉴에 있는 레시피가 클릭되었다.", Toast.LENGTH_SHORT).show()
         }
 
-
-        btn_alignment.setOnClickListener {
-            val dialogView: View =
-                layoutInflater.inflate(R.layout.fragment_alignment, null)
-
-            val builder = activity?.let { it1 -> AlertDialog.Builder(it1) }
-            if (builder != null) {
-                builder.setView(dialogView)
-                builder.show()
-            }
-        }
-
-//        btn_alignment.setOnClickListener {
-//            navController.navigate(R.id.action_recipeFragment_to_alignmentFragment)
-//        }
-
-        btn_detail.setOnClickListener {
-            navController.navigate(R.id.action_recipeFragment_to_detailFragment)
-        }
-
-
+        // 셀렉티드 업덥터
         selectedAdapter = object : SelectedListAdapter(requireContext()){
-            override fun onItemClick(index: Int, data: SelectedListItem) {
-                L.i("::클릭시...이벤트")
-            }
+            override fun onItemClick(index: Int, item: CategoryListItem) {
+                //선택한 리스트뷰 클릭시 떨어지는 이벤트트
+                L.i(":::::::::::::::선택한 선택한 카테고리 " + item.data)
+                selectedAdapter.removeItem(index)
+                selectedMenuItems.remove(item.data)
+                recipeList = findRecipe(selectedMenuItems.toMutableList() as ArrayList<String>)
+                rc_count.text = "${recipeList.count()}건"
 
+                rv_data_list.adapter = RecipeAdapter(
+                    recipeList,
+                    requireContext()
+                ) {
+                    Toast.makeText(activity, "메인 메뉴에 있는 레시피가 클릭되었다.", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         rv_selected_item.run {
@@ -103,86 +148,40 @@ class RecipeFragment : Fragment() {
             adapter = selectedAdapter
         }
 
-        selectedAdapter.replaceAll(selectedMenuItem?.toList())
+        reLoadSelectedCategory()
     }
 
-    private fun addRecipeArray() {
+    private fun addRecipeArray() {//만들어만 놓으신듯
         recipeList.add(
             Recipe(
+                1,
                 "김치찌개",
                 "김개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 ",
-                "kimchi"
-            )
-        )
-        recipeList.add(
-            Recipe(
-                "된장찌개",
-                "김개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 ",
-                "gogi"
-            )
-        )
-        recipeList.add(
-            Recipe(
-                "참치찌개",
-                "김개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 ",
-                "mamuri"
+                "한식",
+                "이미지 url들어감",
+                arrayListOf("삼겹살", "간장", "가자미", "계란")
             )
         )
 
     }
 
-
-    private abstract inner class SelectedListAdapter(private val context: Context) :
-        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-        abstract fun onItemClick(index: Int, data: SelectedListItem)
-
-        var items = mutableListOf<SelectedListItem>()
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            return CategorySelectedListViewHolder(
-                CategorySelectedListItemBinding.inflate(
-                    layoutInflater,
-                    parent,
-                    false
-                )
-            )
+    // 선택된 재료들을 모두 포함하는 모든 레시피를 찾음
+    private fun findRecipe(ingredientArr: ArrayList<String>): ArrayList<Recipe> {
+        var tempRecipeList = ArrayList<Recipe>()
+        recipeInfo.RECIPELIST.forEach{
+            if(it.ingredientArr.containsAll(ingredientArr))
+                tempRecipeList.add(it)
         }
-
-        fun replaceAll(items: List<SelectedListItem>?) {
-            items?.let {
-                this.items.run {
-                    clear()
-                    addAll(it)
-                    notifyDataSetChanged()
-                }
-            }
-        }
-
-        fun removeItem(position: Int) {
-            if (position < this.items.size) {
-                items.removeAt(position)
-                notifyItemRemoved(position)
-                notifyItemRangeChanged(position, items.size)
-            }
-        }
-
-        override fun getItemCount(): Int = items.size
-
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            if (holder is CategorySelectedListViewHolder) {
-                val title = items[position].data
-                holder.binding.tvSelectedTitle.text = title
-                holder.itemView.setOnClickListener {
-                    onItemClick(position, items[position])
-                }
-            }
-        }
-
-        inner class CategorySelectedListViewHolder(val binding: CategorySelectedListItemBinding) :
-            RecyclerView.ViewHolder(binding.root)
-
+        return tempRecipeList
     }
 
-
+    private fun reLoadSelectedCategory() {
+        //다시 카테고리 화면 돌아올시.. 선택한 메뉴들 ListUp 오른쪽에 back화살표 모양
+        val selectedDataSet = arrayListOf<CategoryListItem>()
+        selectedMenuItems.forEach {
+            selectedDataSet.add(CategoryListItem(it, false))
+        }
+        L.i("::::selectedDataSet " + selectedDataSet)
+        selectedAdapter.replaceAll(selectedDataSet)
+    }
 }

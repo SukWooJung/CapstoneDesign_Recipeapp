@@ -69,7 +69,7 @@
             android:backgroundTint="@color/white"
             android:contentDescription="북마크 추가"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon_bookmark_check"
+            android:src="@drawable/icon_bookmark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

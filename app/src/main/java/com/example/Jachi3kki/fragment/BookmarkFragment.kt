@@ -7,18 +7,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.Jachi3kki.Bookmark
+import com.example.Jachi3kki.Class.Bookmark
 import com.example.Jachi3kki.R
-import com.example.Jachi3kki.Recipe
 import com.example.Jachi3kki.databinding.BookmarkListItemBinding
 import com.example.Jachi3kki.databinding.FragmentBookmarkBinding
-import com.example.Jachi3kki.databinding.FragmentIngredientBinding
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_bookmark.*
 
@@ -41,7 +37,6 @@ class BookmarkFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = nav_host_fragment.findNavController()
-
         addBookmarkArray()
         // 조회된 레시피 수 출력
         tv_count.text = "${bookmarkList.count()}건"
@@ -62,7 +57,13 @@ class BookmarkFragment : Fragment() {
                 it
             )
         }
-
+        /*
+        rv_data_list.adapter = activity?.let {
+            BookmarkAdapter(bookmarkList, it) {
+                Toast.makeText(activity, "메인 메뉴에 있는 레시피가 클릭되었다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+        */
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

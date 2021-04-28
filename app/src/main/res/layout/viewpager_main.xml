@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+
+    <FrameLayout
+        android:id="@+id/Top_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.25"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white">
+        <FrameLayout
+            android:layout_marginTop="10dp"
+            android:layout_width="220dp"
+            android:layout_height="90dp"
+            android:layout_gravity="center"
+            android:background="@drawable/border_layout_timer"
+
+            >
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_gravity="top"
+
+                >
+                <TextView
+                    android:layout_marginTop="2dp"
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textAlignment="center"
+                    android:textSize= "35dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:text="00 : 00 : 00"/>
+
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="bottom"
+                >
+                <View
+                    android:background="@color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="top"
+                    />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/start"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="110dp"
+                    android:layout_height="match_parent"
+                    android:text="Start"
+                    android:background="@drawable/border_layout_timer_button_left"
+                    android:textColor="@color/green" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/reset"
+                    android:layout_gravity="right"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="110dp"
+                    android:layout_height="match_parent"
+                    android:text="Reset"
+                    android:background="@drawable/border_layout_timer_button_right"
+                    android:textColor="@color/white" />
+            </FrameLayout>
+        </FrameLayout>
+    </FrameLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/Bottom_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Top_view" />
+
+    <FrameLayout
+        android:id="@+id/Bottom_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.20"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/white">
+        <ImageView
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_recorder"
+            >
+
+        </ImageView>
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,23 +1,25 @@
 package com.example.Jachi3kki.fragment
 
-import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.Jachi3kki.Adapter.ClassListAdapter
+import com.example.Jachi3kki.Adapter.SelectedListAdapter
 import com.example.Jachi3kki.Category
+import com.example.Jachi3kki.Class.CategoryListItem
 import com.example.Jachi3kki.L
 import com.example.Jachi3kki.R
-import com.example.Jachi3kki.databinding.CategoryGroupListItemBinding
-import com.example.Jachi3kki.databinding.CategorySelectedListItemBinding
+import com.example.Jachi3kki.Class.SelectedListItem
 import com.example.Jachi3kki.databinding.FragmentVitaminBinding
 import kotlinx.android.synthetic.main.fragment_vitamin.*
-import kotlinx.android.synthetic.main.recipe_list_item.*
 
 class VitaminFragment : Fragment() {
     // private val vitaminList = arrayListOf<Vitamin>()
@@ -31,7 +33,7 @@ class VitaminFragment : Fragment() {
 
     //선택한 item의 중복방지와 순서유지를위해 hashmap을 사용
     // 카테고리에서 재료를 선택하면, 아래에 출력되는 아이템 Map
-    private var selectedCategorys = LinkedHashMap<String, String>()
+    private var selectedCategorys = mutableSetOf<String>()
 
     //카테고리 디폴트 데이터
     private val deFaultClass1 by lazy {
@@ -65,24 +67,44 @@ class VitaminFragment : Fragment() {
         navController = Navigation.findNavController(view)
         //디폴트데이터를 초반에 설정해주세요.
 
-        btn_vitamin_select.setOnClickListener{
+        // 비타민 선택 버튼 누르면, 아래의 선택된 비타민 목록에 추가하는 비타민이 뜨도록
+        btn_vitamin_select.setOnClickListener {
             val itemText = tv_middle_category.text
             val item = Category.VITAMINDATA[itemText]
             if (item != null) {
-                if (!selectedCategorys.containsKey(item.name)) {
-                    selectedCategorys[item.name] = item.name
+                if (!selectedCategorys.contains(item.name)) {
+                    selectedCategorys.add(item.name)
                     val selectedDataSet = arrayListOf<CategoryListItem>()
 
-                    selectedCategorys.entries.forEach {
-                        selectedDataSet.add(CategoryListItem(it.key, false))
+                    selectedCategorys.forEach {
+                        selectedDataSet.add(CategoryListItem(it, false))
                     }
                     L.i("::::selectedDataSet " + selectedDataSet)
                     SelectedCategoryAdapter.replaceAll(selectedDataSet)
                 }
             }
         }
-        btn_goIngredient.setOnClickListener {
-            navController.navigate(R.id.action_vitaminFragment_to_ingredientFragment)
+
+        btn_goIngredient.setOnClickListener {       //이제 여기가 비타민 선택 완료하고 그에 따른 재료창으로 가는 것
+            val selectedDataSet = arrayListOf<SelectedListItem>()
+            if (selectedCategorys.isEmpty()) {
+                Toast.makeText(requireContext(), "최소 1개 이상의 비타민을 선택해 주세요.", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                selectedCategorys.forEach {
+                    selectedDataSet.add(
+                        SelectedListItem(
+                            it
+                        )
+                    )
+                }
+                selectedDataSet.sortBy { it.data }
+
+                navController.navigate(
+                    R.id.action_vitaminFragment_to_ingredientFragment,
+                    bundleOf("vitaminItem" to selectedDataSet)
+                )
+            }
         }
     }
 
@@ -107,12 +129,9 @@ class VitaminFragment : Fragment() {
                     if (vitamin != null) {
                         binding.vitDescription.text = vitamin.description
                         if (vitamin.img_src != "") {
-                            val resourceId = requireContext().resources.getIdentifier(
-                                vitamin.img_src,
-                                "drawable",
-                                requireContext().packageName
-                            )
-                            binding.imgVitamin?.setImageResource(resourceId)
+                            var nutritionImg: ImageView = binding.imgVitamin
+                            var imageUrl = "http://" + vitamin.img_src
+                            Glide.with(requireContext()).load(imageUrl).into(nutritionImg)
                         } else {
                             binding.imgVitamin?.setImageResource(R.mipmap.ic_launcher)
                         }
@@ -141,6 +160,18 @@ class VitaminFragment : Fragment() {
         }
         MainCategoryAdapter.replaceAll(deFaultClass1)
         MainCategoryAdapter.onItemClick(0, CategoryListItem("비타민A", true))
+
+        reLoadSelectedCategory()
+    }
+
+    private fun reLoadSelectedCategory() {
+        //다시 카테고리 화면 돌아올시.. 선택한 메뉴들 ListUp 오른쪽에 back화살표 모양
+        val selectedDataSet = arrayListOf<CategoryListItem>()
+        selectedCategorys.forEach {
+            selectedDataSet.add(CategoryListItem(it, false))
+        }
+        L.i("::::selectedDataSet " + selectedDataSet)
+        SelectedCategoryAdapter.replaceAll(selectedDataSet)
     }
 
     //선택한 list의 클릭상태를 변경하기위한 함수
@@ -155,132 +186,5 @@ class VitaminFragment : Fragment() {
             category
         }?.toList()
     }
-
-    //리스트뷰 의 각 Item 클래스
-    private data class CategoryListItem(val data: String, var selected: Boolean)
-
-    // 대분류 중분류 소분류의 리사이클러뷰의 어뎁터를 만들기 위한 inner class
-    // 대분류 중분류 소분류의 어뎁터가 이 클래스를 참조한다.
-    private abstract inner class ClassListAdapter(private val context: Context) :
-        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-        abstract fun onItemClick(index: Int, data: CategoryListItem)
-
-        var items = mutableListOf<CategoryListItem>()
-
-        // 만들어진 View가 없는 경우 xml 파일을 inflate해서 ViewHolder 생성
-        // ViewHolder는 뷰를 보관하는 객체, 여러개 보관가능
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            return CategoryGroupListItemViewHolder(
-                CategoryGroupListItemBinding.inflate(
-                    layoutInflater,
-                    parent,
-                    false
-                )
-            )
-        }
-
-        fun clearItems() {
-            items.clear()
-            notifyDataSetChanged()
-        }
-
-        fun replaceAll(items: List<CategoryListItem>?) {
-            items?.let {
-                this.items.run {
-                    clear()
-                    addAll(it)
-                    notifyDataSetChanged()
-                }
-            }
-        }
-
-        fun getItemList(): List<CategoryListItem> {
-            return items
-        }
-
-        override fun getItemCount(): Int = items.size
-
-        // 만들어진 뷰와 실제 입력되는 각각의 데이터를 연결한다.
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            if (holder is CategoryGroupListItemViewHolder) {
-                val title = items[position].data
-                val isSelected = items[position].selected
-                holder.binding.root.text = title
-
-                //클릭시 텍스트뷰의 배경과 글씨색상을 변경한다. isSelected true 시 클릭
-                if (isSelected) {
-                    holder.binding.root.setBackgroundColor(Color.parseColor("#e8b943"))
-                    holder.binding.root.setTextColor(Color.parseColor("#fed966"))
-                } else {
-                    holder.binding.root.setBackgroundColor(Color.parseColor("#ffffff"))
-                    holder.binding.root.setTextColor(Color.parseColor("#252525"))
-                }
-                holder.itemView.setOnClickListener {
-                    onItemClick(position, items[position])
-                }
-            }
-        }
-
-        // Data binding
-        // layout 이름을 category_group_list_item으로 정의했다면 DataBinding에 의해 생성된 데이터는 CategoryGroupListItemBinding.java 이다.
-        // 실제 DataBinding 해야 할 객체는 CategoryGroupListItemBinding을 초기화 해야한다. root(view)를 뷰 홀더에 넘겨주자
-        // https://thdev.tech/androiddev/2020/05/25/Android-RecyclerView-Adapter-Use-DataBinding/
-        inner class CategoryGroupListItemViewHolder(val binding: CategoryGroupListItemBinding) :
-            RecyclerView.ViewHolder(binding.root)
-    }
-
-    private abstract inner class SelectedListAdapter(private val context: Context) :
-        RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-        abstract fun onItemClick(index: Int, data: CategoryListItem)
-
-        var items = mutableListOf<CategoryListItem>()
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            return CategotySelectedListViewHolder(
-                CategorySelectedListItemBinding.inflate(
-                    layoutInflater,
-                    parent,
-                    false
-                )
-            )
-        }
-
-        fun replaceAll(items: List<CategoryListItem>?) {
-            items?.let {
-                this.items.run {
-                    clear()
-                    addAll(it)
-                    notifyDataSetChanged()
-                }
-            }
-        }
-
-        fun removeItem(position: Int) {
-            if (position < this.items.size) {
-                items.removeAt(position)
-                notifyItemRemoved(position)
-                notifyItemRangeChanged(position, items.size)
-            }
-        }
-
-        override fun getItemCount(): Int = items.size
-
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            if (holder is CategotySelectedListViewHolder) {
-                val title = items[position].data
-                holder.binding.tvSelectedTitle.text = title
-                holder.itemView.setOnClickListener {
-                    onItemClick(position, items[position])
-                }
-            }
-        }
-
-        inner class CategotySelectedListViewHolder(val binding: CategorySelectedListItemBinding) :
-            RecyclerView.ViewHolder(binding.root)
-
-    }
-
 
 }
