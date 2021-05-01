@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.Jachi3kki.Category
+import com.example.Jachi3kki.Class.SelectedListItem
 import com.example.Jachi3kki.R
 import com.example.Jachi3kki.RefrigeratorAdapter
 import com.example.Jachi3kki.Helper.RefrigeratorDeleteButton
@@ -98,8 +100,15 @@ class fridgeFragment : Fragment() {
 
         //냉장고에서 레시피로 가는 버튼
         btn_go_fridge_Recipe.setOnClickListener {
-
-            startActivity(Intent(view.context, PagerActivity::class.java))
+            val selectedDataSet by lazy {
+                arrayListOf<SelectedListItem>().also{ list->
+                    itemlist.forEach{
+                        list.add(SelectedListItem(it.name))
+                    }
+                }
+            }
+            navController.navigate(R.id.action_fridgeFragment_to_recipeFragment, bundleOf("item" to selectedDataSet))
+//            startActivity(Intent(view.context, PagerActivity::class.java))
             //데이터값 받아서 레시피 전달 롸롸롸롸로라ㅗ라ㅗ라ㅗ라ㅘ롸롸로 ㅏㅏ ㅏ ㅏ ㅏ ㅏ ㅏ ㅏㅏ ㅏ ~~~~~~~~~~~~~~~
         }
 
@@ -107,6 +116,7 @@ class fridgeFragment : Fragment() {
             navController.navigate(R.id.action_fridgeFragment_to_addFragment)
         }
     }
+
     //데이터 넣는 창
     //이건 그냥 디폴트 데이터 넣는 함수
     private fun generateItem(ingredientList: MutableList<FridgeIngredient>) {

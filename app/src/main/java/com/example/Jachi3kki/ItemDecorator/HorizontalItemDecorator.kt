@@ -1,15 +1,36 @@
+import android.content.Context
+import android.graphics.Canvas
 import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
+class HorizontalItemDecorator(
+    context: Context,
+    resId: Int,
+    val paddingTop: Int,
+    val paddingBottom: Int
+) : RecyclerView.ItemDecoration() {
+    private var mDivider: Drawable? = null
 
-class HorizontalItemDecorator(private val divHeight : Int) : RecyclerView.ItemDecoration() {
+    init {
+        mDivider = ContextCompat.getDrawable(context, resId)
+    }
 
-    @Override
-    override fun getItemOffsets(outRect: Rect, view: View, parent : RecyclerView, state : RecyclerView.State) {
-        super.getItemOffsets(outRect, view, parent, state)
-        outRect.top = divHeight
-        outRect.bottom = divHeight
-
+    override fun onDrawOver(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+        val top = parent.paddingTop + paddingTop
+        val bottom = parent.height - parent.paddingBottom - paddingBottom
+        val childCount = parent.childCount
+        for (i in 0 until childCount) {
+            val child = parent.getChildAt(i)
+            val params = child.layoutParams as RecyclerView.LayoutParams
+            val left = child.right + params.rightMargin
+            val right = left + (mDivider?.intrinsicHeight ?: 0)
+            mDivider?.let {
+                it.setBounds(left, top, right, bottom)
+                it.draw(c)
+            }
+        }
     }
 }

@@ -47,7 +47,11 @@
         android:id="@+id/fridgeFragment"
         android:name="com.example.Jachi3kki.fragment.fridgeFragment"
         android:label="fragment_fridge"
-        tools:layout="@layout/fragment_fridge" />
+        tools:layout="@layout/fragment_fridge" >
+        <action
+            android:id="@+id/action_fridgeFragment_to_recipeFragment"
+            app:destination="@id/recipeFragment" />
+    </fragment>
         <action
             android:id="@+id/action_fridgeFragment_to_addFragment"
             app:destination="@id/addFragment" />

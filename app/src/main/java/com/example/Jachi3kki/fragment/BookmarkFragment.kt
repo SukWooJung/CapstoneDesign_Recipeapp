@@ -52,7 +52,7 @@ class BookmarkFragment : Fragment() {
         rv_data_list.setHasFixedSize(true)
 
         // 아이템간의 구분선 추가
-        activity?.let { VerticalItemDecorator(it, R.drawable.line_divider, 0, 0) }?.let {
+        activity?.let { VerticalItemDecorator(it, R.drawable.horizontal_line_divider, 0, 0) }?.let {
             rv_data_list.addItemDecoration(
                 it
             )

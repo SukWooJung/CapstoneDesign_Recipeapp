@@ -1,28 +1,25 @@
 package com.example.Jachi3kki.fragment
 
 import VerticalItemDecorator
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.Jachi3kki.Adapter.RecipeAdapter
+import com.example.Jachi3kki.Adapter.ExtensionRecipeAdapter
+import com.example.Jachi3kki.Adapter.MainFragmentAdapter
 import com.example.Jachi3kki.Adapter.SelectedListAdapter
-import com.example.Jachi3kki.Category
 import com.example.Jachi3kki.Class.CategoryListItem
 import com.example.Jachi3kki.L
 import com.example.Jachi3kki.R
 import com.example.Jachi3kki.Class.Recipe
 import com.example.Jachi3kki.Class.SelectedListItem
-import com.example.Jachi3kki.databinding.CategorySelectedListItemBinding
 import com.example.Jachi3kki.recipeInfo
 import kotlinx.android.synthetic.main.fragment_main.rv_data_list
 import kotlinx.android.synthetic.main.fragment_recipe.*
@@ -111,13 +108,13 @@ class RecipeFragment : Fragment() {
         rv_data_list.setHasFixedSize(true)
 
         // 아이템간의 구분선 추가
-        activity?.let { VerticalItemDecorator(it, R.drawable.line_divider, 0, 0) }?.let {
-            rv_data_list.addItemDecoration(
-                it
-            )
-        }
+//        activity?.let { VerticalItemDecorator(it, R.drawable.vertical_line_divider, 0, 0) }?.let {
+//            rv_data_list.addItemDecoration(
+//                it
+//            )
+//        }
 
-        rv_data_list.adapter = RecipeAdapter(
+        rv_data_list.adapter = ExtensionRecipeAdapter(
             recipeList,
             requireContext()
         ) {
@@ -134,7 +131,7 @@ class RecipeFragment : Fragment() {
                 recipeList = findRecipe(selectedMenuItems.toMutableList() as ArrayList<String>)
                 rc_count.text = "${recipeList.count()}건"
 
-                rv_data_list.adapter = RecipeAdapter(
+                rv_data_list.adapter = MainFragmentAdapter(
                     recipeList,
                     requireContext()
                 ) {

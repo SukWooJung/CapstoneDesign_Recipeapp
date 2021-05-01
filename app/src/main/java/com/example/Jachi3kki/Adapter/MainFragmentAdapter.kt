@@ -6,16 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.Jachi3kki.R
 import com.example.Jachi3kki.Class.Recipe
+import com.example.Jachi3kki.R
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.bookmark_list_item.*
+import kotlinx.android.synthetic.main.main_recipe_list_item.*
 
-class ExtensionRecipeAdapter(
+
+class MainFragmentAdapter(
     val items: ArrayList<Recipe>,
     val context: Context,
     val itemSelect: (Recipe) -> Unit
-) : RecyclerView.Adapter<ExtensionRecipeAdapter.RecipeViewHolder>() {
+) : RecyclerView.Adapter<MainFragmentAdapter.MainFragmentViewHolder>() {
     override fun getItemCount(): Int {
         return items.size
     }
@@ -23,20 +24,21 @@ class ExtensionRecipeAdapter(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): RecipeViewHolder {
+    ): MainFragmentViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(
-            R.layout.bookmark_list_item,
+            R.layout.main_recipe_list_item,
             parent,
             false
         )
-        return RecipeViewHolder(view, itemSelect)
+        return MainFragmentViewHolder(view, itemSelect)
     }
 
-    override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MainFragmentViewHolder, position: Int) {
         holder.bind(items[position], context, position)
+
     }
 
-    inner class RecipeViewHolder(
+    inner class MainFragmentViewHolder(
         override val containerView: View,
         itemSelect: (Recipe) -> Unit
     ) :
@@ -46,6 +48,11 @@ class ExtensionRecipeAdapter(
             tv_bookmark_title.text = recipe.name
             tv_bookmark_content.text = recipe.content
             itemView.setOnClickListener() { itemSelect(recipe) }
+            tv_main_title.text = when(position){
+                0 -> "오늘의 추천 레시피"
+                1 -> "Hot 레시피"
+                else -> "나오면 안됨"
+            }
         }
     }
 
