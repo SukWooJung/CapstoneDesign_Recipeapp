@@ -18,8 +18,8 @@ abstract class AppDatabase : RoomDatabase() {
                     INSTANCE = Room.databaseBuilder(
                         context.applicationContext,
                         AppDatabase::class.java,
-                        "fridgeNew"
-                    ).allowMainThreadQueries().createFromAsset("databases/fridgeNew.db").build()   //미리 데이터 채우고 싶으면 .build 앞에 createFormAsset("db이름.db")넣으면 됨. 기본으로 assets 폴더로 정해져있음
+                        "fridgeIngredient"
+                    ).allowMainThreadQueries().createFromAsset("databases/fridgeIngredient.db").build()   //미리 데이터 채우고 싶으면 .build 앞에 createFormAsset("db이름.db")넣으면 됨. 기본으로 assets 폴더로 정해져있음
                 }
             }
             return INSTANCE

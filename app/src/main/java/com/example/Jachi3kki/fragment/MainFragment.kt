@@ -23,13 +23,13 @@ import com.example.Jachi3kki.Class.SelectedListItem
 import com.example.Jachi3kki.PagerActivity
 import com.example.Jachi3kki.recipeInfo
 import kotlinx.android.synthetic.main.fragment_main.*
-
 class MainFragment : Fragment() {
 
     class MainVitamin(val name: String, val img_src: String)
     var recipeList = arrayListOf<Recipe>()
     var vitaminList = arrayListOf<MainVitamin>()
     lateinit var navController: NavController
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -91,8 +91,7 @@ class MainFragment : Fragment() {
         rv_vitamin_list.adapter = activity?.let { it ->
             MainVitaminAdapter(vitaminList, it) {
                 Log.e("Index", it.name) //어떤 아이템을 클릭했는지 확인하기위해 로그를 넣음
-                
-//                Toast.makeText(activity, "메인 메뉴에 있는 레시피가 클릭되었다.", Toast.LENGTH_SHORT).show()
+
                 val selectedDataSet = arrayListOf<SelectedListItem>()
                 selectedDataSet.add(SelectedListItem(it.name))
                 navController.navigate(
@@ -125,7 +124,7 @@ class MainFragment : Fragment() {
     }
 
     private fun addRecipeArray() {  //그냥 데이터 채워넣기
-        //recipeInfo.fetchJson_RecipeInfo()
+        println("여기는 addRecipeArray")
         recipeList.add(recipeInfo.RECIPELIST[0])
         recipeList.add(recipeInfo.RECIPELIST[1])
     }

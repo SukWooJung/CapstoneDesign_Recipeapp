@@ -5,16 +5,16 @@ import androidx.room.*
 //RoomDB에 접근하는 메소드들
 @Dao
 interface IngredientDAO {
-    @Query("SELECT * FROM fridgeNew")    //다 읽어오는 쿼리
+    @Query("SELECT * FROM fridgeIngredient")    //다 읽어오는 쿼리
     fun getAll(): MutableList<FridgeIngredient>
 
-    @Query("SELECT * FROM fridgeNew WHERE name IN (:ingredientsNames)")  //이름으로 다 읽어오는 쿼리
+    @Query("SELECT * FROM fridgeIngredient WHERE name IN (:ingredientsNames)")  //이름으로 다 읽어오는 쿼리
     fun loadAllByNames(ingredientsNames: Array<String>): List<FridgeIngredient>
 
-    @Query("UPDATE fridgeNew SET activate_check = 0 WHERE name = (:givenName)")
+    @Query("UPDATE fridgeIngredient SET activate_check = 0 WHERE name = (:givenName)")
     fun deactivate(givenName: String)
 
-    @Query("UPDATE fridgeNew SET activate_check = 1 WHERE name = (:givenName)")
+    @Query("UPDATE fridgeIngredient SET activate_check = 1 WHERE name = (:givenName)")
     fun activate(givenName: String)
 
     @Update////활성화여부만 바꾸게 할 메소드. 짜피 roomdb에선 데이터 앵간하면 삭제할게 없음

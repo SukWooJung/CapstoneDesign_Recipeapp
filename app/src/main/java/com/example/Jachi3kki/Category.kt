@@ -140,7 +140,7 @@ private constructor(val src: Array<String>) {
         fun fetchJson_vitaminToIngredient() {
             GETINGREDIENT.clear()   //외부에서 데이터 읽어오므로 디폴트 데이터는 날림
             val targetIp = "118.67.132.138"
-            val url = URL("http://"+targetIp+"/nutrition_ingredient.php")   //재료별 비타민 가져오기
+            val url = URL("http://"+targetIp+"/nutritionIngredient.php")   //재료별 비타민 가져오기
             val request = Request.Builder().url(url).build()
             val client = OkHttpClient()
             client.newCall(request).enqueue(object: Callback{

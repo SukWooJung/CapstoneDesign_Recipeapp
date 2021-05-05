@@ -101,13 +101,16 @@ class fridgeFragment : Fragment() {
         //냉장고에서 레시피로 가는 버튼
         btn_go_fridge_Recipe.setOnClickListener {
             val selectedDataSet by lazy {
-                arrayListOf<SelectedListItem>().also{ list->
-                    itemlist.forEach{
-                        list.add(SelectedListItem(it.name))
+                arrayListOf<SelectedListItem>().also { list ->
+                    adapter.selectlist.selectList.forEach {
+                        list.add(SelectedListItem(itemlist[it.toInt()].name))
                     }
                 }
             }
-            navController.navigate(R.id.action_fridgeFragment_to_recipeFragment, bundleOf("item" to selectedDataSet))
+            navController.navigate(
+                R.id.action_fridgeFragment_to_recipeFragment,
+                bundleOf("item" to selectedDataSet)
+            )
 //            startActivity(Intent(view.context, PagerActivity::class.java))
             //데이터값 받아서 레시피 전달 롸롸롸롸로라ㅗ라ㅗ라ㅗ라ㅘ롸롸로 ㅏㅏ ㅏ ㅏ ㅏ ㅏ ㅏ ㅏㅏ ㅏ ~~~~~~~~~~~~~~~
         }

@@ -20,18 +20,9 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        recipeInfo.fetchJson_RecipeInfo()
+
         setContentView(R.layout.activity_main)
 
-        //냉장고 데이터 넣기
-        var db: AppDatabase? = null
-        db = AppDatabase.getInstance(this)
-        var ingredientList = mutableListOf<FridgeIngredient>()
-        ingredientList = db?.ingredientDAO()?.getAll()!!
-        //비타민, 식재료 데이터 가져오기. ingredientList를 매개변수로 줘서 냉장고 재료까지 추가함
-        Category.fetchJson_Ingredient(ingredientList)
-        Category.fetchJson_vitamin()
-        Category.fetchJson_vitaminToIngredient()
         // val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 //        val navController = navHostFragment.navController
         navController = nav_host_fragment.findNavController()

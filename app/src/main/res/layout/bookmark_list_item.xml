@@ -7,7 +7,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+        android:id="@+id/bookmark_constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -24,7 +24,7 @@
             android:background="#FFFFFF"
             android:contentDescription="@string/todo"
             android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_content"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -42,7 +42,7 @@
             android:textColorHighlight="@color/colorLightYellow"
             android:textSize="17sp"
             app:layout_constraintBottom_toTopOf="@id/tv_bookmark_content"
-            app:layout_constraintEnd_toEndOf="@+id/img"
+            app:layout_constraintEnd_toEndOf="@+id/img_bookmark_picture"
             app:layout_constraintStart_toStartOf="parent" />
         />
 

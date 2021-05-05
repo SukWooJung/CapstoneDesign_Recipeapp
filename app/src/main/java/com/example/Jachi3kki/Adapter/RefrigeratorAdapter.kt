@@ -13,27 +13,27 @@ import com.example.Jachi3kki.Model.Item
 
 
 class RefrigeratorAdapter(internal var  context: Context, internal var itemList:MutableList<FridgeIngredient>) :
-    RecyclerView.Adapter<RefrigeratorViewHolder>(){
+    RecyclerView.Adapter<RefrigeratorViewHolder>() {
 
     val selectlist = select_list()
-    var selectionList = ArrayList<Long>()
-    var onItemSelectedListener : ((MutableList<Long>)->Unit)? = null
+
+    //    var selectionList = ArrayList<Long>()
+    var onItemSelectedListener: ((MutableList<Long>) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RefrigeratorViewHolder {
         val itemView = LayoutInflater.from(context)
-            .inflate(R.layout.refrigerator,parent,false)
+            .inflate(R.layout.refrigerator, parent, false)
 
-        itemView.setOnClickListener(object : View.OnClickListener{
+        itemView.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View?) {
                 val id = v?.tag
-                if(selectlist.selectList.contains(id)) {
+                if (selectlist.selectList.contains(id)) {
                     selectlist.select_remove(id as Long)
-                }
-                else {
+                } else {
                     selectlist.select_add(id as Long)
                 }
                 notifyDataSetChanged()
-                onItemSelectedListener?.let{it(selectlist.selectList)}
+                onItemSelectedListener?.let { it(selectlist.selectList) }
             }
         })
 
@@ -50,12 +50,13 @@ class RefrigeratorAdapter(internal var  context: Context, internal var itemList:
     }
 
     override fun onBindViewHolder(holder: RefrigeratorViewHolder, position: Int) {
-        var imageUrl = "http://118.67.132.138"+itemList[position].img_src
+        var imageUrl = "http://118.67.132.138" + itemList[position].img_src
         Glide.with(context).load(imageUrl).into(holder.txt_cart_img)
         //println("테스트용: "+itemList[position].img_src)
         holder.txt_cart_name.text = itemList[position].name
         holder.itemView2.tag = getItemId(position)
-        holder.itemView2.isActivated = selectlist.selectList.contains(getItemId(position))  //선택 여부 표시
+        holder.itemView2.isActivated =
+            selectlist.selectList.contains(getItemId(position))  //선택 여부 표시
 
 
     }

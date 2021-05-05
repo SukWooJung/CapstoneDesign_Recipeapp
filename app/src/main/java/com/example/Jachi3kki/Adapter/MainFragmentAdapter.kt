@@ -11,7 +11,6 @@ import com.example.Jachi3kki.R
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.main_recipe_list_item.*
 
-
 class MainFragmentAdapter(
     val items: ArrayList<Recipe>,
     val context: Context,
@@ -44,9 +43,9 @@ class MainFragmentAdapter(
     ) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
         fun bind(recipe: Recipe, context: Context, position: Int) {
-            Glide.with(context).load(recipe.img_src).into(img_bookmark_picture)
-            tv_bookmark_title.text = recipe.name
-            tv_bookmark_content.text = recipe.content
+            Glide.with(context).load(recipe.img_src).into(main_img_bookmark_picture)
+            main_tv_bookmark_title.text = recipe.name
+            main_tv_bookmark_content.text = recipe.content
             itemView.setOnClickListener() { itemSelect(recipe) }
             tv_main_title.text = when(position){
                 0 -> "오늘의 추천 레시피"

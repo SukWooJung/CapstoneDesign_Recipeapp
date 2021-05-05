@@ -148,20 +148,6 @@ class RecipeFragment : Fragment() {
         reLoadSelectedCategory()
     }
 
-    private fun addRecipeArray() {//만들어만 놓으신듯
-        recipeList.add(
-            Recipe(
-                1,
-                "김치찌개",
-                "김개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 ",
-                "한식",
-                "이미지 url들어감",
-                arrayListOf("삼겹살", "간장", "가자미", "계란")
-            )
-        )
-
-    }
-
     // 선택된 재료들을 모두 포함하는 모든 레시피를 찾음
     private fun findRecipe(ingredientArr: ArrayList<String>): ArrayList<Recipe> {
         var tempRecipeList = ArrayList<Recipe>()
