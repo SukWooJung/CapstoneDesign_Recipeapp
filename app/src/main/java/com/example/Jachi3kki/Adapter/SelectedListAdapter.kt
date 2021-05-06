@@ -1,6 +1,7 @@
 package com.example.Jachi3kki.Adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -49,7 +50,11 @@ abstract class SelectedListAdapter(private val context: Context) :
             val title = items[position].data
             holder.binding.tvSelectedTitle.text = title
             holder.itemView.setOnClickListener {
-                onItemClick(position, items[position])
+                try {
+                    onItemClick(position, items[position])
+                } catch (e: IndexOutOfBoundsException){
+                    print("IndexOutOfBoundsException 오류 발생")
+                }
             }
         }
     }

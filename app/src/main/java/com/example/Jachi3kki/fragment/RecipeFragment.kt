@@ -131,7 +131,7 @@ class RecipeFragment : Fragment() {
                 recipeList = findRecipe(selectedMenuItems.toMutableList() as ArrayList<String>)
                 rc_count.text = "${recipeList.count()}건"
 
-                rv_data_list.adapter = MainFragmentAdapter(
+                rv_data_list.adapter = ExtensionRecipeAdapter(
                     recipeList,
                     requireContext()
                 ) {

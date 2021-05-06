@@ -2,6 +2,7 @@ package com.example.Jachi3kki.fragment
 
 import VerticalItemDecorator
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,6 +13,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.Jachi3kki.Class.Bookmark
+import com.example.Jachi3kki.MainActivity
+import com.example.Jachi3kki.PagerActivity
 import com.example.Jachi3kki.R
 import com.example.Jachi3kki.databinding.BookmarkListItemBinding
 import com.example.Jachi3kki.databinding.FragmentBookmarkBinding
@@ -144,6 +147,11 @@ class BookmarkFragment : Fragment() {
 
                 holder.binding.imgBookmarkIcon.setOnClickListener {
                     removeItem(position)
+                }
+                holder.itemView.setOnClickListener {
+                    // 매개변수 전달 TODO
+                    val intent = Intent(MainActivity.instance, PagerActivity::class.java)
+                    MainActivity.instance.startActivity(intent)
                 }
                 // 레시피 클릭되면 레시피 창으로 가도록하는 설정
                 /*

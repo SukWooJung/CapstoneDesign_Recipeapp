@@ -1,6 +1,7 @@
 package com.example.Jachi3kki.Adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.Jachi3kki.R
 import com.example.Jachi3kki.Class.Recipe
+import com.example.Jachi3kki.MainActivity
+import com.example.Jachi3kki.PagerActivity
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.bookmark_list_item.*
 
@@ -45,7 +48,12 @@ class ExtensionRecipeAdapter(
             Glide.with(context).load(recipe.img_src).into(img_bookmark_picture)
             tv_bookmark_title.text = recipe.name
             tv_bookmark_content.text = recipe.content
-            itemView.setOnClickListener() { itemSelect(recipe) }
+            itemView.setOnClickListener() {
+                itemSelect(recipe)
+                // 매개변수 전달 TODO
+                val intent = Intent(MainActivity.instance, PagerActivity::class.java)
+                MainActivity.instance.startActivity(intent)
+            }
         }
     }
 

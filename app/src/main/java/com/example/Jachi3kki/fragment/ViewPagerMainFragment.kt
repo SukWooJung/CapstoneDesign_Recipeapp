@@ -42,6 +42,10 @@ class ViewPagerMainFragment : Fragment(),
     var pass = 0;
 
 
+    open fun getXml(): Int {
+        return R.layout.viewpager_main
+    }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,7 +73,7 @@ class ViewPagerMainFragment : Fragment(),
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.activity_droid_speech, container, false)
-        return inflater.inflate(R.layout.viewpager_main, container, false)
+        return inflater.inflate(getXml(), container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

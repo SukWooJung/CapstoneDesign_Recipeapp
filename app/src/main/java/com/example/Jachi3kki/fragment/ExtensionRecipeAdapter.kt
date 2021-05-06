@@ -1,10 +1,13 @@
 package com.example.Jachi3kki.fragment
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.Jachi3kki.MainActivity
+import com.example.Jachi3kki.PagerActivity
 import com.example.Jachi3kki.R
 import com.example.Jachi3kki.Recipe
 import com.example.Jachi3kki.databinding.FragmentRecipeBinding
@@ -13,8 +16,7 @@ import kotlinx.android.synthetic.main.recipe_list_item.*
 
 class RecipeAdapter(
     val items: ArrayList<Recipe>,
-    val context: Context,
-    val itemSelect: (Recipe) -> Unit
+    val context: Context
 ) : RecyclerView.Adapter<RecipeAdapter.ExtensionViewHolder>() {
     override fun getItemCount(): Int {
         return items.size
@@ -29,7 +31,7 @@ class RecipeAdapter(
             parent,
             false
         )
-        return ExtensionViewHolder(view, itemSelect)
+        return ExtensionViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ExtensionViewHolder, position: Int) {
@@ -38,8 +40,7 @@ class RecipeAdapter(
     }
 
     inner class ExtensionViewHolder(
-        override val containerView: View,
-        itemSelect: (Recipe) -> Unit
+        override val containerView: View
     ) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
         fun bind(recipe: Recipe, context: Context, position: Int) {
@@ -61,7 +62,11 @@ class RecipeAdapter(
                 2-> "오늘의 영양소에 따른 레시피"
                 else -> "이게 나올리 없음"
             }
-            itemView.setOnClickListener() { itemSelect(recipe) }
+            itemView.setOnClickListener() {
+                // 매개변수 전달 TODO
+                val intent = Intent(MainActivity.instance, PagerActivity::class.java)
+                MainActivity.instance.startActivity(intent)
+            }
         }
     }
 

@@ -1,12 +1,15 @@
 package com.example.Jachi3kki.Adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.Jachi3kki.Class.Recipe
+import com.example.Jachi3kki.MainActivity
+import com.example.Jachi3kki.PagerActivity
 import com.example.Jachi3kki.R
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.main_recipe_list_item.*
@@ -46,13 +49,19 @@ class MainFragmentAdapter(
             Glide.with(context).load(recipe.img_src).into(main_img_bookmark_picture)
             main_tv_bookmark_title.text = recipe.name
             main_tv_bookmark_content.text = recipe.content
-            itemView.setOnClickListener() { itemSelect(recipe) }
+            main_img_bookmark_picture.setOnClickListener {
+                val intent = Intent(MainActivity.instance, PagerActivity::class.java)
+                MainActivity.instance.startActivity(intent)
+            }
+            main_img_bookmark_icon.setOnClickListener {
+                itemSelect(recipe)
+            }
             tv_main_title.text = when(position){
                 0 -> "오늘의 추천 레시피"
                 1 -> "Hot 레시피"
                 else -> "나오면 안됨"
             }
         }
-    }
+    }   
 
 }

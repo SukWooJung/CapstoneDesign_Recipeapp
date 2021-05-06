@@ -42,8 +42,12 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
-        addRecipeArray()
-        addVitaminArray()
+        if(recipeList.isEmpty()){
+            addRecipeArray()
+        }
+        if(vitaminList.isEmpty()){
+            addVitaminArray()
+        }
         toolbar.title = "Three Meals Alone"
         println("테스트: "+recipeList)
 
@@ -79,12 +83,7 @@ class MainFragment : Fragment() {
             MainFragmentAdapter(recipeList, it) {
                 Log.e("Index", it.name) //어떤 아이템을 클릭했는지 확인하기위해 로그를 넣음
                 Toast.makeText(activity, "메인 메뉴에 있는 레시피가 클릭되었다.", Toast.LENGTH_SHORT).show()
-
-                startActivity(Intent(view.context, PagerActivity::class.java))
                 //넘어갈때 00데이터 전송 ----> 반대에서 받ㄷ아서 데이터 출력ㄱ
-
-                //startActivity(Intent(현재 액티비티, 이동할 액티비티)) --> 일단 냉장고 선택완료에만 넣었음
-                // 재료선택, 비타민선택에는 안넣었어요ㅛ ,,,, ('-'*)
             }
         }
 
@@ -103,9 +102,6 @@ class MainFragment : Fragment() {
     }
 
     private fun addVitaminArray() {
-//        Category.VITAMINDATA.keys.forEach{
-//
-//        }
         vitaminList.add(MainVitamin("비타민A", "icon_a"))
         vitaminList.add(MainVitamin("비타민B", "icon_b"))
         vitaminList.add(MainVitamin("비타민C", "icon_c"))
@@ -118,9 +114,6 @@ class MainFragment : Fragment() {
         vitaminList.add(MainVitamin("철분", "icon_fe"))
         vitaminList.add(MainVitamin("구리", "icon_cu"))
         vitaminList.add(MainVitamin("아연", "icon_zn"))
-
-
-
     }
 
     private fun addRecipeArray() {  //그냥 데이터 채워넣기
