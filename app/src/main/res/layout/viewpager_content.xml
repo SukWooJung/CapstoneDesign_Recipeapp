@@ -6,56 +6,69 @@
     android:layout_height="match_parent">
 
 
-    <TextView
-        android:id="@+id/name"
+    <ImageView
+        android:id="@+id/contentImage"
         android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="150dp"
-        android:text="TextView"
+        android:layout_height="300dp"
         app:layout_constraintBottom_toTopOf="@+id/recipe"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="centerCrop"
+
+        android:visibility="visible"
+        app:srcCompat="@drawable/no_image" >
+
+    </ImageView>
+
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="5dp"
+        android:text="TextView"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/contentImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/contentImage"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/recipe"
         android:layout_width="0dp"
-        android:layout_height="80dp"
+        android:layout_height="120dp"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/contentImage"
+        android:bufferType="spannable"
+        app:layout_constraintBottom_toTopOf="@+id/pageName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name" />
+        app:layout_constraintTop_toBottomOf="@+id/contentImage"
+        android:scrollbars="vertical"
+        android:visibility="visible"/>
+
+    <TextView
+        android:id="@+id/content"
+        android:layout_width="0dp"
+        android:layout_height="120dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/pageName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contentImage"
+
+        android:visibility="visible" />
 
     <TextView
         android:id="@+id/pageName"
         android:layout_width="wrap_content"
         android:layout_height="19dp"
         android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/content" />
-
-    <TextView
-        android:id="@+id/content"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:layout_marginBottom="40dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/pageName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contentImage" />
-
-    <ImageView
-        android:id="@+id/contentImage"
-        android:layout_width="0dp"
-        android:layout_height="150dp"
-        android:layout_marginBottom="30dp"
-        app:layout_constraintBottom_toTopOf="@+id/content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recipe"
-        tools:srcCompat="@tools:sample/avatars" />
 </androidx.constraintlayout.widget.ConstraintLayout>

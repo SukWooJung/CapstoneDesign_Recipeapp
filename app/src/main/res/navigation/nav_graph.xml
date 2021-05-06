@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_mainFragment_to_fridgeFragment"
             app:destination="@id/fridgeFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 
     <fragment
@@ -127,5 +130,14 @@
         android:id="@+id/action_global_ingredientFragment"
         app:destination="@id/ingredientFragment"
         app:popUpTo="@id/mainFragment" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.Jachi3kki.fragment.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
 
 </navigation>

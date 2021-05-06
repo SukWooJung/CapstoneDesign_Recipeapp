@@ -1,7 +1,12 @@
 package com.example.Jachi3kki
 
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -9,15 +14,27 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.get
-import com.example.Jachi3kki.InternalDB.AppDatabase
-import com.example.Jachi3kki.InternalDB.FridgeIngredient
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.kakao.auth.ISessionCallback
+import com.kakao.auth.Session
+import com.kakao.network.ErrorResult
+import com.kakao.usermgmt.UserManagement
+import com.kakao.usermgmt.callback.MeV2ResponseCallback
+import com.kakao.usermgmt.response.MeV2Response
+import com.kakao.usermgmt.response.model.Profile
+import com.kakao.util.OptionalBoolean
+import com.kakao.util.exception.KakaoException
 import kotlinx.android.synthetic.main.activity_main.*
+import java.security.MessageDigest
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
-
     companion object {
         lateinit var instance: MainActivity
+        var session: Session? = null
+        private var sessionCallback: SessionCallback = SessionCallback()
+        var email: String? = null
+        var id: String? = null
+        var profile : Profile? = null
     }
 
     lateinit var navController: NavController
@@ -26,17 +43,18 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
+        // 로그인 세션
+        session = Session.getCurrentSession()
+        session?.addCallback(sessionCallback);
         instance = this
         // val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 //        val navController = navHostFragment.navController
         navController = nav_host_fragment.findNavController()
-
+        getHashKey()
         bottomNavigationView.setOnNavigationItemSelectedListener(this)
     }
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
-        // val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-
         when (p0.itemId) {
             R.id.menu_home -> {
                 Toast.makeText(this, "home clicked", Toast.LENGTH_SHORT).show()
@@ -100,4 +118,107 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         navigation.menu.findItem(R.id.menu_home).isChecked = true
     }
 
+    fun getHashKey(){
+        val packageName = "com.example.Jachi3kki"
+        try {
+            val info = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES)
+            val signatures = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                info.signingInfo.apkContentsSigners
+            } else {
+                TODO("VERSION.SDK_INT < P")
+            }
+            val md = MessageDigest.getInstance("SHA")
+            for (signature in signatures) {
+                val md: MessageDigest
+                md = MessageDigest.getInstance("SHA")
+                md.update(signature.toByteArray())
+                val key = String(Base64.encode(md.digest(), 0))
+                Log.d("Hash key:", "!!!!!!!$key!!!!!!")
+            }
+        } catch(e: Exception) {
+            Log.e("name not found", e.toString())
+        }
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        // 세션 콜백 삭제
+        Session.getCurrentSession().removeCallback(sessionCallback)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+            return
+        }
+
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private class SessionCallback : ISessionCallback {
+
+        override fun onSessionOpenFailed(exception: KakaoException?) {
+            Log.e("SessionCallback :: ", "onSessionOpenFailed : " + exception.toString());
+        }
+
+        override fun onSessionOpened() {
+            UserManagement.getInstance().me(object : MeV2ResponseCallback() {
+
+                override fun onFailure(errorResult: ErrorResult?) {
+                    Log.e("KAKAO_API", "사용자 정보 요청 실패: " + errorResult);
+//                    Dlog.d("Session Call back :: on failed ${errorResult?.errorMessage}")
+                }
+
+                override fun onSessionClosed(errorResult: ErrorResult?) {
+                    Log.e("KAKAO_API", "세션이 닫혀 있음: " + errorResult);
+//                    Dlog.e("Session Call back :: onSessionClosed ${errorResult?.errorMessage}")
+
+                }
+
+                override fun onSuccess(result: MeV2Response?) {
+                    if (result != null) {
+                        MainActivity.id = result.id.toString()
+                    }
+                    checkNotNull(result) { "session response null" }
+                    Log.i("KAKAO_API", "사용자 아이디: " + result.id);
+                    val kakaoAccount = result!!.kakaoAccount
+                    val kakaoNickname = result!!
+                    if (kakaoAccount != null) {
+                        // 이메일
+                        MainActivity.email = kakaoAccount.email
+                        if (email != null) {
+                            Log.i("KAKAO_API", "email: " + email);
+
+                        } else if (kakaoAccount.emailNeedsAgreement() == OptionalBoolean.TRUE) {
+                            // 동의 요청 후 이메일 획득 가능
+                            // 단, 선택 동의로 설정되어 있다면 서비스 이용 시나리오 상에서 반드시 필요한 경우에만 요청해야 합니다.
+
+                        } else {
+                            // 이메일 획득 불가
+                        }
+
+                        // 프로필
+
+                        if (kakaoAccount.profile != null) {
+                            MainActivity.profile = kakaoAccount.profile
+                            Log.d("KAKAO_API", "nickname: " + profile!!.nickname);
+                            Log.d("KAKAO_API", "profile image: " + profile!!.profileImageUrl);
+                            Log.d("KAKAO_API", "thumbnail image: " + profile!!.thumbnailImageUrl);
+
+                        } else if (kakaoAccount.profileNeedsAgreement() == OptionalBoolean.TRUE) {
+                            // 동의 요청 후 프로필 정보 획득 가능
+                            MainActivity.profile = kakaoAccount.profile
+                        } else {
+                            // 프로필 획득 불가
+                        }
+                    }
+
+                }
+
+                // register or login
+
+            })
+        }
+    }
 }

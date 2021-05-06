@@ -5,9 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/bookmark_constraintLayout"
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -24,7 +23,7 @@
             android:background="#FFFFFF"
             android:contentDescription="@string/todo"
             android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -42,7 +41,7 @@
             android:textColorHighlight="@color/colorLightYellow"
             android:textSize="17sp"
             app:layout_constraintBottom_toTopOf="@id/tv_bookmark_content"
-            app:layout_constraintEnd_toEndOf="@+id/img_bookmark_picture"
+            app:layout_constraintEnd_toEndOf="@+id/img"
             app:layout_constraintStart_toStartOf="parent" />
         />
 
@@ -70,7 +69,7 @@
             android:backgroundTint="@color/white"
             android:contentDescription="북마크 추가"
             android:scaleType="centerCrop"
-            android:src="@drawable/icon_bookmark"
+            android:src="@drawable/icon_bookmark_check"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

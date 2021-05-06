@@ -2,18 +2,19 @@ package com.example.Jachi3kki.Adapter
 
 import android.annotation.SuppressLint
 import android.graphics.BitmapFactory
-import android.net.Uri
-import android.opengl.Visibility
+import android.graphics.Color
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.method.ScrollingMovementMethod
+import android.text.style.ForegroundColorSpan
+import android.text.style.RelativeSizeSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.ColorRes
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.Jachi3kki.*
-import com.example.Jachi3kki.fragment.ViewPagerMainFragment
 import kotlinx.android.synthetic.main.viewpager_content.view.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -21,6 +22,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.FileNotFoundException
 import java.net.URL
+
 
 class ViewPagerAdapter(
     recipeNum: Int
@@ -64,24 +66,47 @@ class ViewPagerAdapter(
 
         @SuppressLint("SetTextI18n")
         fun bind(content: String, imageUrl: String, position: Int) {
+            if(position == 0) {
+                pageNameView.text = "${position + 1} 페이지"
+                contentView.text = "" //레시피 단계 설명 부분. 첫번째 페이지 아니라 그냥 없앰
+                nameView.text = name   //레시피 이름
+                recipeView.setMovementMethod(ScrollingMovementMethod())
 
-            pageNameView.text = "${position + 1} 페이지"
-            nameView.text = name    //레시피 이름
-            recipeView.text = ingredients    //레시피에 들어가는 재료
-            contentView.text = manualList[position]  //레시피 단계 들어감
+                val spannable = SpannableStringBuilder("재료\n"+ingredients)
+                spannable.setSpan(
+                    RelativeSizeSpan(1.4f),
+                    0, // start
+                    2, // end
+                    Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+                )
 
-            try {
-                GlobalScope.launch {
-                    setImage(contentImageView, imageUrl)
+                recipeView.text = spannable    //레시피에 들어가는 재료
+
+                try {
+                    GlobalScope.launch {
+                        setImage(contentImageView, img_src)
+                    }
+                } catch (e: FileNotFoundException) {
+                    false
                 }
-            } catch (e: FileNotFoundException) {
-                contentImageView.setImageResource(R.drawable.no_image)
+            }
+            else{
+                pageNameView.text = "${position + 1} 페이지"
+                contentView.text = content  //레시피 단계 들어감
+                nameView.text = ""    //레시피 이름부분. 첫번째 페이지 아니라 그냥 없앰
+                recipeView.text = "" //레시피 들어가는 재료 부분. 첫번째 페이지 아니라 그냥 없앰
+
+                try {
+                    GlobalScope.launch {
+                        setImage(contentImageView, imageUrl)
+                    }
+                } catch (e: FileNotFoundException) {
+                    false
+                }
             }
         }
 
-
         fun setImage(imageView: ImageView, urlString: String) {
-            imageView.setImageResource(R.drawable.no_image)
             if (urlString.equals("no_image")) //해당 단계가 이미지가 없는 경우 drawable에 있는 이미지로 대신 설정
                 imageView.setImageResource(R.drawable.no_image)
             else {//해당 단계 이미지가 있는 경우
@@ -96,7 +121,7 @@ class ViewPagerAdapter(
                         }
                     }
                 } catch (e: FileNotFoundException) {
-                    println("오류: 서버쪽 이미지 오류")
+                    false
                 }
             }
 
@@ -117,15 +142,25 @@ class ViewPagerAdapter(
         val pos = position
 
         setData(recipeId)
-        holder.bind(
-            manualList[pos],
-            imgList[pos],
-            pos
-        )
+        if(pos == 0) {
+            holder.bind(
+                manualList[pos],
+                imgList[pos],
+                pos
+            )
+        }
+        else {
+            holder.bind(
+                manualList[pos - 1],
+                imgList[pos - 1],
+                pos
+            )
+        }
+
     }
 
     override fun getItemCount(): Int {
         setData(recipeId)
-        return manualList.size
+        return manualList.size+1
     }
 }

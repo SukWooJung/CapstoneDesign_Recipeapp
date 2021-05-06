@@ -18,6 +18,7 @@ import com.example.Jachi3kki.NumberPickerDialog
 import com.example.Jachi3kki.R
 import kotlinx.android.synthetic.main.activity_droid_speech.*
 import kotlinx.android.synthetic.main.dialog_number_picker.*
+import kotlinx.android.synthetic.main.viewpager_content.*
 import kotlinx.android.synthetic.main.viewpager_main.*
 import java.util.*
 
@@ -90,7 +91,10 @@ class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
 //        )
 
         // RecyclerView.Adapter<ViewHolder>()
+
+
         viewPager.adapter = ViewPagerAdapter(recipeNum)
+
         // ViewPager의 Paging 방향은 Horizontal
         viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
@@ -101,7 +105,14 @@ class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
                 super.onPageSelected(position)
                 Log.d("ViewPagerFragment", "Page ${position + 1}")
                 Log.d("ViewPagerFragment", "Page ${position + 1}")
+                if(position == 0){
+
+                }else{
+
+                }
             }
+
+
         })
 
     }

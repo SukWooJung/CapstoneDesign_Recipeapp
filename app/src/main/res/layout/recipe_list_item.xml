@@ -67,8 +67,10 @@
             android:contentDescription="@string/todo"
             app:layout_constraintBottom_toTopOf="@+id/tv_content"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/tv_recipe_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_recipe_title"
+            app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/kimchi" />
 
         <TextView
@@ -85,6 +87,27 @@
             app:layout_constraintStart_toStartOf="@+id/img"
             app:layout_constraintTop_toBottomOf="@+id/img" />
 
+        <ImageView
+            android:id="@+id/bookmark_btn"
+            android:layout_width="44dp"
+            android:layout_height="59dp"
+            app:layout_constraintEnd_toEndOf="@+id/img_recipe"
+            app:layout_constraintHorizontal_bias="0.964"
+            app:layout_constraintStart_toStartOf="@+id/img_recipe"
+            app:layout_constraintTop_toTopOf="@+id/img_recipe"
+            app:srcCompat="@drawable/icon_bookmark_check" />
+
+        <ImageButton
+            android:id="@+id/heart_btn"
+            android:layout_width="39dp"
+            android:layout_height="37dp"
+            android:layout_marginTop="8dp"
+            android:drawableTint="#ffffff"
+            app:layout_constraintEnd_toStartOf="@+id/bookmark_btn"
+            app:layout_constraintHorizontal_bias="0.06"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/img_recipe"
+            android:background="@drawable/btn_off"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,13 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.Jachi3kki.R
+import com.example.Jachi3kki.*
 import com.example.Jachi3kki.Class.Recipe
-import com.example.Jachi3kki.MainActivity
-import com.example.Jachi3kki.PagerActivity
-import com.example.Jachi3kki.recipeInfo
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.bookmark_list_item.*
+import kotlinx.android.synthetic.main.recipe_list_item.*
 
 class ExtensionRecipeAdapter(
     val items: ArrayList<Recipe>,
@@ -38,6 +36,13 @@ class ExtensionRecipeAdapter(
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         holder.bind(items[position], context, position)
+        holder.itemView.setOnClickListener {
+            //Toast.makeText(context,"조회수",Toast.LENGTH_SHORT).show()
+            L.i("조회수")
+        }
+        holder.heart_btn.setOnClickListener {
+            L.i("좋아요")
+        }
     }
 
     inner class RecipeViewHolder(
