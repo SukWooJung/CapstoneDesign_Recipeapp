@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.viewpager_main.*
 import java.util.*
 
 
-class ViewPagerMainFragment : Fragment(),
+class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
     OnDSListener,
     OnDSPermissionsListener {
     //ViewPager 부모프래그먼트
@@ -40,6 +40,7 @@ class ViewPagerMainFragment : Fragment(),
     private var finalSpeechResult: TextView? = null
     var dialog = NumberPickerDialog()
     var pass = 0;
+    var recipeNum = recipeNum
 
 
     open fun getXml(): Int {
@@ -89,7 +90,7 @@ class ViewPagerMainFragment : Fragment(),
 //        )
 
         // RecyclerView.Adapter<ViewHolder>()
-        viewPager.adapter = ViewPagerAdapter()
+        viewPager.adapter = ViewPagerAdapter(recipeNum)
         // ViewPager의 Paging 방향은 Horizontal
         viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 

@@ -11,6 +11,7 @@ import com.example.Jachi3kki.Class.Recipe
 import com.example.Jachi3kki.MainActivity
 import com.example.Jachi3kki.PagerActivity
 import com.example.Jachi3kki.R
+import com.example.Jachi3kki.recipeInfo
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.main_recipe_list_item.*
 
@@ -49,8 +50,10 @@ class MainFragmentAdapter(
             Glide.with(context).load(recipe.img_src).into(main_img_bookmark_picture)
             main_tv_bookmark_title.text = recipe.name
             main_tv_bookmark_content.text = recipe.content
+            var recipeNum = recipeInfo.RECIPELIST.indexOf(recipe)
             main_img_bookmark_picture.setOnClickListener {
                 val intent = Intent(MainActivity.instance, PagerActivity::class.java)
+                intent.putExtra("recipeNum",recipeNum)
                 MainActivity.instance.startActivity(intent)
             }
             main_img_bookmark_icon.setOnClickListener {
@@ -62,6 +65,6 @@ class MainFragmentAdapter(
                 else -> "나오면 안됨"
             }
         }
-    }   
+    }
 
 }

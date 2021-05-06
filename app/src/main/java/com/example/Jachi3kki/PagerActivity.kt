@@ -12,10 +12,10 @@ class PagerActivity : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pager)
-
+        val recipeNum = intent.getIntExtra("recipeNum",0)
         //Fragment 연결해주는 코드
         //해당 코드가 없으면 빈화면이 나옴
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.add(R.id.fragmentFrame, ViewPagerMainFragment()).commit()
+        transaction.add(R.id.fragmentFrame, ViewPagerMainFragment(recipeNum)).commit()
     }
 }
