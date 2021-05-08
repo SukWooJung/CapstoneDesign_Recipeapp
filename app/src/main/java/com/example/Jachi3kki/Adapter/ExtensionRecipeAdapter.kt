@@ -11,7 +11,6 @@ import com.example.Jachi3kki.*
 import com.example.Jachi3kki.Class.Recipe
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.bookmark_list_item.*
-import kotlinx.android.synthetic.main.recipe_list_item.*
 
 class ExtensionRecipeAdapter(
     val items: ArrayList<Recipe>,
@@ -36,12 +35,22 @@ class ExtensionRecipeAdapter(
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         holder.bind(items[position], context, position)
-        holder.itemView.setOnClickListener {
-            //Toast.makeText(context,"조회수",Toast.LENGTH_SHORT).show()
+        holder.itemView.setOnClickListener() {
             L.i("조회수")
+            //Toast.makeText(context,"조회수",Toast.LENGTH_SHORT).show()
+
+            // 매개변수 전달 TODO
+            var recipeNum = recipeInfo.RECIPELIST.indexOf(items[position])
+            val intent = Intent(MainActivity.instance, PagerActivity::class.java)   //여기서 뷰페이저 연결하는 거 같은데
+            intent.putExtra("recipeNum",recipeNum)
+            MainActivity.instance.startActivity(intent)
         }
+
         holder.heart_btn.setOnClickListener {
             L.i("좋아요")
+        }
+        holder.img_bookmark_icon.setOnClickListener{
+            L.i("북마크")
         }
     }
 
@@ -54,14 +63,6 @@ class ExtensionRecipeAdapter(
             Glide.with(context).load(recipe.img_src).into(img_bookmark_picture)
             tv_bookmark_title.text = recipe.name
             tv_bookmark_content.text = recipe.content
-            var recipeNum = recipeInfo.RECIPELIST.indexOf(recipe)
-            itemView.setOnClickListener() {
-                itemSelect(recipe)
-                // 매개변수 전달 TODO
-                val intent = Intent(MainActivity.instance, PagerActivity::class.java)   //여기서 뷰페이저 연결하는 거 같은데
-                intent.putExtra("recipeNum",recipeNum)
-                MainActivity.instance.startActivity(intent)
-            }
         }
     }
 

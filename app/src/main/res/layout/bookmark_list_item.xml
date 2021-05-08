@@ -23,7 +23,7 @@
             android:background="#FFFFFF"
             android:contentDescription="@string/todo"
             android:scaleType="centerCrop"
-            app:layout_constraintBottom_toBottomOf="@+id/tv_content"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -40,8 +40,8 @@
             android:textColor="@color/white"
             android:textColorHighlight="@color/colorLightYellow"
             android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="@id/img_bookmark_picture"
             app:layout_constraintBottom_toTopOf="@id/tv_bookmark_content"
-            app:layout_constraintEnd_toEndOf="@+id/img"
             app:layout_constraintStart_toStartOf="parent" />
         />
 
@@ -72,6 +72,16 @@
             android:src="@drawable/icon_bookmark_check"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/heart_btn"
+            android:layout_width="39dp"
+            android:layout_height="37dp"
+            android:layout_marginTop="8dp"
+            android:drawableTint="#ffffff"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/img_recipe"
+            android:background="@drawable/btn_off"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

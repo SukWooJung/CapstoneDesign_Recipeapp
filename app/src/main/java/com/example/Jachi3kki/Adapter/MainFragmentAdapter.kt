@@ -11,9 +11,6 @@ import com.example.Jachi3kki.*
 import com.example.Jachi3kki.Class.Recipe
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.main_recipe_list_item.*
-import kotlinx.android.synthetic.main.main_recipe_list_item.heart_btn
-import kotlinx.android.synthetic.main.main_recipe_list_item.tv_main_title
-import kotlinx.android.synthetic.main.recipe_list_item.*
 
 class MainFragmentAdapter(
     val items: ArrayList<Recipe>,
@@ -38,12 +35,23 @@ class MainFragmentAdapter(
 
     override fun onBindViewHolder(holder: MainFragmentViewHolder, position: Int) {
         holder.bind(items[position], context, position)
-        holder.itemView.setOnClickListener {
-            //Toast.makeText(context,"조회수",Toast.LENGTH_SHORT).show()
+        holder.itemView.setOnClickListener() {
             L.i("조회수")
+            //Toast.makeText(context,"조회수",Toast.LENGTH_SHORT).show()
+
+            // 매개변수 전달 TODO
+            var recipeNum = recipeInfo.RECIPELIST.indexOf(items[position])
+            val intent = Intent(MainActivity.instance, PagerActivity::class.java)   //여기서 뷰페이저 연결하는 거 같은데
+            intent.putExtra("recipeNum",recipeNum)
+            MainActivity.instance.startActivity(intent)
         }
+
         holder.heart_btn.setOnClickListener {
             L.i("좋아요")
+        }
+        holder.main_img_bookmark_icon.setOnClickListener {
+            L.i("북마크")
+
         }
 
     }
@@ -57,15 +65,6 @@ class MainFragmentAdapter(
             Glide.with(context).load(recipe.img_src).into(main_img_bookmark_picture)
             main_tv_bookmark_title.text = recipe.name
             main_tv_bookmark_content.text = recipe.content
-            var recipeNum = recipeInfo.RECIPELIST.indexOf(recipe)
-            main_img_bookmark_picture.setOnClickListener {
-                val intent = Intent(MainActivity.instance, PagerActivity::class.java)
-                intent.putExtra("recipeNum",recipeNum)
-                MainActivity.instance.startActivity(intent)
-            }
-            main_img_bookmark_icon.setOnClickListener {
-                itemSelect(recipe)
-            }
             tv_main_title.text = when(position){
                 0 -> "오늘의 추천 레시피"
                 1 -> "Hot 레시피"

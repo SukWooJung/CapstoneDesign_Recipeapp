@@ -79,14 +79,13 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/main_img_bookmark_picture"
             app:layout_constraintStart_toStartOf="parent" />
+
         <ImageButton
             android:id="@+id/heart_btn"
             android:layout_width="39dp"
             android:layout_height="37dp"
             android:layout_marginTop="8dp"
             android:drawableTint="#ffffff"
-            app:layout_constraintEnd_toStartOf="@+id/bookmark_btn"
-            app:layout_constraintHorizontal_bias="0.06"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/img_recipe"
             android:background="@drawable/btn_off"/>
