@@ -23,6 +23,7 @@ class AlignmentFragment : Fragment(), View.OnClickListener {
 
     lateinit var navController: NavController
     private val selectedMenuItem  by lazy { arguments?.getParcelableArrayList<SelectedListItem>("item")}
+    private val selectedDetailItem by lazy { arguments?.getParcelableArrayList<SelectedListItem>("detailItem") }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -57,7 +58,7 @@ class AlignmentFragment : Fragment(), View.OnClickListener {
                     else -> selectedDataSet.add(SelectedListItem("선택안함"))
                 }
                 navController.navigate(R.id.action_alignmentFragment_to_recipeFragment,
-                    bundleOf("detailItem" to selectedDataSet, "item" to selectedMenuItem)
+                    bundleOf("alignmentItem" to selectedDataSet, "item" to selectedMenuItem, "detailItem" to selectedDetailItem)
                 )
             }
         }

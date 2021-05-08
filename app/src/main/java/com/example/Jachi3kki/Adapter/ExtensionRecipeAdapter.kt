@@ -46,9 +46,6 @@ class ExtensionRecipeAdapter(
             MainActivity.instance.startActivity(intent)
         }
 
-        holder.heart_btn.setOnClickListener {
-            L.i("좋아요")
-        }
         holder.img_bookmark_icon.setOnClickListener{
             L.i("북마크")
         }

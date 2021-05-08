@@ -177,6 +177,8 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 }
 
                 override fun onSuccess(result: MeV2Response?) {
+                    val intent = Intent(MainActivity.instance, MainActivity::class.java)
+                    MainActivity.instance.startActivity(intent)
                     if (result != null) {
                         MainActivity.id = result.id.toString()
                     }

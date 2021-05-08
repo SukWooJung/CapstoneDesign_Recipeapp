@@ -12,18 +12,21 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.Jachi3kki.*
+import com.example.Jachi3kki.Adapter.ExtensionRecipeAdapter
 import com.example.Jachi3kki.Class.Bookmark
-import com.example.Jachi3kki.MainActivity
-import com.example.Jachi3kki.PagerActivity
-import com.example.Jachi3kki.R
+import com.example.Jachi3kki.Class.Recipe
 import com.example.Jachi3kki.databinding.BookmarkListItemBinding
 import com.example.Jachi3kki.databinding.FragmentBookmarkBinding
+import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.bookmark_list_item.*
 import kotlinx.android.synthetic.main.fragment_bookmark.*
 
 class BookmarkFragment : Fragment() {
 
-    val bookmarkList = mutableListOf<Bookmark>()
+    val bookmarkList = mutableListOf<Recipe>()
     private lateinit var binding: FragmentBookmarkBinding
     lateinit var navController: NavController
     private lateinit var BookmarkCategoryAdapter: BookmarkAdapter
@@ -40,7 +43,6 @@ class BookmarkFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = nav_host_fragment.findNavController()
-        addBookmarkArray()
         // 조회된 레시피 수 출력
         tv_count.text = "${bookmarkList.count()}건"
 
@@ -60,13 +62,6 @@ class BookmarkFragment : Fragment() {
                 it
             )
         }
-        /*
-        rv_data_list.adapter = activity?.let {
-            BookmarkAdapter(bookmarkList, it) {
-                Toast.makeText(activity, "메인 메뉴에 있는 레시피가 클릭되었다.", Toast.LENGTH_SHORT).show()
-            }
-        }
-        */
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -83,34 +78,9 @@ class BookmarkFragment : Fragment() {
     }
 
 
+    private open inner class BookmarkAdapter(private val context: Context) : RecyclerView.Adapter<BookmarkAdapter.RecipeViewHolder>() {
 
-    private fun addBookmarkArray() {
-        bookmarkList.add(
-            Bookmark(
-                "김치찌개",
-                "김개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 ",
-                "kimchi"
-            )
-        )
-        bookmarkList.add(
-            Bookmark(
-                "된장찌개",
-                "김개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 ",
-                "gogi"
-            )
-        )
-        bookmarkList.add(
-            Bookmark(
-                "참치찌개",
-                "김개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 김치찌개는 어쩌구 저쩌구 ",
-                "mamuri"
-            )
-        )
-
-    }
-    private open inner class BookmarkAdapter(private val context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-        var items = mutableListOf<Bookmark>()
+        var items = mutableListOf<Recipe>()
 
         override fun getItemCount(): Int {
             return items.size
@@ -119,49 +89,34 @@ class BookmarkFragment : Fragment() {
         override fun onCreateViewHolder(
             parent: ViewGroup,
             viewType: Int
-        ): RecyclerView.ViewHolder {
-            return BookmarkViewHolder(
-                BookmarkListItemBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent,
-                    false
-                )
+        ): BookmarkAdapter.RecipeViewHolder {
+            val view = LayoutInflater.from(parent.context).inflate(
+                R.layout.bookmark_list_item,
+                parent,
+                false
             )
+            return RecipeViewHolder(view)
         }
 
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            if (holder is BookmarkViewHolder) {
-                var bookmark = items[position]
-                if (bookmark.img != "") {
-                    val resourceId = context.resources.getIdentifier(
-                        bookmark.img,
-                        "drawable",
-                        context.packageName
-                    )
-                    holder.binding.imgBookmarkPicture?.setImageResource(resourceId)
-                } else {
-                    holder.binding.imgBookmarkPicture?.setImageResource(R.mipmap.ic_launcher)
-                }
-                holder.binding.tvBookmarkTitle.text = bookmark.title
-                holder.binding.tvBookmarkContent.text = bookmark.content
+        override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
+            holder.bind(items[position], context, position)
+            holder.itemView.setOnClickListener() {
+                L.i("조회수")
+                //Toast.makeText(context,"조회수",Toast.LENGTH_SHORT).show()
 
-                holder.binding.imgBookmarkIcon.setOnClickListener {
-                    removeItem(position)
-                }
-                holder.itemView.setOnClickListener {
-                    // 매개변수 전달 TODO
-                    val intent = Intent(MainActivity.instance, PagerActivity::class.java)
-                    MainActivity.instance.startActivity(intent)
-                }
-                // 레시피 클릭되면 레시피 창으로 가도록하는 설정
-                /*
-                holder.itemView.setOnClickListener {
-                    onItemClick(position, items[position])
-                }
-                */
+                // 매개변수 전달 TODO
+                var recipeNum = recipeInfo.RECIPELIST.indexOf(items[position])
+                val intent = Intent(MainActivity.instance, PagerActivity::class.java)   //여기서 뷰페이저 연결하는 거 같은데
+                intent.putExtra("recipeNum",recipeNum)
+                MainActivity.instance.startActivity(intent)
+            }
 
+            holder.img_bookmark_icon.setOnClickListener{
+                L.i("북마크")
+                removeItem(position)
             }
         }
+
 
         fun removeItem(position: Int) {
             if (position < this.items.size) {
@@ -174,7 +129,7 @@ class BookmarkFragment : Fragment() {
             }
         }
 
-        fun replaceAll(items: List<Bookmark>?) {
+        fun replaceAll(items: List<Recipe>?) {
             items?.let {
                 this.items.run {
                     clear()
@@ -184,9 +139,16 @@ class BookmarkFragment : Fragment() {
             }
         }
 
-        inner class BookmarkViewHolder(val binding: BookmarkListItemBinding) :
-            RecyclerView.ViewHolder(binding.root)
-
+        inner class RecipeViewHolder(
+            override val containerView: View
+        ) :
+            RecyclerView.ViewHolder(containerView), LayoutContainer {
+            fun bind(recipe: Recipe, context: Context, position: Int) {
+                Glide.with(context).load(recipe.img_src).into(img_bookmark_picture)
+                tv_bookmark_title.text = recipe.name
+                tv_bookmark_content.text = recipe.content
+            }
+        }
     }
 }
 

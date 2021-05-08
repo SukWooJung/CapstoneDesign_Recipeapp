@@ -46,9 +46,6 @@ class MainFragmentAdapter(
             MainActivity.instance.startActivity(intent)
         }
 
-        holder.heart_btn.setOnClickListener {
-            L.i("좋아요")
-        }
         holder.main_img_bookmark_icon.setOnClickListener {
             L.i("북마크")
 

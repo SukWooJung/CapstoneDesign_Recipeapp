@@ -39,81 +39,100 @@
             android:layout_height="150dp">
 
             <TextView
-                android:id="@+id/cook_level"
+                android:id="@+id/cook_method"
                 android:layout_width="99dp"
                 android:layout_height="53dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginLeft="25dp"
                 android:gravity="center_vertical"
-                android:text="요리수준"
+                android:text="조리방법"
                 android:textSize="20dp"
-                app:layout_constraintEnd_toStartOf="@+id/rg_all"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+
             <RadioGroup
-                android:id="@+id/rg_all"
-                android:layout_width="wrap_content"
+                android:id="@+id/rg_method"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/cook_level"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/cook_level">
-
-                <RadioButton
-                    android:id="@+id/all_button"
-                    android:layout_width="114dp"
-                    android:layout_height="58dp"
-                    android:text="모두선택" />
-            </RadioGroup>
-
-            <RadioGroup
-                android:id="@+id/rg_level"
-                android:layout_width="376dp"
-                android:layout_height="79dp"
                 android:layout_marginBottom="24dp"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.485"
                 app:layout_constraintStart_toStartOf="parent">
 
                 <RadioButton
-                    android:id="@+id/radio_top"
-                    android:layout_width="84dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:background="@drawable/radio_selector"
-                    android:button="@android:color/transparent"
-                    android:gravity="center"
-                    android:padding="14dp"
-                    android:text="상"
-                    android:textColor="@drawable/radio_text_color" />
-
-                <RadioButton
-                    android:id="@+id/radio_middle"
-                    android:layout_width="89dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:background="@drawable/radio_selector"
-                    android:button="@android:color/transparent"
-                    android:gravity="center"
-                    android:padding="14dp"
-                    android:text="중"
-                    android:textColor="@drawable/radio_text_color" />
-
-                <RadioButton
-                    android:id="@+id/radio_bottom"
-                    android:layout_width="81dp"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/radio_1_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_margin="14dp"
+                    android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
                     android:gravity="center"
-                    android:padding="14dp"
-                    android:text="하"
+                    android:text="볶기"
                     android:textColor="@drawable/radio_text_color" />
+
+                <RadioButton
+                    android:id="@+id/radio_1_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="14dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/radio_selector"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:text="끓이기"
+                    android:textColor="@drawable/radio_text_color" />
+
+                <RadioButton
+                    android:id="@+id/radio_1_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="14dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/radio_selector"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:text="찌기"
+                    android:textColor="@drawable/radio_text_color" />
+
+                <RadioButton
+                    android:id="@+id/radio_1_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="14dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/radio_selector"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:text="굽기"
+                    android:textColor="@drawable/radio_text_color" />
+
+                <RadioButton
+                    android:id="@+id/radio_1_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="14dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/radio_selector"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:text="튀기기"
+                    android:textColor="@drawable/radio_text_color" />
+
+                <RadioButton
+                    android:id="@+id/radio_1_6"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="14dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/radio_selector"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:text="기타"
+                    android:textColor="@drawable/radio_text_color" />
+
             </RadioGroup>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -130,71 +149,94 @@
             android:layout_height="150dp">
 
             <TextView
-                android:id="@+id/cook_type"
+                android:id="@+id/food_type"
                 android:layout_width="108dp"
                 android:layout_height="54dp"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical"
-                android:text="요리종류"
+                android:layout_marginLeft="25dp"
+                android:text="음식분류"
                 android:textSize="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.052"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <RadioGroup
                 android:id="@+id/rg_kind"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.906">
 
                 <RadioButton
-                    android:id="@+id/radioButton8"
+                    android:id="@+id/radio_2_1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="14dp"
+                    android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
                     android:gravity="center"
-                    android:padding="14dp"
-                    android:text="한식" />
+                    android:text="밥" />
 
                 <RadioButton
-                    android:id="@+id/radioButton9"
+                    android:id="@+id/radio_2_2"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="14dp"
+                    android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
                     android:gravity="center"
-                    android:padding="14dp"
-                    android:text="중식" />
+                    android:text="반찬" />
 
                 <RadioButton
-                    android:id="@+id/radioButton10"
+                    android:id="@+id/radio_2_3"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="14dp"
+                    android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
                     android:gravity="center"
-                    android:padding="14dp"
-                    android:text="양식" />
+                    android:text="국 &amp;\n찌개" />
 
                 <RadioButton
-                    android:id="@+id/radioButton11"
+                    android:id="@+id/radio_2_4"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
+                    android:layout_height="match_parent"
+                    android:layout_margin="14dp"
+                    android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
                     android:gravity="center"
-                    android:padding="14dp"
-                    android:text="일식" />
+                    android:text="기타" />
+
+                <RadioButton
+                    android:id="@+id/radio_2_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="14dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/radio_selector"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:text="후식" />
+
+                <RadioButton
+                    android:id="@+id/radio_2_6"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="14dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/radio_selector"
+                    android:button="@android:color/transparent"
+                    android:gravity="center"
+                    android:text="일품" />
 
             </RadioGroup>
 
@@ -209,33 +251,6 @@
             android:layout_marginBottom="16dp"
             android:background="#dddddd" />
 
-        <TextView
-            android:id="@+id/textView0"
-            android:layout_width="390dp"
-            android:layout_height="56dp"
-            android:layout_gravity="bottom"
-            android:layout_marginLeft="20dp"
-            android:gravity="center_vertical"
-            android:text="기타옵션"
-            android:textSize="20dp" />
-
-        <RadioGroup
-            android:id="@+id/rg_optionOnly"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <RadioButton
-            android:id="@+id/option_only"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/radio_selector"
-            android:button="@android:color/transparent"
-            android:gravity="center"
-            android:text="포함된 재료로만 검색"
-            android:textSize="20dp" />
-        </RadioGroup>
 
         <TextView
             android:id="@+id/textView5"
@@ -244,6 +259,7 @@
             android:text="" />
 
         <Button
+            android:layout_marginTop="80dp"
             android:id="@+id/completion"
             android:layout_width="184dp"
             android:layout_height="55dp"

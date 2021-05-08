@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.fragment_detail.*
 
 class DetailFragment : Fragment(), View.OnClickListener {
     lateinit var navController: NavController
-    private val selectedMenuItem  by lazy { arguments?.getParcelableArrayList<SelectedListItem>("item")}
+    private val selectedMenuItem by lazy { arguments?.getParcelableArrayList<SelectedListItem>("item") }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,34 +39,33 @@ class DetailFragment : Fragment(), View.OnClickListener {
             R.id.completion -> {
                 val selectedDataSet = arrayListOf<SelectedListItem>()
 
-                // 요리수준
-                if (rg_all.checkedRadioButtonId == R.id.all_button) {
-                    selectedDataSet.add(SelectedListItem("요리수준전체"))
-                } else {
-                    when (rg_level.checkedRadioButtonId) {
-                        R.id.radio_top -> selectedDataSet.add(SelectedListItem("요리수준상"))
-                        R.id.radio_middle -> selectedDataSet.add(SelectedListItem("요리수준중"))
-                        R.id.radio_bottom -> selectedDataSet.add(SelectedListItem("요리수준하"))
-                        else -> selectedDataSet.add(SelectedListItem("선택안함"))
-                    }
-                }
-
-                // 요리종류
-                when (rg_kind.checkedRadioButtonId) {
-                    R.id.radioButton8 -> selectedDataSet.add(SelectedListItem("요리종류한식"))
-                    R.id.radioButton9 -> selectedDataSet.add(SelectedListItem("요리종류중식"))
-                    R.id.radioButton10 -> selectedDataSet.add(SelectedListItem("요리종류양식"))
-                    R.id.radioButton11 -> selectedDataSet.add(SelectedListItem("요리종류일식"))
+                // 조리방법
+                when (rg_method.checkedRadioButtonId) {
+                    R.id.radio_1_1 -> selectedDataSet.add(SelectedListItem("볶기"))
+                    R.id.radio_1_2 -> selectedDataSet.add(SelectedListItem("끓이기"))
+                    R.id.radio_1_3 -> selectedDataSet.add(SelectedListItem("찌기"))
+                    R.id.radio_1_4 -> selectedDataSet.add(SelectedListItem("굽기"))
+                    R.id.radio_1_5 -> selectedDataSet.add(SelectedListItem("튀기기"))
+                    R.id.radio_1_6 -> selectedDataSet.add(SelectedListItem("기타"))
                     else -> selectedDataSet.add(SelectedListItem("선택안함"))
                 }
 
-                // 포함된 재료로만 검색
-                if(rg_optionOnly.checkedRadioButtonId == R.id.option_only){
-                    selectedDataSet.add(SelectedListItem("포함된 재료로만 검색"))
+
+                // 음식종류
+                when (rg_kind.checkedRadioButtonId) {
+                    R.id.radio_2_1 -> selectedDataSet.add(SelectedListItem("밥"))
+                    R.id.radio_2_2 -> selectedDataSet.add(SelectedListItem("반찬"))
+                    R.id.radio_2_3 -> selectedDataSet.add(SelectedListItem("국&찌개"))
+                    R.id.radio_2_4 -> selectedDataSet.add(SelectedListItem("기타"))
+                    R.id.radio_2_5 -> selectedDataSet.add(SelectedListItem("후식"))
+                    R.id.radio_2_6 -> selectedDataSet.add(SelectedListItem("일품"))
+                    else -> selectedDataSet.add(SelectedListItem("선택안함"))
                 }
 
-                navController.navigate(R.id.action_detailFragment_to_recipeFragment,
-                    bundleOf("detailItem" to selectedDataSet, "item" to selectedMenuItem))
+                navController.navigate(
+                    R.id.action_detailFragment_to_recipeFragment,
+                    bundleOf("detailItem" to selectedDataSet, "item" to selectedMenuItem)
+                )
 
             }
         }

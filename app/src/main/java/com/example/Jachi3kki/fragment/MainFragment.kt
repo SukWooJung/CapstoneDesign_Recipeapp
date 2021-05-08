@@ -180,6 +180,14 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
+            R.id.star -> {
+                Toast.makeText(activity, "bookmark clicked", Toast.LENGTH_SHORT).show()
+                navController.navigate(R.id.action_global_bookmarkFragment)
+            }
+            R.id.cart -> {
+                Toast.makeText(activity, "fridge clicked", Toast.LENGTH_SHORT).show()
+                navController.navigate(R.id.action_global_fridgeFragment)
+            }
         }
         return true
     }
