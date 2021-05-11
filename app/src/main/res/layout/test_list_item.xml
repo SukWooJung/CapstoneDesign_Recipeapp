@@ -23,6 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="삭제"
+                android:fontFamily="@font/fontstyle"
                 android:textColor="#ff0000"
                 android:layout_gravity="end|center_vertical" />
 
@@ -57,6 +58,7 @@
                 app:layout_constraintTop_toTopOf="@id/cook_Img"
                 app:layout_constraintBottom_toBottomOf="@id/cook_Img"
                 android:id="@+id/payTxt"
+                android:fontFamily="@font/fontstyle"
                 android:layout_width="119dp"
                 android:layout_height="match_parent"
                 android:text="default Text입니다."

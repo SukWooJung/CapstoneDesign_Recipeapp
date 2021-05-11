@@ -58,7 +58,6 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
             addVitaminArray()
         }
         toolbar.title = "Three Meals Alone"
-        println("테스트: "+recipeList)
 
         // recyclerView에 layout Manger 설정
         rv_data_list.layoutManager = LinearLayoutManager(
@@ -170,10 +169,23 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
         vitaminList.add(MainVitamin("철분", "icon_fe"))
         vitaminList.add(MainVitamin("구리", "icon_cu"))
         vitaminList.add(MainVitamin("아연", "icon_zn"))
+        /*
+        vitaminList.add(MainVitamin("비타민A", "http://118.67.132.138/vitamin_icon/icon_a.png"))
+        vitaminList.add(MainVitamin("비타민B", "http://118.67.132.138/vitamin_icon/icon_b.png"))
+        vitaminList.add(MainVitamin("비타민C", "http://118.67.132.138/vitamin_icon/icon_c.png"))
+        vitaminList.add(MainVitamin("비타민D", "http://118.67.132.138/vitamin_icon/icon_d.png"))
+        vitaminList.add(MainVitamin("비타민E", "http://118.67.132.138/vitamin_icon/icon_e.png"))
+        vitaminList.add(MainVitamin("비타민K", "http://118.67.132.138/vitamin_icon/icon_k.png"))
+        vitaminList.add(MainVitamin("칼슘", "http://118.67.132.138/vitamin_icon/icon_ca.png"))
+        vitaminList.add(MainVitamin("인", "http://118.67.132.138/vitamin_icon/icon_p.png"))
+        vitaminList.add(MainVitamin("마그네슘", "http://118.67.132.138/vitamin_icon/icon_mg.png"))
+        vitaminList.add(MainVitamin("철분", "http://118.67.132.138/vitamin_icon/icon_fe.png"))
+        vitaminList.add(MainVitamin("구리", "http://118.67.132.138/vitamin_icon/icon_cu.png"))
+        vitaminList.add(MainVitamin("아연", "http://118.67.132.138/vitamin_icon/icon_zn.png"))
+        */
     }
 
     private fun addRecipeArray() {  //그냥 데이터 채워넣기
-        println("여기는 addRecipeArray")
         recipeList.add(recipeInfo.RECIPELIST[0])
         recipeList.add(recipeInfo.RECIPELIST[1])
     }

@@ -70,6 +70,12 @@ class RecipeFragment : Fragment() {
         if (!selectedAlignItem.isNullOrEmpty()) {
             recipeList = sortedRecipe()
         }
+
+//        for(i in 0..2){
+//            val rec = recipeList[i]
+//            println("${i}번째 레시피: ${rec.name} ${rec.likeCnt} ${rec.viewCnt}")
+//        }
+
         println("정렬" + selectedAlignItem)
 
 
@@ -168,21 +174,21 @@ class RecipeFragment : Fragment() {
             val viewCnt = selectedAlignItem!![1].data
             if (likeCnt == "선택안함" && viewCnt == "선택안함") {
             } else if (likeCnt == "추천높은순" && viewCnt == "조회수높은순") {
-                sortedRecipe.sortWith(compareBy({ it.likeCnt }, { it.viewCnt }))
-            } else if (likeCnt == "추천낮은순" && viewCnt == "조회수낮은순") {
                 sortedRecipe.sortWith(compareBy({ -it.likeCnt }, { -it.viewCnt }))
+            } else if (likeCnt == "추천낮은순" && viewCnt == "조회수낮은순") {
+                sortedRecipe.sortWith(compareBy({ it.likeCnt }, { it.viewCnt }))
             } else if (likeCnt == "추천높은순" && viewCnt == "조회수낮은순") {
-                sortedRecipe.sortWith(compareBy({ it.likeCnt }, { -it.viewCnt }))
-            } else if (likeCnt == "추천낮은순" && viewCnt == "조회수높은순") {
                 sortedRecipe.sortWith(compareBy({ -it.likeCnt }, { it.viewCnt }))
+            } else if (likeCnt == "추천낮은순" && viewCnt == "조회수높은순") {
+                sortedRecipe.sortWith(compareBy({ it.likeCnt }, { -it.viewCnt }))
             } else if (likeCnt == "선택안함" && viewCnt == "조회수높은순") {
-                sortedRecipe.sortWith(compareBy { it.viewCnt })
-            } else if (likeCnt == "선택안함" && viewCnt == "조회수낮은순") {
                 sortedRecipe.sortWith(compareBy { -it.viewCnt })
+            } else if (likeCnt == "선택안함" && viewCnt == "조회수낮은순") {
+                sortedRecipe.sortWith(compareBy { it.viewCnt })
             } else if (likeCnt == "추천높은순" && viewCnt == "선택안함") {
-                sortedRecipe.sortWith(compareBy { it.likeCnt })
-            } else if (likeCnt == "추천낮은순" && viewCnt == "선택안함") {
                 sortedRecipe.sortWith(compareBy { -it.likeCnt })
+            } else if (likeCnt == "추천낮은순" && viewCnt == "선택안함") {
+                sortedRecipe.sortWith(compareBy { it.likeCnt })
             }
         }
         return sortedRecipe

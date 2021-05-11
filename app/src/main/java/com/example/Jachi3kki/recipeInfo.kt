@@ -10,6 +10,43 @@ import java.sql.Types.NULL
 
 class recipeInfo {
     companion object{
+        fun fetchJson_Bookmark(){
+            var bookmarkList: MutableList<String> = mutableListOf<String>()
+            val targetIp = "118.67.132.138"
+            val url = URL("http://"+targetIp+"/getBookmarkList.php")
+            val request = Request.Builder().url(url).build()
+            val client = OkHttpClient()
+            client.newCall(request).enqueue(object: Callback{
+                override fun onResponse(call: Call?, response: Response?) {
+                    val body = response?.body()?.string()//body는 php의 내용을 그대로 담고 있음
+                    println("Success to execute nutrition request!")
+
+                    //파싱을 위해 json 정보가 담긴 body를 jsonObject에 저장
+                    var jsonObject = JSONObject(body)
+                    val jsonArray = jsonObject.getJSONArray("bookmarkInfo")
+                    val arrayNum = jsonArray.length() //json 배열의 길이이자 전체 영양소의 개수
+
+                    for(i in 0 until arrayNum) {//북마크에서 자신의 아이디로 저장된 레시피 이름들을 가져옴
+                        if(jsonArray.getJSONObject(i).getString("userId").equals(MainActivity.id))
+                            bookmarkList.add(jsonArray.getJSONObject(i).getString("recipeName"))
+                    }
+
+                    BOOKMARKLIST.clear()
+
+                    for(i in 0 until bookmarkList.size) {
+                        for(j in 0 until RECIPELIST.size) { //가져온 북마크 레시피들의 이름과 전체 레시피들의 이름을 비교하여 북마크 리스트에 레시피를 추가
+                            if(bookmarkList[i].equals(RECIPELIST[j].name))
+                                BOOKMARKLIST.add(RECIPELIST[j])
+                        }
+                    }
+
+                }
+                override fun onFailure(call: Call?, e: IOException?) {
+                    println("Fail to execute request!")
+                }
+            })
+        }
+
         fun fetchJson_RecipeInfo() {
             val targetIp = "118.67.132.138"
             val url = URL("http://"+targetIp+"/recipe_total.php")
@@ -90,19 +127,14 @@ class recipeInfo {
                         tempManualArray.clear()
                         tempImgArray.clear()
                     }
-
-                    for(i in 0 until 20) {
-                        println("레시피$i: "+RECIPELIST[i])
-                    }
-
                 }
                 override fun onFailure(call: Call?, e: IOException?) {
                     println("recipeInfo http 호출 실패")
                 }
             })
-
-            println("여기까진 완료됨1")
         }
+
+        var BOOKMARKLIST: MutableList<Recipe> = mutableListOf<Recipe>()
 
         //이 밑은 레시피 디폴트 데이터
         var RECIPELIST: MutableList<Recipe> = mutableListOf<Recipe>(

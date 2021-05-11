@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.Jachi3kki.*
 import com.example.Jachi3kki.Adapter.ExtensionRecipeAdapter
+import com.example.Jachi3kki.Adapter.MainFragmentAdapter
 import com.example.Jachi3kki.Class.Bookmark
 import com.example.Jachi3kki.Class.Recipe
 import com.example.Jachi3kki.databinding.BookmarkListItemBinding
@@ -26,17 +28,18 @@ import kotlinx.android.synthetic.main.fragment_bookmark.*
 
 class BookmarkFragment : Fragment() {
 
-    val bookmarkList = mutableListOf<Recipe>()
+    var bookmarkList = mutableListOf<Recipe>()
     private lateinit var binding: FragmentBookmarkBinding
     lateinit var navController: NavController
     private lateinit var BookmarkCategoryAdapter: BookmarkAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentBookmarkBinding.inflate(inflater,container, false)
+        bookmarkList = recipeInfo.BOOKMARKLIST
+        binding = FragmentBookmarkBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -48,9 +51,9 @@ class BookmarkFragment : Fragment() {
 
         // recyclerView에 layout Manger 설정
         rv_data_list.layoutManager = LinearLayoutManager(
-            activity,
-            LinearLayoutManager.VERTICAL,
-            false
+                activity,
+                LinearLayoutManager.VERTICAL,
+                false
         ) as RecyclerView.LayoutManager?
 
         // 안전성을 위해 사이즈 고정
@@ -59,7 +62,7 @@ class BookmarkFragment : Fragment() {
         // 아이템간의 구분선 추가
         activity?.let { VerticalItemDecorator(it, R.drawable.horizontal_line_divider, 0, 0) }?.let {
             rv_data_list.addItemDecoration(
-                it
+                    it
             )
         }
     }
@@ -69,7 +72,7 @@ class BookmarkFragment : Fragment() {
         // 리사이클러 뷰 출력을 위한 adapter 설정
         BookmarkCategoryAdapter = BookmarkAdapter(requireContext())
 
-        binding.rvDataList.run{
+        binding.rvDataList.run {
             setHasFixedSize(true)
             adapter = BookmarkCategoryAdapter
         }
@@ -87,13 +90,13 @@ class BookmarkFragment : Fragment() {
         }
 
         override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int
+                parent: ViewGroup,
+                viewType: Int
         ): BookmarkAdapter.RecipeViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(
-                R.layout.bookmark_list_item,
-                parent,
-                false
+                    R.layout.bookmark_list_item,
+                    parent,
+                    false
             )
             return RecipeViewHolder(view)
         }
@@ -107,12 +110,37 @@ class BookmarkFragment : Fragment() {
                 // 매개변수 전달 TODO
                 var recipeNum = recipeInfo.RECIPELIST.indexOf(items[position])
                 val intent = Intent(MainActivity.instance, PagerActivity::class.java)   //여기서 뷰페이저 연결하는 거 같은데
-                intent.putExtra("recipeNum",recipeNum)
+
+                //조회수 증가
+                val recipeName = items[position].name
+                items[position].viewCnt += 1
+                val viewCnt = (items[position].viewCnt).toString()
+                var task = MainFragmentAdapter.IncreaseView();
+                task.execute("http://118.67.132.138/increaseView.php", recipeName, viewCnt)
+
+                intent.putExtra("recipeNum", recipeNum)
                 MainActivity.instance.startActivity(intent)
             }
 
-            holder.img_bookmark_icon.setOnClickListener{
+            holder.img_bookmark_icon.setOnClickListener {
                 L.i("북마크")
+
+                if (MainActivity.id != null) {
+                    if (recipeInfo.BOOKMARKLIST.contains(items[position])) {//이미 추가되어있다면 반대로 북마크 제거
+                        val userId = MainActivity.id
+                        val recipeName = items[position].name
+                        items[position].likeCnt -= 1
+                        val likeCnt = (items[position].likeCnt).toString()
+                        var task = MainFragmentAdapter.DeleteData()
+                        task.execute("http://118.67.132.138/deleteDb.php", userId, recipeName, likeCnt)
+                        recipeInfo.BOOKMARKLIST.remove(items[position]) //얘 안해주면 메인이나 다른 레시피 목록에서 북마크리스트 적용안됨
+
+                        holder.img_bookmark_icon.setImageResource(R.drawable.icon_bookmark)
+                        Toast.makeText(context, "북마크에서 제거되었습니다", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(context, "로그인이 필요합니다", Toast.LENGTH_SHORT).show()
+                }
                 removeItem(position)
             }
         }
@@ -120,10 +148,10 @@ class BookmarkFragment : Fragment() {
 
         fun removeItem(position: Int) {
             if (position < this.items.size) {
-                items.removeAt(position)
+                items.removeAt(position) //이미 위에서 해당 레시피 제거해서, 여기서 또 하면 인덱스 오류남
                 notifyItemRemoved(position)
                 notifyItemRangeChanged(position, items.size)
-                bookmarkList.removeAt(position)
+                //bookmarkList.removeAt(position) 얘도 제거하면 인덱스 오류남. 둘 다 recipeInfo.BOOKMARKLIST의 레퍼런스 주소로 값을 공유하기 때문
 
                 binding.tvCount.text = "${items.count()}건"
             }
@@ -133,20 +161,25 @@ class BookmarkFragment : Fragment() {
             items?.let {
                 this.items.run {
                     clear()
-                    addAll(it)
+                    addAll(it)  //여기서 items에 BookmarkFragment의 bookmarkList를 모두 추가함
                     notifyDataSetChanged()
                 }
             }
         }
 
         inner class RecipeViewHolder(
-            override val containerView: View
+                override val containerView: View
         ) :
-            RecyclerView.ViewHolder(containerView), LayoutContainer {
+                RecyclerView.ViewHolder(containerView), LayoutContainer {
             fun bind(recipe: Recipe, context: Context, position: Int) {
                 Glide.with(context).load(recipe.img_src).into(img_bookmark_picture)
                 tv_bookmark_title.text = recipe.name
                 tv_bookmark_content.text = recipe.content
+
+                if (MainActivity.id != null) {
+                    img_bookmark_icon.setImageResource(R.drawable.icon_bookmark_check)
+                }
+
             }
         }
     }

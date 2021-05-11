@@ -36,6 +36,7 @@
         android:layout_gravity="bottom"
         android:layout_marginStart="0dp"
         android:layout_marginEnd="0dp"
+        android:fontFamily="@font/fontstyle"
         android:background="#EE88C9"
         app:itemBackground="@color/cardview_light_background"
         app:itemIconTint="@drawable/item_color"

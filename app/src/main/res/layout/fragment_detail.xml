@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:backgroundTint="#efefef"
+            android:backgroundTint="#00ff0000"
             app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
         <TextView
@@ -30,6 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="45dp"
             android:layout_gravity="center"
+            android:fontFamily="@font/fontstyle"
             android:text="º상세조건º"
             android:textSize="23dp"
             android:textStyle="bold" />
@@ -38,18 +39,20 @@
             android:layout_width="match_parent"
             android:layout_height="150dp">
 
+
             <TextView
                 android:id="@+id/cook_method"
-                android:layout_width="99dp"
-                android:layout_height="53dp"
+                android:layout_width="98dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="4dp"
-                android:layout_marginLeft="25dp"
                 android:gravity="center_vertical"
                 android:text="조리방법"
+                android:fontFamily="@font/fontstyle"
                 android:textSize="20dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
 
             <RadioGroup
                 android:id="@+id/rg_method"
@@ -65,10 +68,11 @@
                     android:id="@+id/radio_1_1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="14dp"
+                    android:layout_margin="9dp"
                     android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
+                    android:fontFamily="@font/fontstyle"
                     android:gravity="center"
                     android:text="볶기"
                     android:textColor="@drawable/radio_text_color" />
@@ -77,10 +81,11 @@
                     android:id="@+id/radio_1_2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="14dp"
+                    android:layout_margin="9dp"
                     android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
+                    android:fontFamily="@font/fontstyle"
                     android:gravity="center"
                     android:text="끓이기"
                     android:textColor="@drawable/radio_text_color" />
@@ -89,11 +94,13 @@
                     android:id="@+id/radio_1_3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="14dp"
+                    android:layout_margin="9dp"
                     android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
+                    android:fontFamily="@font/fontstyle"
                     android:gravity="center"
+
                     android:text="찌기"
                     android:textColor="@drawable/radio_text_color" />
 
@@ -101,10 +108,11 @@
                     android:id="@+id/radio_1_4"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="14dp"
+                    android:layout_margin="9dp"
                     android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
+                    android:fontFamily="@font/fontstyle"
                     android:gravity="center"
                     android:text="굽기"
                     android:textColor="@drawable/radio_text_color" />
@@ -113,10 +121,11 @@
                     android:id="@+id/radio_1_5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="14dp"
+                    android:layout_margin="9dp"
                     android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
+                    android:fontFamily="@font/fontstyle"
                     android:gravity="center"
                     android:text="튀기기"
                     android:textColor="@drawable/radio_text_color" />
@@ -125,10 +134,11 @@
                     android:id="@+id/radio_1_6"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="14dp"
+                    android:layout_margin="9dp"
                     android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
+                    android:fontFamily="@font/fontstyle"
                     android:gravity="center"
                     android:text="기타"
                     android:textColor="@drawable/radio_text_color" />
@@ -152,18 +162,20 @@
                 android:id="@+id/food_type"
                 android:layout_width="108dp"
                 android:layout_height="54dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="4dp"
                 android:gravity="center_vertical"
-                android:layout_marginLeft="25dp"
                 android:text="음식분류"
+                android:fontFamily="@font/fontstyle"
                 android:textSize="20dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <RadioGroup
                 android:id="@+id/rg_kind"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="411dp"
+                android:layout_height="70dp"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -176,8 +188,9 @@
                     android:id="@+id/radio_2_1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="14dp"
+                    android:layout_margin="9dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/fontstyle"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
                     android:gravity="center"
@@ -187,7 +200,8 @@
                     android:id="@+id/radio_2_2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="14dp"
+                    android:layout_margin="9dp"
+                    android:fontFamily="@font/fontstyle"
                     android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
@@ -198,8 +212,9 @@
                     android:id="@+id/radio_2_3"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="14dp"
+                    android:layout_margin="9dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/fontstyle"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
                     android:gravity="center"
@@ -209,7 +224,8 @@
                     android:id="@+id/radio_2_4"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="14dp"
+                    android:layout_margin="9dp"
+                    android:fontFamily="@font/fontstyle"
                     android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
@@ -220,8 +236,9 @@
                     android:id="@+id/radio_2_5"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="14dp"
+                    android:layout_margin="9dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/fontstyle"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
                     android:gravity="center"
@@ -231,7 +248,8 @@
                     android:id="@+id/radio_2_6"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="14dp"
+                    android:layout_margin="9dp"
+                    android:fontFamily="@font/fontstyle"
                     android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
@@ -259,14 +277,15 @@
             android:text="" />
 
         <Button
-            android:layout_marginTop="80dp"
             android:id="@+id/completion"
-            android:layout_width="184dp"
-            android:layout_height="55dp"
+            android:layout_width="165dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_marginTop="80dp"
             android:text="선택완료"
-            android:textColor="#000000"
-            android:textSize="25dp"
+            android:fontFamily="@font/fontstyle"
+            android:textColor="@color/black"
+            android:textSize="20dp"
             app:backgroundTint="#00F4F0F0" />
 
     </LinearLayout>

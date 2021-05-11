@@ -61,22 +61,23 @@
 
 
                 <TextView
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="4dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="오늘의 영양소"
-                    android:gravity="left"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textColorHighlight="@color/colorLightYellow"
+                    android:layout_height="34dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="4dp"
                     android:background="@color/white"
-                    android:textSize="20sp"
-                    />
+                    android:fontFamily="@font/fontstyle"
+                    android:gravity="center|left"
+                    android:text="오늘의 영양소"
+                    android:textColor="@color/black"
+                    android:textColorHighlight="@color/colorLightYellow"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_vitamin_list"
                     android:scrollbars="horizontal"
+                    android:fontFamily="@font/fontstyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
@@ -85,7 +86,7 @@
                     android:id="@+id/divider"
                     android:layout_width="match_parent"
                     android:layout_height="10dp"
-                    android:background="?android:attr/listDivider" />
+                    android:background= "#f0f0f0" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_data_list"
@@ -107,6 +108,8 @@
         android:layout_width="236dp"
         android:layout_height="732dp"
         android:layout_gravity="start"
+        app:itemIconTint="@drawable/item_color"
+        app:itemTextColor="@drawable/item_color"
         app:headerLayout="@layout/main_navheader"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -39,6 +39,7 @@
                     android:layout_gravity="center"
                     android:textAlignment="center"
                     android:textSize= "30dp"
+
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:text="00:00:00"/>

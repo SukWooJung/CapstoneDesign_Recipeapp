@@ -11,6 +11,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.Jachi3kki.Class.SelectedListItem
@@ -47,19 +48,19 @@ class AlignmentFragment : Fragment(), View.OnClickListener {
             R.id.button ->{
                 val selectedDataSet = arrayListOf<SelectedListItem>()
                 when(rg_recommand.checkedRadioButtonId){
-                    R.id.radioButton3->selectedDataSet.add(SelectedListItem("추천높은순"))
-                    R.id.radioButton4->selectedDataSet.add(SelectedListItem("추천낮은순"))
+                    R.id.likeCntSort->selectedDataSet.add(SelectedListItem("추천높은순"))
+                    R.id.likeCntSortReverse->selectedDataSet.add(SelectedListItem("추천낮은순"))
                     else -> selectedDataSet.add(SelectedListItem("선택안함"))
                 }
 
                 when(rg_view.checkedRadioButtonId){
-                    R.id.radioButton3->selectedDataSet.add(SelectedListItem("조회수높은순"))
-                    R.id.radioButton4->selectedDataSet.add(SelectedListItem("조회수낮은순"))
+                    R.id.viewCntSort->selectedDataSet.add(SelectedListItem("조회수높은순"))
+                    R.id.viewCntSortReverse->selectedDataSet.add(SelectedListItem("조회수낮은순"))
                     else -> selectedDataSet.add(SelectedListItem("선택안함"))
                 }
+
                 navController.navigate(R.id.action_alignmentFragment_to_recipeFragment,
-                    bundleOf("alignmentItem" to selectedDataSet, "item" to selectedMenuItem, "detailItem" to selectedDetailItem)
-                )
+                    bundleOf("alignmentItem" to selectedDataSet, "item" to selectedMenuItem, "detailItem" to selectedDetailItem))
             }
         }
     }

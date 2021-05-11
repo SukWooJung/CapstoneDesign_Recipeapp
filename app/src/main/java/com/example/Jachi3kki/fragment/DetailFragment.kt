@@ -50,7 +50,6 @@ class DetailFragment : Fragment(), View.OnClickListener {
                     else -> selectedDataSet.add(SelectedListItem("선택안함"))
                 }
 
-
                 // 음식종류
                 when (rg_kind.checkedRadioButtonId) {
                     R.id.radio_2_1 -> selectedDataSet.add(SelectedListItem("밥"))

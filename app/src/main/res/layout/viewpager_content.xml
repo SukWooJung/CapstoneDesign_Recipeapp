@@ -24,48 +24,52 @@
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_width="385dp"
+        android:layout_height="43dp"
         android:layout_marginLeft="5dp"
+        android:fontFamily="@font/fontstyle"
         android:text="TextView"
         android:textColor="@color/white"
         android:textSize="25sp"
         app:layout_constraintBottom_toBottomOf="@+id/contentImage"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.384"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/contentImage"
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/recipe"
-        android:layout_width="0dp"
-        android:layout_height="120dp"
-        android:text="TextView"
+        android:layout_width="387dp"
+        android:layout_height="110dp"
         android:bufferType="spannable"
+        android:fontFamily="@font/fontstyle"
+        android:scrollbars="vertical"
+        android:text="TextView"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/pageName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contentImage"
-        android:scrollbars="vertical"
-        android:visibility="visible"/>
+        app:layout_constraintTop_toBottomOf="@+id/contentImage" />
 
     <TextView
         android:id="@+id/content"
-        android:layout_width="0dp"
-        android:layout_height="120dp"
+        android:layout_width="386dp"
+        android:layout_height="111dp"
+        android:fontFamily="@font/fontstyle"
         android:text="TextView"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/pageName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/contentImage"
 
-        android:visibility="visible" />
+        app:layout_constraintTop_toBottomOf="@+id/contentImage" />
 
     <TextView
         android:id="@+id/pageName"
         android:layout_width="wrap_content"
         android:layout_height="19dp"
+        android:fontFamily="@font/fontstyle"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

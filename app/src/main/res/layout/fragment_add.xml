@@ -25,6 +25,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="0.7"
             android:gravity="center"
+            android:fontFamily="@font/fontstyle"
             android:text="카테고리"
             android:textSize="16dp" />
 
@@ -36,6 +37,7 @@
             android:layout_weight="0.7"
             android:gravity="center"
             android:text="육류"
+            android:fontFamily="@font/fontstyle"
             android:textSize="16dp" />
 
 
@@ -47,6 +49,7 @@
             android:layout_weight="0.7"
             android:gravity="center"
             android:text=""
+            android:fontFamily="@font/fontstyle"
             android:textSize="16dp" />
 
     </LinearLayout>
@@ -77,6 +80,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginTop="5dp"
+            android:fontFamily="@font/fontstyle"
             android:layout_weight="1"
             android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
@@ -92,6 +96,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="5dp"
             android:layout_weight="1"
+            android:fontFamily="@font/fontstyle"
             android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
@@ -105,6 +110,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginTop="5dp"
+            android:fontFamily="@font/fontstyle"
             android:layout_weight="1"
             android:overScrollMode="never"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
@@ -132,6 +138,7 @@
             android:layout_height="match_parent"
             android:overScrollMode="never"
             android:orientation="horizontal"
+            android:fontFamily="@font/fontstyle"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
     </LinearLayout>
@@ -154,6 +161,7 @@
             android:id="@+id/btn_goFridge"
             android:layout_width="wrap_content"
             android:text="선택완료"
+            android:fontFamily="@font/fontstyle"
             android:textColor="@color/white"
             android:background="@color/colorPrimary"
             android:layout_height="wrap_content"/>
