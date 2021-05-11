@@ -12,15 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:background="#CCefefef"
+        android:background="#efefef"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
+        >
 
         <ImageButton
             android:id="@+id/close"
@@ -28,7 +22,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:backgroundTint="#00ff0000"
-            android:paddingRight="25dp"
             app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
         <TextView
@@ -48,7 +41,7 @@
             android:layout_height="66dp"
             android:layout_marginLeft="20dp"
             android:gravity="center_vertical"
-            android:text="추천수"
+            android:text="   추천수"
             android:fontFamily="@font/fontstyle"
             android:textSize="20dp" />
 
@@ -56,23 +49,23 @@
             android:id="@+id/rg_recommand"
             android:layout_width="match_parent"
             android:orientation="horizontal"
-            android:layout_height="180dp">
+            android:layout_height="150dp">
 
             <RadioButton
                 android:id="@+id/likeCntSort"
-                android:layout_width="165dp"
+                android:layout_width="172dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:fontFamily="@font/fontstyle"
                 android:background="@drawable/radio_selector"
                 android:button="@android:color/transparent"
+                android:fontFamily="@font/fontstyle"
                 android:gravity="center"
                 android:padding="16dp"
                 android:text="높은순" />
 
             <RadioButton
                 android:id="@+id/likeCntSortReverse"
-                android:layout_width="165dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:fontFamily="@font/fontstyle"
@@ -87,39 +80,39 @@
             android:id="@+id/textView"
             android:layout_height="66dp"
             android:layout_width="match_parent"
-            android:layout_marginLeft="20dp"
             android:gravity="center_vertical"
-            android:text="조회수"
+            android:text="   조회수"
             android:fontFamily="@font/fontstyle"
             android:textSize="20dp" />
+
 
         <RadioGroup
             android:id="@+id/rg_view"
             android:layout_width="match_parent"
             android:orientation="horizontal"
-            android:layout_height="180dp">
+            android:layout_height="150dp">
 
             <RadioButton
                 android:id="@+id/viewCntSort"
-                android:layout_width="165dp"
+                android:layout_width="172dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/fontstyle"
                 android:layout_margin="16dp"
                 android:background="@drawable/radio_selector"
                 android:button="@android:color/transparent"
+                android:fontFamily="@font/fontstyle"
                 android:gravity="center"
-                android:padding="14dp"
+                android:padding="16dp"
                 android:text="높은순" />
 
             <RadioButton
                 android:id="@+id/viewCntSortReverse"
-                android:layout_width="165dp"
+                android:layout_width="match_parent"
                 android:background="@drawable/radio_selector"
                 android:button="@android:color/transparent"
                 android:gravity="center"
                 android:fontFamily="@font/fontstyle"
                 android:layout_margin="16dp"
-                android:padding="14dp"
+                android:padding="16dp"
                 android:layout_height="wrap_content"
                 android:text="낮은순" />
         </RadioGroup>
@@ -127,13 +120,13 @@
         <Button
             android:id="@+id/button"
             android:layout_width="165dp"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:fontFamily="@font/fontstyle"
-            android:textSize="16dp"
-            app:backgroundTint="#00F4F0F0"
+            android:textSize="18dp"
             android:textColor="@color/black"
             android:layout_gravity="center"
             android:text="선택완료" />
+
 
     </LinearLayout>
 

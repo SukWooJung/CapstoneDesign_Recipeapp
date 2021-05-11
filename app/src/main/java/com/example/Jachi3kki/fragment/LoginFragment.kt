@@ -54,17 +54,6 @@ class LoginFragment : Fragment() {
 //        }
 
 
-        btn_register.setOnClickListener{
-            updateKakaoInfo()
-            if(id == null){
-                Toast.makeText(MainActivity.instance, "로그인 되어있지 않습니다.", Toast.LENGTH_SHORT).show()
-            }else{
-                println("test:" + id + email)
-                Toast.makeText(MainActivity.instance, "로그인 되었습니다.", Toast.LENGTH_SHORT).show()
-                navController.navigate(R.id.mainFragment)
-            }
-        }
-
     }
 
     fun updateKakaoInfo(){

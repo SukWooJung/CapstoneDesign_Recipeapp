@@ -9,22 +9,22 @@
 
     <TextView
         android:id="@+id/tv_main_title"
-        android:layout_width="396dp"
-        android:layout_height="38dp"
-        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="@color/white"
+        android:gravity="left"
         android:fontFamily="@font/fontstyle"
-        android:gravity="center|left"
-        android:text=" 메인"
-
         android:textColor="@color/black"
         android:textColorHighlight="@color/colorLightYellow"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/main_constraintLayout"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/main_constraintLayout"
+        android:layout_marginBottom="5dp"
+        android:text="메인"
+        />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_constraintLayout"
@@ -66,11 +66,7 @@
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@id/main_tv_bookmark_content"
             app:layout_constraintEnd_toEndOf="@+id/main_img_bookmark_picture"
-            app:layout_constraintStart_toStartOf="parent" /><![CDATA[
-        />
-
-
-        ]]>
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/main_tv_bookmark_content"

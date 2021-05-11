@@ -58,9 +58,12 @@ class AlignmentFragment : Fragment(), View.OnClickListener {
                     R.id.viewCntSortReverse->selectedDataSet.add(SelectedListItem("조회수낮은순"))
                     else -> selectedDataSet.add(SelectedListItem("선택안함"))
                 }
-
-                navController.navigate(R.id.action_alignmentFragment_to_recipeFragment,
-                    bundleOf("alignmentItem" to selectedDataSet, "item" to selectedMenuItem, "detailItem" to selectedDetailItem))
+                if(selectedDetailItem.isNullOrEmpty()){
+                    navController.navigate(R.id.action_alignmentFragment_to_bookmarkFragment)
+                } else{
+                    navController.navigate(R.id.action_alignmentFragment_to_recipeFragment,
+                        bundleOf("alignmentItem" to selectedDataSet, "item" to selectedMenuItem, "detailItem" to selectedDetailItem))
+                }
             }
         }
     }

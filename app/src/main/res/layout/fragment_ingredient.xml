@@ -176,8 +176,9 @@
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:text="선택완료"
-            android:textColor="@color/black"
             android:background="@drawable/border_layout_button"
+            android:fontFamily="@font/fontstyle"
+            android:textColor="@color/black"
             style="?android:attr/borderlessButtonStyle"
             />
 

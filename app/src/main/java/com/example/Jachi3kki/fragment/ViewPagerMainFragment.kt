@@ -106,9 +106,15 @@ class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
                 Log.d("ViewPagerFragment", "Page ${position + 1}")
                 Log.d("ViewPagerFragment", "Page ${position + 1}")
                 if(position == 0){
-
+                    Bottom_view?.visibility = View.INVISIBLE
+                    Top_view?.visibility = View.INVISIBLE
+                    Bottom_view_2?.visibility = View.INVISIBLE
+                    timer_container?.visibility = View.GONE
                 }else{
-
+                    Bottom_view?.visibility = View.VISIBLE
+                    Top_view?.visibility = View.VISIBLE
+                    Bottom_view_2?.visibility = View.VISIBLE
+                    timer_container?.visibility = View.VISIBLE
                 }
             }
 
@@ -141,6 +147,16 @@ class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
             } else {
                 startTimer()
             }
+        }
+
+        imageButton_left?.setOnClickListener{
+            //stop_timer_Clicked()
+            Previous_page()
+        }
+
+        imageButton_right?.setOnClickListener{
+            //stop_timer_Clicked()
+            Next_page()
         }
 
         stop_timer?.setOnClickListener{
@@ -309,23 +325,29 @@ class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
     // page부분 current는 페이지수 -1이 마지막 입니다. (ex 현재 총 페이지 수 = 5 따라서 current = 4)
     private fun Previous_page(){
         var current = viewPager.currentItem
+        /*
         if (current == 0){
-            viewPager.setCurrentItem(5, false)
+            viewPager.setCurrentItem(5, true)
         }
         else{
-            viewPager.setCurrentItem(current - 1, false)
+            viewPager.setCurrentItem(current - 1, true)
 
         }
+        */
+        viewPager.setCurrentItem(current - 1, true)
     }
 
     private fun Next_page(){
         var current = viewPager.currentItem
+        /*
         if (current == 4){
-            viewPager.setCurrentItem(0, false)
+            viewPager.setCurrentItem(0, true)
         }
         else{
-            viewPager.setCurrentItem(current + 1, false)
+            viewPager.setCurrentItem(current + 1, true)
         }
+        */
+        viewPager.setCurrentItem(current + 1, true)
     }
 
 

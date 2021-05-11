@@ -3,30 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
 
     <ImageView
         android:id="@+id/contentImage"
         android:layout_width="0dp"
         android:layout_height="300dp"
+        android:scaleType="centerCrop"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/recipe"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:scaleType="centerCrop"
-
-        android:visibility="visible"
-        app:srcCompat="@drawable/no_image" >
+        app:srcCompat="@drawable/no_image">
 
     </ImageView>
 
-
     <TextView
         android:id="@+id/name"
-        android:layout_width="385dp"
+        android:layout_width="match_parent"
         android:layout_height="43dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="15dp"
         android:fontFamily="@font/fontstyle"
         android:text="TextView"
         android:textColor="@color/white"
@@ -40,8 +41,10 @@
 
     <TextView
         android:id="@+id/recipe"
-        android:layout_width="387dp"
-        android:layout_height="110dp"
+        android:layout_width="match_parent"
+        android:paddingTop="5dp"
+        android:layout_margin="10dp"
+        android:layout_height="250dp"
         android:bufferType="spannable"
         android:fontFamily="@font/fontstyle"
         android:scrollbars="vertical"
@@ -54,8 +57,9 @@
 
     <TextView
         android:id="@+id/content"
-        android:layout_width="386dp"
-        android:layout_height="111dp"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
         android:fontFamily="@font/fontstyle"
         android:text="TextView"
         android:visibility="visible"

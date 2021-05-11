@@ -72,9 +72,15 @@ class ViewPagerAdapter(
                 nameView.text = name   //레시피 이름
                 recipeView.setMovementMethod(ScrollingMovementMethod())
 
-                val spannable = SpannableStringBuilder("재료\n"+ingredients)
+                val spannable = SpannableStringBuilder("재료\n\n"+ingredients)
                 spannable.setSpan(
-                    RelativeSizeSpan(1.4f),
+                    RelativeSizeSpan(1.6f),
+                    0, // start
+                    2, // end
+                    Spannable.SPAN_EXCLUSIVE_INCLUSIVE
+                )
+                spannable.setSpan(
+                    ForegroundColorSpan(Color.rgb(250, 205, 102)),
                     0, // start
                     2, // end
                     Spannable.SPAN_EXCLUSIVE_INCLUSIVE
@@ -91,6 +97,7 @@ class ViewPagerAdapter(
                 }
             }
             else{
+
                 pageNameView.text = "${position + 1} 페이지"
                 contentView.text = content  //레시피 단계 들어감
                 nameView.text = ""    //레시피 이름부분. 첫번째 페이지 아니라 그냥 없앰

@@ -19,6 +19,7 @@ import com.example.Jachi3kki.Adapter.ExtensionRecipeAdapter
 import com.example.Jachi3kki.Adapter.MainFragmentAdapter
 import com.example.Jachi3kki.Class.Bookmark
 import com.example.Jachi3kki.Class.Recipe
+import com.example.Jachi3kki.Class.SelectedListItem
 import com.example.Jachi3kki.databinding.BookmarkListItemBinding
 import com.example.Jachi3kki.databinding.FragmentBookmarkBinding
 import kotlinx.android.extensions.LayoutContainer
@@ -32,6 +33,8 @@ class BookmarkFragment : Fragment() {
     private lateinit var binding: FragmentBookmarkBinding
     lateinit var navController: NavController
     private lateinit var BookmarkCategoryAdapter: BookmarkAdapter
+    private val selectedAlignItem by lazy { arguments?.getParcelableArrayList<SelectedListItem>("alignmentItem") }
+
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -65,6 +68,11 @@ class BookmarkFragment : Fragment() {
                     it
             )
         }
+
+        // 정렬버튼
+        condition.setOnClickListener {
+            navController.navigate(R.id.action_bookmarkFragment_to_alignmentFragment)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -75,6 +83,10 @@ class BookmarkFragment : Fragment() {
         binding.rvDataList.run {
             setHasFixedSize(true)
             adapter = BookmarkCategoryAdapter
+        }
+        // 정렬 조건 반영
+        if (!selectedAlignItem.isNullOrEmpty()) {
+            bookmarkList = sortedRecipe()
         }
         BookmarkCategoryAdapter.replaceAll(bookmarkList)
 
@@ -143,7 +155,10 @@ class BookmarkFragment : Fragment() {
                 }
                 removeItem(position)
             }
+
+
         }
+
 
 
         fun removeItem(position: Int) {
@@ -183,5 +198,33 @@ class BookmarkFragment : Fragment() {
             }
         }
     }
+
+    fun sortedRecipe(): MutableList<Recipe> {
+        var sortedRecipe = bookmarkList
+        if (!selectedAlignItem.isNullOrEmpty()) {
+            val likeCnt = selectedAlignItem!![0].data
+            val viewCnt = selectedAlignItem!![1].data
+            if (likeCnt == "선택안함" && viewCnt == "선택안함") {
+            } else if (likeCnt == "추천높은순" && viewCnt == "조회수높은순") {
+                sortedRecipe.sortWith(compareBy({ -it.likeCnt }, { -it.viewCnt }))
+            } else if (likeCnt == "추천낮은순" && viewCnt == "조회수낮은순") {
+                sortedRecipe.sortWith(compareBy({ it.likeCnt }, { it.viewCnt }))
+            } else if (likeCnt == "추천높은순" && viewCnt == "조회수낮은순") {
+                sortedRecipe.sortWith(compareBy({ -it.likeCnt }, { it.viewCnt }))
+            } else if (likeCnt == "추천낮은순" && viewCnt == "조회수높은순") {
+                sortedRecipe.sortWith(compareBy({ it.likeCnt }, { -it.viewCnt }))
+            } else if (likeCnt == "선택안함" && viewCnt == "조회수높은순") {
+                sortedRecipe.sortWith(compareBy { -it.viewCnt })
+            } else if (likeCnt == "선택안함" && viewCnt == "조회수낮은순") {
+                sortedRecipe.sortWith(compareBy { it.viewCnt })
+            } else if (likeCnt == "추천높은순" && viewCnt == "선택안함") {
+                sortedRecipe.sortWith(compareBy { -it.likeCnt })
+            } else if (likeCnt == "추천낮은순" && viewCnt == "선택안함") {
+                sortedRecipe.sortWith(compareBy { it.likeCnt })
+            }
+        }
+        return sortedRecipe
+    }
+
 }
 

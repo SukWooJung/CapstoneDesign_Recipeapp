@@ -25,14 +25,13 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_selected_item"
                 android:layout_width="289dp"
-                android:layout_height="43dp"
-                android:layout_marginTop="4dp"
+                android:paddingTop="8dp"
+                android:layout_height="50dp"
                 android:orientation="horizontal"
                 android:gravity="center|left"
                 android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintEnd_toStartOf="@+id/btn_detail"
-                app:layout_constraintHorizontal_bias="0.333"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,7 +39,6 @@
                 android:id="@+id/btn_detail"
                 android:layout_width="93dp"
                 android:layout_height="37dp"
-                android:layout_marginTop="4dp"
                 android:layout_marginRight="8dp"
                 android:background="@android:drawable/arrow_down_float"
                 android:text="상세조건"

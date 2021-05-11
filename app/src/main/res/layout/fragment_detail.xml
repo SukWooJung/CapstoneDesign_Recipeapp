@@ -22,16 +22,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:backgroundTint="#00ff0000"
+            android:backgroundTint="#efefef"
             app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
+            android:layout_height="30dp"
             android:layout_gravity="center"
             android:fontFamily="@font/fontstyle"
-            android:text="º상세조건º"
+            android:text="상세조건"
             android:textSize="23dp"
             android:textStyle="bold" />
 
@@ -72,8 +72,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
-                    android:fontFamily="@font/fontstyle"
                     android:gravity="center"
+                    android:fontFamily="@font/fontstyle"
                     android:text="볶기"
                     android:textColor="@drawable/radio_text_color" />
 
@@ -85,8 +85,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
-                    android:fontFamily="@font/fontstyle"
                     android:gravity="center"
+                    android:fontFamily="@font/fontstyle"
                     android:text="끓이기"
                     android:textColor="@drawable/radio_text_color" />
 
@@ -96,9 +96,9 @@
                     android:layout_height="match_parent"
                     android:layout_margin="9dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/fontstyle"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
-                    android:fontFamily="@font/fontstyle"
                     android:gravity="center"
 
                     android:text="찌기"
@@ -110,9 +110,9 @@
                     android:layout_height="match_parent"
                     android:layout_margin="9dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/fontstyle"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
-                    android:fontFamily="@font/fontstyle"
                     android:gravity="center"
                     android:text="굽기"
                     android:textColor="@drawable/radio_text_color" />
@@ -123,9 +123,9 @@
                     android:layout_height="match_parent"
                     android:layout_margin="9dp"
                     android:layout_weight="1"
+                    android:fontFamily="@font/fontstyle"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
-                    android:fontFamily="@font/fontstyle"
                     android:gravity="center"
                     android:text="튀기기"
                     android:textColor="@drawable/radio_text_color" />
@@ -138,8 +138,8 @@
                     android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
-                    android:fontFamily="@font/fontstyle"
                     android:gravity="center"
+                    android:fontFamily="@font/fontstyle"
                     android:text="기타"
                     android:textColor="@drawable/radio_text_color" />
 
@@ -165,24 +165,23 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="4dp"
+                android:fontFamily="@font/fontstyle"
                 android:gravity="center_vertical"
                 android:text="음식분류"
-                android:fontFamily="@font/fontstyle"
                 android:textSize="20dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <RadioGroup
                 android:id="@+id/rg_kind"
-                android:layout_width="411dp"
-                android:layout_height="70dp"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginTop="12dp"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.906">
+                app:layout_constraintTop_toBottomOf="@+id/food_type">
 
                 <RadioButton
                     android:id="@+id/radio_2_1"
@@ -190,9 +189,9 @@
                     android:layout_height="match_parent"
                     android:layout_margin="9dp"
                     android:layout_weight="1"
-                    android:fontFamily="@font/fontstyle"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
+                    android:fontFamily="@font/fontstyle"
                     android:gravity="center"
                     android:text="밥" />
 
@@ -201,10 +200,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="9dp"
-                    android:fontFamily="@font/fontstyle"
                     android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
+                    android:fontFamily="@font/fontstyle"
                     android:gravity="center"
                     android:text="반찬" />
 
@@ -214,9 +213,9 @@
                     android:layout_height="match_parent"
                     android:layout_margin="9dp"
                     android:layout_weight="1"
-                    android:fontFamily="@font/fontstyle"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
+                    android:fontFamily="@font/fontstyle"
                     android:gravity="center"
                     android:text="국 &amp;\n찌개" />
 
@@ -225,10 +224,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="9dp"
-                    android:fontFamily="@font/fontstyle"
                     android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
+                    android:fontFamily="@font/fontstyle"
                     android:gravity="center"
                     android:text="기타" />
 
@@ -238,9 +237,9 @@
                     android:layout_height="match_parent"
                     android:layout_margin="9dp"
                     android:layout_weight="1"
-                    android:fontFamily="@font/fontstyle"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
+                    android:fontFamily="@font/fontstyle"
                     android:gravity="center"
                     android:text="후식" />
 
@@ -249,10 +248,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_margin="9dp"
-                    android:fontFamily="@font/fontstyle"
                     android:layout_weight="1"
                     android:background="@drawable/radio_selector"
                     android:button="@android:color/transparent"
+                    android:fontFamily="@font/fontstyle"
                     android:gravity="center"
                     android:text="일품" />
 
@@ -279,14 +278,13 @@
         <Button
             android:id="@+id/completion"
             android:layout_width="165dp"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:layout_gravity="center"
             android:layout_marginTop="80dp"
-            android:text="선택완료"
             android:fontFamily="@font/fontstyle"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            app:backgroundTint="#00F4F0F0" />
+            android:text="선택완료"
+            android:textColor="#000000"
+            android:textSize="18dp"/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
