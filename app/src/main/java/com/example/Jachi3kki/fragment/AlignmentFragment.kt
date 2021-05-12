@@ -24,7 +24,9 @@ class AlignmentFragment : Fragment(), View.OnClickListener {
 
     lateinit var navController: NavController
     private val selectedMenuItem  by lazy { arguments?.getParcelableArrayList<SelectedListItem>("item")}
-    private val selectedDetailItem by lazy { arguments?.getParcelableArrayList<SelectedListItem>("detailItem") }
+    private val selectedDetailItem1 by lazy { arguments?.getParcelableArrayList<SelectedListItem>("detailItem1") }
+    private val selectedDetailItem2 by lazy { arguments?.getParcelableArrayList<SelectedListItem>("detailItem2") }
+    private val fromInt by lazy {arguments?.getInt("fromInt")}
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -58,11 +60,11 @@ class AlignmentFragment : Fragment(), View.OnClickListener {
                     R.id.viewCntSortReverse->selectedDataSet.add(SelectedListItem("조회수낮은순"))
                     else -> selectedDataSet.add(SelectedListItem("선택안함"))
                 }
-                if(selectedDetailItem.isNullOrEmpty()){
+                if(fromInt == 1){
                     navController.navigate(R.id.action_alignmentFragment_to_bookmarkFragment)
-                } else{
+                } else if(fromInt == 0){
                     navController.navigate(R.id.action_alignmentFragment_to_recipeFragment,
-                        bundleOf("alignmentItem" to selectedDataSet, "item" to selectedMenuItem, "detailItem" to selectedDetailItem))
+                        bundleOf("alignmentItem" to selectedDataSet, "item" to selectedMenuItem, "detailItem1" to selectedDetailItem1, "detailItem2" to selectedDetailItem2))
                 }
             }
         }

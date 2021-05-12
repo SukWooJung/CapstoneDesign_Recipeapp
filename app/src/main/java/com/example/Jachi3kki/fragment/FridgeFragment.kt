@@ -77,6 +77,9 @@ class fridgeFragment : Fragment() {
                                 adapter.selectlist.select_check(pos)
                                 itemlist.removeAt(pos)
                                 buttonList?.clear()
+                                if(itemlist.size == 0){
+                                    background_fridge.visibility = View.VISIBLE
+                                }
                                 Category.fetchJson_Ingredient(itemlist)     //냉장고의 데이터를 갱신해줘야함. 더 깔끔한 방법은 모르겠음.
                                 adapter.notifyDataSetChanged()
                             }
@@ -104,6 +107,9 @@ class fridgeFragment : Fragment() {
                 arrayListOf<SelectedListItem>().also { list ->
                     adapter.selectlist.selectList.forEach {
                         list.add(SelectedListItem(itemlist[it.toInt()].name))
+                        if(itemlist.size == 0){
+                            background_fridge.visibility = View.VISIBLE
+                        }
                     }
                 }
             }
@@ -132,6 +138,9 @@ class fridgeFragment : Fragment() {
             }
         }                                           //나머지는 activation이 0이라 보이지 않음(ingredientList엔 여전히 들어있음)
 
+        if(itemlist.size == 0){
+            background_fridge.visibility = View.VISIBLE
+        }
         adapter = activity?.let {
             RefrigeratorAdapter(it.applicationContext, itemlist)
         }!!

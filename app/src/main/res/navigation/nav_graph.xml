@@ -64,6 +64,12 @@
             android:id="@+id/action_fridgeFragment_to_addFragment"
             app:destination="@id/addFragment" />
     <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.Jachi3kki.fragment.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search"
+        />
+    <fragment
         android:id="@+id/vitaminFragment"
         android:name="com.example.Jachi3kki.fragment.VitaminFragment"
         android:label="fragment_vitamin"
@@ -135,6 +141,10 @@
     <action
         android:id="@+id/action_global_fridgeFragment"
         app:destination="@id/fridgeFragment"
+        app:popUpTo="@id/mainFragment" />
+    <action
+        android:id="@+id/action_global_searchFragment"
+        app:destination="@id/searchFragment"
         app:popUpTo="@id/mainFragment" />
     <action
         android:id="@+id/action_global_vitaminFragment"

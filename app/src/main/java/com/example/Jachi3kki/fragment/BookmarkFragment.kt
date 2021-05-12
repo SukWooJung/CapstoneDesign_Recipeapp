@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -52,6 +53,12 @@ class BookmarkFragment : Fragment() {
         // 조회된 레시피 수 출력
         tv_count.text = "${bookmarkList.count()}건"
 
+        if(bookmarkList.count() == 0){
+            background_bookmark?.visibility=View.VISIBLE
+        }
+        if(bookmarkList.count() != 0){
+            background_bookmark?.visibility=View.GONE
+        }
         // recyclerView에 layout Manger 설정
         rv_data_list.layoutManager = LinearLayoutManager(
                 activity,
@@ -71,7 +78,8 @@ class BookmarkFragment : Fragment() {
 
         // 정렬버튼
         condition.setOnClickListener {
-            navController.navigate(R.id.action_bookmarkFragment_to_alignmentFragment)
+            val fromInt = 1
+            navController.navigate(R.id.action_bookmarkFragment_to_alignmentFragment, bundleOf("fromInt" to fromInt))
         }
     }
 
@@ -168,6 +176,9 @@ class BookmarkFragment : Fragment() {
                 notifyItemRangeChanged(position, items.size)
                 //bookmarkList.removeAt(position) 얘도 제거하면 인덱스 오류남. 둘 다 recipeInfo.BOOKMARKLIST의 레퍼런스 주소로 값을 공유하기 때문
 
+                if(bookmarkList.count() == 0){
+                    background_bookmark?.visibility=View.VISIBLE
+                }
                 binding.tvCount.text = "${items.count()}건"
             }
         }

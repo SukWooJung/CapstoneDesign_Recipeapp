@@ -13,14 +13,14 @@
         android:title="재료 선택" />
 
     <item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/icon_search"
+        android:title="검색" />
+
+    <item
         android:id="@+id/menu_vitamin"
         android:icon="@drawable/icon_vitamin"
         android:title="비타민 선택" />
-
-    <item
-        android:id="@+id/menu_bookmark"
-        android:icon="@drawable/icon_star"
-        android:title="북마크" />
 
     <item
         android:id="@+id/menu_fridge"

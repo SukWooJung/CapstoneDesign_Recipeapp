@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.get
+import com.example.Jachi3kki.fragment.DetailFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kakao.auth.ISessionCallback
 import com.kakao.auth.Session
@@ -69,9 +70,9 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 Toast.makeText(this, "vitamin clicked", Toast.LENGTH_SHORT).show()
                 navController.navigate(R.id.action_global_vitaminFragment)
             }
-            R.id.menu_bookmark -> {
-                Toast.makeText(this, "bookmark clicked", Toast.LENGTH_SHORT).show()
-                navController.navigate(R.id.action_global_bookmarkFragment)
+            R.id.menu_search -> {
+                Toast.makeText(this, "search clicked", Toast.LENGTH_SHORT).show()
+                navController.navigate(R.id.action_global_searchFragment)
             }
             R.id.menu_fridge -> {
                 Toast.makeText(this, "fridge clicked", Toast.LENGTH_SHORT).show()

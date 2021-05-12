@@ -2,6 +2,7 @@ package com.example.Jachi3kki.fragment
 
 import HorizontalItemDecorator
 import VerticalItemDecorator
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,6 +15,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.get
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,6 +37,7 @@ import kotlinx.android.synthetic.main.fragment_main.*
 class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener {
 
     class MainVitamin(val name: String, val img_src: String)
+
     var recipeList = arrayListOf<Recipe>()
     var vitaminList = arrayListOf<MainVitamin>()
     lateinit var navController: NavController
@@ -51,13 +54,13 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
-        if(recipeList.isEmpty()){
+        if (recipeList.isEmpty()) {
             addRecipeArray()
         }
-        if(vitaminList.isEmpty()){
+        if (vitaminList.isEmpty()) {
             addVitaminArray()
         }
-        toolbar.title = "Three Meals Alone"
+        toolbar.title = "자취3끼"
 
         // recyclerView에 layout Manger 설정
         rv_data_list.layoutManager = LinearLayoutManager(
@@ -75,13 +78,13 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
         rv_data_list.setHasFixedSize(true)
         rv_vitamin_list.setHasFixedSize(true)
 
-        // 아이템간의 구분선 추가
-        activity?.let {VerticalItemDecorator(it, drawable.vertical_line_divider, 0, 0) }?.let {
-            rv_data_list.addItemDecoration(
-                it
-            )
-        }
-        activity?.let {HorizontalItemDecorator(it, drawable.horizontal_line_divider, 0, 0)}?.let{
+//        // 아이템간의 구분선 추가
+//        activity?.let { VerticalItemDecorator(it, drawable.vertical_line_divider, 0, 0) }?.let {
+//            rv_data_list.addItemDecoration(
+//                it
+//            )
+//        }
+        activity?.let { HorizontalItemDecorator(it, drawable.horizontal_line_divider, 0, 0) }?.let {
             rv_vitamin_list.addItemDecoration(
                 it
             )
@@ -114,22 +117,28 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
         // 네비바의 로그인기능 구현
         val headerView = navigationView.getHeaderView(0)
         val loginBtn = headerView.findViewById<Button>(R.id.login_btn)
-        loginBtn.setOnClickListener{
+        loginBtn.setOnClickListener {
             navController.navigate(R.id.action_mainFragment_to_loginFragment)
         }
 
         // 로그인 정보 업데이트
-        if(MainActivity.id != null){
-            headerView.findViewById<TextView>(R.id.email).text = "${MainActivity?.email}"
-            headerView.findViewById<TextView>(R.id.nickName).text = "${MainActivity?.profile?.nickname}"
-            Glide.with(MainActivity.instance).load(MainActivity?.profile?.thumbnailImageUrl).into(headerView.findViewById<ImageView>(R.id.profileImage))
+        if (MainActivity.id != null) {
+            if(MainActivity.email != null){
+                headerView.findViewById<TextView>(R.id.email).text = "${MainActivity?.email}"
+            }
+            headerView.findViewById<TextView>(R.id.nickName).text =
+                "${MainActivity?.profile?.nickname}"
+            Glide.with(MainActivity.instance).load(MainActivity?.profile?.thumbnailImageUrl)
+                .into(headerView.findViewById<ImageView>(R.id.profileImage))
 
-            // 로그아웃
             headerView.findViewById<Button>(R.id.btn_logout).setVisibility(View.VISIBLE)
             headerView.findViewById<Button>(R.id.btn_logout).setEnabled(true)
+
+            // 로그아웃 버튼 클릭 시
             headerView.findViewById<Button>(R.id.btn_logout)!!.setOnClickListener {
                 println("logout버튼눌림")
-                Toast.makeText(MainActivity.instance, "정상적으로 로그아웃 되었습니다.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(MainActivity.instance, "정상적으로 로그아웃 되었습니다.", Toast.LENGTH_SHORT)
+                    .show()
                 headerView.findViewById<TextView>(R.id.email).text = null
                 headerView.findViewById<TextView>(R.id.nickName).text = null
                 headerView.findViewById<ImageView>(R.id.profileImage).background = null
@@ -138,13 +147,14 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
                 headerView.findViewById<Button>(R.id.btn_logout).setVisibility(View.INVISIBLE)
                 headerView.findViewById<Button>(R.id.btn_logout).setEnabled(false)
 
+
                 MainActivity.profile = null
                 MainActivity.id = null
                 MainActivity.email = null
                 UserManagement.getInstance()
                     .requestLogout(object : LogoutResponseCallback() {
                         override fun onCompleteLogout() {
-                           navController.navigate(R.id.action_global_mainFragment)
+                            navController.navigate(R.id.action_global_mainFragment)
                         }
                     })
             }
@@ -191,16 +201,27 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.star -> {
-                Toast.makeText(activity, "bookmark clicked", Toast.LENGTH_SHORT).show()
-                navController.navigate(R.id.action_global_bookmarkFragment)
+        when (item.itemId) {
+            R.id.menu_bookmark -> {
+                if (MainActivity.id == null) {
+                    // 로그인 필요 다이얼로그 표시
+                    alertLoginRequired()
+                } else {
+                    Toast.makeText(activity, "bookmark clicked", Toast.LENGTH_SHORT).show()
+                    navController.navigate(R.id.action_global_bookmarkFragment)
+                }
             }
-            R.id.cart -> {
-                Toast.makeText(activity, "fridge clicked", Toast.LENGTH_SHORT).show()
-                navController.navigate(R.id.action_global_fridgeFragment)
-            }
+
         }
         return true
+    }
+
+    private fun alertLoginRequired() {
+        AlertDialog.Builder(context)
+            .setTitle("로그인 필요")
+            .setMessage("로그인이 필요한 기능입니다")
+            .setPositiveButton("확인") { dialog, _ ->
+                dialog.dismiss()
+            }.show()
     }
 }

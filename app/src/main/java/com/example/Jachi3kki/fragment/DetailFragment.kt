@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.CompoundButton
+import android.widget.ImageButton
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -14,7 +17,12 @@ import kotlinx.android.synthetic.main.fragment_detail.*
 
 class DetailFragment : Fragment(), View.OnClickListener {
     lateinit var navController: NavController
+    private val selectedDetailItem1 by lazy { arguments?.getParcelableArrayList<SelectedListItem>("detailItem1") }
+    private val selectedDetailItem2 by lazy { arguments?.getParcelableArrayList<SelectedListItem>("detailItem2") }
+    private val selectedDataSet1 = arrayListOf<SelectedListItem>()
+    private val selectedDataSet2 = arrayListOf<SelectedListItem>()
     private val selectedMenuItem by lazy { arguments?.getParcelableArrayList<SelectedListItem>("item") }
+    private val selectedAlignItem by lazy { arguments?.getParcelableArrayList<SelectedListItem>("alignmentItem") }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,45 +36,126 @@ class DetailFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
 
+        if(!selectedDetailItem1.isNullOrEmpty()){
+            selectedDetailItem1?.forEach {
+                when(it.data){
+                    "볶기" -> {
+                        selectedDataSet1.add(SelectedListItem("볶기"))
+                        checkBox1.isChecked = true
+                    }
+                    "찌기" -> {
+                        selectedDataSet1.add(SelectedListItem("찌기"))
+                        checkBox2.isChecked = true
+                    }
+                    "기타" -> {
+                        selectedDataSet1.add(SelectedListItem("기타"))
+                        checkBox3.isChecked = true
+                    }
+                    "튀기기" -> {
+                        selectedDataSet1.add(SelectedListItem("튀기기"))
+                        checkBox4.isChecked = true
+                    }
+                    "굽기" -> {
+                        selectedDataSet1.add(SelectedListItem("굽기"))
+                        checkBox5.isChecked = true
+                    }
+                    "끓이기" -> {
+                        selectedDataSet1.add(SelectedListItem("끓이기"))
+                        checkBox6.isChecked = true
+                    }
+                }
+            }
+        }
+
+        if(!selectedDetailItem2.isNullOrEmpty()){
+            selectedDetailItem2?.forEach {
+                when(it.data){
+                    "밥" -> {
+                        selectedDataSet2.add(SelectedListItem("밥"))
+                        checkBox7.isChecked = true
+                    }
+                    "반찬" -> {
+                        selectedDataSet2.add(SelectedListItem("반찬"))
+                        checkBox8.isChecked = true
+                    }
+                    "국&찌개" -> {
+                        selectedDataSet2.add(SelectedListItem("국&찌개"))
+                        checkBox9.isChecked = true
+                    }
+                    "후식" -> {
+                        selectedDataSet2.add(SelectedListItem("후식"))
+                        checkBox10.isChecked = true
+                    }
+                    "일품" -> {
+                        selectedDataSet2.add(SelectedListItem("일품"))
+                        checkBox11.isChecked = true
+                    }
+                    "기타" -> {
+                        selectedDataSet2.add(SelectedListItem("기타"))
+                        checkBox12.isChecked = true
+                    }
+                }
+            }
+        }
+
+
+        var listener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                when (buttonView.id) {
+                    R.id.checkBox1 -> selectedDataSet1.add(SelectedListItem("볶기"))
+                    R.id.checkBox2 -> selectedDataSet1.add(SelectedListItem("찌기"))
+                    R.id.checkBox3 -> selectedDataSet1.add(SelectedListItem("기타"))
+                    R.id.checkBox4 -> selectedDataSet1.add(SelectedListItem("튀기기"))
+                    R.id.checkBox5 -> selectedDataSet1.add(SelectedListItem("굽기"))
+                    R.id.checkBox6 -> selectedDataSet1.add(SelectedListItem("끓이기"))
+                    R.id.checkBox7 -> selectedDataSet2.add(SelectedListItem("밥"))
+                    R.id.checkBox8 -> selectedDataSet2.add(SelectedListItem("반찬"))
+                    R.id.checkBox9 -> selectedDataSet2.add(SelectedListItem("국&찌개"))
+                    R.id.checkBox10 -> selectedDataSet2.add(SelectedListItem("후식"))
+                    R.id.checkBox11 -> selectedDataSet2.add(SelectedListItem("일품"))
+                    R.id.checkBox12 -> selectedDataSet2.add(SelectedListItem("기타"))
+                }
+            }
+        }
+        checkBox1.setOnCheckedChangeListener(listener)
+        checkBox2.setOnCheckedChangeListener(listener)
+        checkBox3.setOnCheckedChangeListener(listener)
+        checkBox4.setOnCheckedChangeListener(listener)
+        checkBox5.setOnCheckedChangeListener(listener)
+        checkBox6.setOnCheckedChangeListener(listener)
+        checkBox7.setOnCheckedChangeListener(listener)
+        checkBox8.setOnCheckedChangeListener(listener)
+        checkBox9.setOnCheckedChangeListener(listener)
+        checkBox10.setOnCheckedChangeListener(listener)
+        checkBox11.setOnCheckedChangeListener(listener)
+        checkBox12.setOnCheckedChangeListener(listener)
+
         detailClose.setOnClickListener(this)
-        completion.setOnClickListener(this)
+        complete.setOnClickListener(this)
     }
 
-    override fun onClick(v: View?) {
-
-        when (v?.id) {
+    override fun onClick(view: View?) {
+        when (view?.id) {
             R.id.detailClose -> navController.popBackStack()
-            R.id.completion -> {
-                val selectedDataSet = arrayListOf<SelectedListItem>()
-
-                // 조리방법
-                when (rg_method.checkedRadioButtonId) {
-                    R.id.radio_1_1 -> selectedDataSet.add(SelectedListItem("볶기"))
-                    R.id.radio_1_2 -> selectedDataSet.add(SelectedListItem("끓이기"))
-                    R.id.radio_1_3 -> selectedDataSet.add(SelectedListItem("찌기"))
-                    R.id.radio_1_4 -> selectedDataSet.add(SelectedListItem("굽기"))
-                    R.id.radio_1_5 -> selectedDataSet.add(SelectedListItem("튀기기"))
-                    R.id.radio_1_6 -> selectedDataSet.add(SelectedListItem("기타"))
-                    else -> selectedDataSet.add(SelectedListItem("선택안함"))
+            R.id.complete -> {
+                if (selectedDataSet1.isEmpty()) {
+                    selectedDataSet1.add(SelectedListItem("선택안함"))
                 }
-
-                // 음식종류
-                when (rg_kind.checkedRadioButtonId) {
-                    R.id.radio_2_1 -> selectedDataSet.add(SelectedListItem("밥"))
-                    R.id.radio_2_2 -> selectedDataSet.add(SelectedListItem("반찬"))
-                    R.id.radio_2_3 -> selectedDataSet.add(SelectedListItem("국&찌개"))
-                    R.id.radio_2_4 -> selectedDataSet.add(SelectedListItem("기타"))
-                    R.id.radio_2_5 -> selectedDataSet.add(SelectedListItem("후식"))
-                    R.id.radio_2_6 -> selectedDataSet.add(SelectedListItem("일품"))
-                    else -> selectedDataSet.add(SelectedListItem("선택안함"))
+                if (selectedDataSet2.isEmpty()) {
+                    selectedDataSet2.add(SelectedListItem("선택안함"))
                 }
-
                 navController.navigate(
                     R.id.action_detailFragment_to_recipeFragment,
-                    bundleOf("detailItem" to selectedDataSet, "item" to selectedMenuItem)
+                    bundleOf(
+                        "detailItem1" to selectedDataSet1,
+                        "detailItem2" to selectedDataSet2,
+                        "item" to selectedMenuItem,
+                        "alignmentItem" to selectedAlignItem
+                    )
                 )
-
             }
         }
     }
-}
+
+
+    }
