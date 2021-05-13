@@ -36,9 +36,9 @@ class DetailFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
 
-        if(!selectedDetailItem1.isNullOrEmpty()){
+        if (!selectedDetailItem1.isNullOrEmpty()) {
             selectedDetailItem1?.forEach {
-                when(it.data){
+                when (it.data) {
                     "볶기" -> {
                         selectedDataSet1.add(SelectedListItem("볶기"))
                         checkBox1.isChecked = true
@@ -67,9 +67,9 @@ class DetailFragment : Fragment(), View.OnClickListener {
             }
         }
 
-        if(!selectedDetailItem2.isNullOrEmpty()){
+        if (!selectedDetailItem2.isNullOrEmpty()) {
             selectedDetailItem2?.forEach {
-                when(it.data){
+                when (it.data) {
                     "밥" -> {
                         selectedDataSet2.add(SelectedListItem("밥"))
                         checkBox7.isChecked = true
@@ -115,6 +115,58 @@ class DetailFragment : Fragment(), View.OnClickListener {
                     R.id.checkBox11 -> selectedDataSet2.add(SelectedListItem("일품"))
                     R.id.checkBox12 -> selectedDataSet2.add(SelectedListItem("기타"))
                 }
+            } else {
+                when (buttonView.id) {
+                    R.id.checkBox1 -> {
+                        selectedDataSet1.remove(SelectedListItem("볶기"))
+                        checkBox1.isChecked = false
+                    }
+                    R.id.checkBox2 -> {
+                        selectedDataSet1.remove(SelectedListItem("찌기"))
+                        checkBox2.isChecked = false
+                    }
+                    R.id.checkBox3 -> {
+                        selectedDataSet1.remove(SelectedListItem("기타"))
+                        checkBox3.isChecked = false
+                    }
+                    R.id.checkBox4 -> {
+                        selectedDataSet1.remove(SelectedListItem("튀기기"))
+                        checkBox4.isChecked = false
+                    }
+                    R.id.checkBox5 -> {
+                        selectedDataSet1.remove(SelectedListItem("굽기"))
+                        checkBox5.isChecked = false
+                    }
+                    R.id.checkBox6 -> {
+                        selectedDataSet1.remove(SelectedListItem("끓이기"))
+                        checkBox6.isChecked = false
+                    }
+                    R.id.checkBox7 -> {
+                        selectedDataSet2.remove(SelectedListItem("밥"))
+                        checkBox7.isChecked = false
+                    }
+                    R.id.checkBox8 -> {
+                        selectedDataSet2.remove(SelectedListItem("반찬"))
+                        checkBox8.isChecked = false
+                    }
+                    R.id.checkBox9 -> {
+                        selectedDataSet2.remove(SelectedListItem("국&찌개"))
+                        checkBox9.isChecked = false
+                    }
+                    R.id.checkBox10 -> {
+                        selectedDataSet2.remove(SelectedListItem("후식"))
+                        checkBox10.isChecked = false
+                    }
+                    R.id.checkBox11 -> {
+                        selectedDataSet2.remove(SelectedListItem("일품"))
+                        checkBox11.isChecked = false
+                    }
+                    R.id.checkBox12 -> {
+                        selectedDataSet2.remove(SelectedListItem("기타"))
+                        checkBox12.isChecked = false
+                    }
+
+                }
             }
         }
         checkBox1.setOnCheckedChangeListener(listener)
@@ -158,4 +210,4 @@ class DetailFragment : Fragment(), View.OnClickListener {
     }
 
 
-    }
+}
