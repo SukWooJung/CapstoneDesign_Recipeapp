@@ -53,7 +53,7 @@
 
             <RadioButton
                 android:id="@+id/likeCntSort"
-                android:layout_width="172dp"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:background="@drawable/radio_selector"
@@ -65,10 +65,11 @@
 
             <RadioButton
                 android:id="@+id/likeCntSortReverse"
-                android:layout_width="match_parent"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:fontFamily="@font/fontstyle"
+                android:layout_marginLeft="100dp"
                 android:background="@drawable/radio_selector"
                 android:button="@android:color/transparent"
                 android:gravity="center"
@@ -94,7 +95,7 @@
 
             <RadioButton
                 android:id="@+id/viewCntSort"
-                android:layout_width="172dp"
+                android:layout_width="160dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:background="@drawable/radio_selector"
@@ -105,8 +106,9 @@
                 android:text="높은순" />
 
             <RadioButton
+                android:layout_marginLeft="100dp"
                 android:id="@+id/viewCntSortReverse"
-                android:layout_width="match_parent"
+                android:layout_width="160dp"
                 android:background="@drawable/radio_selector"
                 android:button="@android:color/transparent"
                 android:gravity="center"

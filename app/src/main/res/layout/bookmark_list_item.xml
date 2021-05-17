@@ -63,18 +63,62 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="8dp"
             android:id="@+id/img_bookmark_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="8dp"
             android:adjustViewBounds="false"
-            android:contentDescription="북마크 추가"
             android:scaleType="centerCrop"
             android:src="@drawable/icon_bookmark"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+        <TextView
+            android:id="@+id/bookmark_tv_likeCnt"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginRight="3dp"
+            android:text="TextView"
+            app:layout_constraintEnd_toEndOf="@+id/img_bookmark_icon"
+            app:layout_constraintTop_toTopOf="@+id/tv_bookmark_content"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            />
+
+        <ImageView
+            android:id="@+id/bookmark_img_likeCnt"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/icon_bookmark"
+            app:layout_constraintEnd_toStartOf="@+id/bookmark_tv_likeCnt"
+            app:layout_constraintTop_toTopOf="@+id/tv_bookmark_content"
+            android:layout_marginRight="5dp"
+            />
+
+
+        <ImageView
+            android:id="@+id/bookmark_img_viewCnt"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            app:layout_constraintEnd_toStartOf="@+id/bookmark_tv_viewCnt"
+            app:layout_constraintTop_toTopOf="@+id/tv_bookmark_content"
+            android:src="@drawable/icon_bookmark"
+            android:layout_marginRight="5dp"
+            />
+
+        <TextView
+            android:id="@+id/bookmark_tv_viewCnt"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="TextView"
+            app:layout_constraintEnd_toStartOf="@+id/bookmark_img_likeCnt"
+            app:layout_constraintTop_toTopOf="@+id/tv_bookmark_content"
+            android:textColor="@color/white"
+            android:textSize="13sp"
+            android:layout_marginRight="5dp"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

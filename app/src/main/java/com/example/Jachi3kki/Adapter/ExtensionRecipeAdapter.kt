@@ -101,6 +101,9 @@ class ExtensionRecipeAdapter(
             tv_bookmark_title.text = recipe.name
             tv_bookmark_content.text = recipe.content + recipe.category
 
+            bookmark_tv_likeCnt.text = "${recipe.likeCnt}"
+            bookmark_tv_viewCnt.text = "${recipe.viewCnt} "
+
             if (MainActivity.id != null) {
                 if (recipeInfo.BOOKMARKLIST.contains(items[position])) {
                     img_bookmark_icon.setImageResource(R.drawable.icon_bookmark_check)
@@ -108,6 +111,7 @@ class ExtensionRecipeAdapter(
                     img_bookmark_icon.setImageResource(R.drawable.icon_bookmark)
                 }
             }
+
         }
 
     }

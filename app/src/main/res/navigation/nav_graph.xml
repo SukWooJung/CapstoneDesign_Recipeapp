@@ -67,8 +67,14 @@
         android:id="@+id/searchFragment"
         android:name="com.example.Jachi3kki.fragment.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search"
-        />
+        tools:layout="@layout/fragment_search">
+
+        <action
+            android:id="@+id/action_searchFragment_to_searchResultFragment"
+            app:destination="@id/searchResultFragment" />
+    </fragment>
+
+
     <fragment
         android:id="@+id/vitaminFragment"
         android:name="com.example.Jachi3kki.fragment.VitaminFragment"
@@ -162,6 +168,15 @@
         <action
             android:id="@+id/action_loginFragment_to_mainFragment"
             app:destination="@id/mainFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchResultFragment"
+        android:name="com.example.Jachi3kki.fragment.SearchResultFragment"
+        android:label="SearchResultFragment" >
+        <argument
+            android:name="keyword"
+            app:argType="string"/>
+
     </fragment>
 
 </navigation>

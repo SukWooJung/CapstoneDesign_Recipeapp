@@ -14,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.Jachi3kki.*
 import kotlinx.android.synthetic.main.viewpager_content.view.*
 import kotlinx.coroutines.Dispatchers
@@ -89,9 +90,10 @@ class ViewPagerAdapter(
                 recipeView.text = spannable    //레시피에 들어가는 재료
 
                 try {
-                    GlobalScope.launch {
-                        setImage(contentImageView, img_src)
-                    }
+                    if (img_src.equals("no_image"))
+                        contentImageView.setImageResource(R.drawable.no_image)
+                    else
+                        Glide.with(itemView.context).load(img_src).into(contentImageView)
                 } catch (e: FileNotFoundException) {
                     false
                 }
@@ -104,34 +106,14 @@ class ViewPagerAdapter(
                 recipeView.text = "" //레시피 들어가는 재료 부분. 첫번째 페이지 아니라 그냥 없앰
 
                 try {
-                    GlobalScope.launch {
-                        setImage(contentImageView, imageUrl)
-                    }
+                    if (imageUrl.equals("no_image"))
+                        contentImageView.setImageResource(R.drawable.no_image)
+                    else
+                        Glide.with(itemView.context).load(imageUrl).into(contentImageView)
                 } catch (e: FileNotFoundException) {
                     false
                 }
             }
-        }
-
-        fun setImage(imageView: ImageView, urlString: String) {
-            if (urlString.equals("no_image")) //해당 단계가 이미지가 없는 경우 drawable에 있는 이미지로 대신 설정
-                imageView.setImageResource(R.drawable.no_image)
-            else {//해당 단계 이미지가 있는 경우
-                try {//우리쪽 문제가 아니라, 저쪽 서버 문제로 이미지 못받아오면 튕길때가 있음. 그거 대비한 코드
-                    val url = URL(urlString)
-                    val bitmap = BitmapFactory.decodeStream(url.openConnection().getInputStream())
-                    GlobalScope.launch {
-                        withContext(Dispatchers.Main) {
-                            if(bitmap != null){
-                                imageView.setImageBitmap(bitmap)
-                            }
-                        }
-                    }
-                } catch (e: FileNotFoundException) {
-                    false
-                }
-            }
-
         }
     }
 

@@ -36,7 +36,6 @@ class BookmarkFragment : Fragment() {
     private lateinit var BookmarkCategoryAdapter: BookmarkAdapter
     private val selectedAlignItem by lazy { arguments?.getParcelableArrayList<SelectedListItem>("alignmentItem") }
 
-
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
@@ -180,6 +179,7 @@ class BookmarkFragment : Fragment() {
                     background_bookmark?.visibility=View.VISIBLE
                 }
                 binding.tvCount.text = "${items.count()}건"
+
             }
         }
 
@@ -205,6 +205,8 @@ class BookmarkFragment : Fragment() {
                 if (MainActivity.id != null) {
                     img_bookmark_icon.setImageResource(R.drawable.icon_bookmark_check)
                 }
+                bookmark_tv_likeCnt.text = "${recipe.likeCnt}"
+                bookmark_tv_viewCnt.text = "${recipe.viewCnt}"
 
             }
         }

@@ -26,11 +26,15 @@ import kotlinx.android.synthetic.main.fragment_recipe.*
 import kotlinx.android.synthetic.main.fragment_recipe.rc_count
 import kotlinx.android.synthetic.main.viewpager_content.*
 
-class RecipeFragment : Fragment() {
+class SearchResultFragment : Fragment() {
+    companion object{
+        const val TAG ="SearchResultFragment"
+    }
     lateinit var recipeList: ArrayList<Recipe>
     lateinit var navController: NavController
     var selectedMenuItems = mutableSetOf<String>()
     private lateinit var selectedAdapter: SelectedListAdapter
+    private val selectedKeyword by lazy { arguments?.getString("keyword") }
     private val selectedMenuItem by lazy { arguments?.getParcelableArrayList<SelectedListItem>("item") }
     private val selectedAlignItem by lazy { arguments?.getParcelableArrayList<SelectedListItem>("alignmentItem") }
     private val selectedDetailItem1 by lazy { arguments?.getParcelableArrayList<SelectedListItem>("detailItem1") }
@@ -48,7 +52,8 @@ class RecipeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
 
-        L.i("::::intent " + selectedMenuItem)
+        L.i("::::selectedKeyword " + selectedKeyword)
+        //입력받은 키워드 값ㅅ,,,, ㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣㅣ
 
         // 선택된 재료로 레시피 검색, 편의를 위한 데이터 형변환
         selectedMenuItem?.forEach {
@@ -57,9 +62,9 @@ class RecipeFragment : Fragment() {
 
 
         // 레시피 검색
-        // DB에 레시피 데이터가 있어야됨
-        recipeList = findRecipe(selectedMenuItems.toMutableList() as ArrayList<String>)
-
+        // DB에 레시피 데이터가 있어야함ㅁ..
+//        recipeList = findRecipe(selectedMenuItems.toMutableList() as ArrayList<String>)
+        recipeList = searchedRecipe(selectedKeyword)
         // 필터 조건 반영
         if (!selectedDetailItem1.isNullOrEmpty()) {
             recipeList = filteredRecipe()
@@ -116,6 +121,8 @@ class RecipeFragment : Fragment() {
         }
     }
 
+
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -151,14 +158,6 @@ class RecipeFragment : Fragment() {
                 selectedAdapter.removeItem(index)
                 selectedMenuItems.remove(item.data)
                 recipeList = findRecipe(selectedMenuItems.toMutableList() as ArrayList<String>)
-                // 필터 조건 반영
-                if (!selectedDetailItem1.isNullOrEmpty()) {
-                    recipeList = filteredRecipe()
-                }
-                // 정렬 조건 반영
-                if (!selectedAlignItem.isNullOrEmpty()) {
-                    recipeList = sortedRecipe()
-                }
                 rc_count.text = "${recipeList.count()}건"
 
                 rv_data_list.adapter = ExtensionRecipeAdapter(
@@ -263,6 +262,16 @@ class RecipeFragment : Fragment() {
         recipeInfo.RECIPELIST.forEach {
             if (it.ingredientArr.containsAll(ingredientArr))
                 tempRecipeList.add(it)
+        }
+        return tempRecipeList
+    }
+
+    private fun searchedRecipe(str: String?): ArrayList<Recipe> {
+        var tempRecipeList = ArrayList<Recipe>()
+        recipeInfo.RECIPELIST.forEach {
+            if (it.name.contains(str.toString())){
+                tempRecipeList.add(it)
+            }
         }
         return tempRecipeList
     }

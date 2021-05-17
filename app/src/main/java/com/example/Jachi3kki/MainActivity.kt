@@ -3,18 +3,17 @@ package com.example.Jachi3kki
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.get
-import com.example.Jachi3kki.fragment.DetailFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kakao.auth.ISessionCallback
 import com.kakao.auth.Session
@@ -35,7 +34,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         private var sessionCallback: SessionCallback = SessionCallback()
         var email: String? = null
         var id: String? = null
-        var profile : Profile? = null
+        var profile: Profile? = null
     }
 
     lateinit var navController: NavController
@@ -58,24 +57,19 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
         when (p0.itemId) {
             R.id.menu_home -> {
-                Toast.makeText(this, "home clicked", Toast.LENGTH_SHORT).show()
                 navController.navigate(R.id.action_global_mainFragment)
 
             }
             R.id.menu_ingredient -> {
-                Toast.makeText(this, "ingredient clicked", Toast.LENGTH_SHORT).show()
                 navController.navigate(R.id.action_global_ingredientFragment)
             }
             R.id.menu_vitamin -> {
-                Toast.makeText(this, "vitamin clicked", Toast.LENGTH_SHORT).show()
                 navController.navigate(R.id.action_global_vitaminFragment)
             }
             R.id.menu_search -> {
-                Toast.makeText(this, "search clicked", Toast.LENGTH_SHORT).show()
                 navController.navigate(R.id.action_global_searchFragment)
             }
             R.id.menu_fridge -> {
-                Toast.makeText(this, "fridge clicked", Toast.LENGTH_SHORT).show()
                 navController.navigate(R.id.action_global_fridgeFragment)
             }
         }
@@ -102,7 +96,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 return
             }
         }
-
         // 홈화면으로 온 경우
         println("test: " + navController.currentDestination)
         val temp = navController.currentDestination
@@ -112,6 +105,8 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             val bnv = findViewById<View>(R.id.bottomNavigationView) as BottomNavigationView
             updateBottomMenu(bnv)
         }
+
+
     }
 
 
@@ -119,10 +114,11 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         navigation.menu.findItem(R.id.menu_home).isChecked = true
     }
 
-    fun getHashKey(){
+    fun getHashKey() {
         val packageName = "com.example.Jachi3kki"
         try {
-            val info = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES)
+            val info =
+                packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNING_CERTIFICATES)
             val signatures = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                 info.signingInfo.apkContentsSigners
             } else {
@@ -136,7 +132,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
                 val key = String(Base64.encode(md.digest(), 0))
                 Log.d("Hash key:", "!!!!!!!$key!!!!!!")
             }
-        } catch(e: Exception) {
+        } catch (e: Exception) {
             Log.e("name not found", e.toString())
         }
 
@@ -147,6 +143,23 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
         // 세션 콜백 삭제
         Session.getCurrentSession().removeCallback(sessionCallback)
+    }
+
+    fun pushNewFragment(fragment: Fragment?, name: String?) {
+        L.i("::::Fragment : " + fragment)
+        L.i(":::::name " + name)
+        if (frame_layout != null) {
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
+            try {
+                fragmentTransaction
+                    .replace(R.id.frame_layout, fragment!!, name)
+                    .addToBackStack(name)
+                    .commit()
+                supportFragmentManager.executePendingTransactions()
+            } catch (e: IllegalStateException) {
+                e.printStackTrace()
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -225,4 +238,6 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
             })
         }
     }
+
+
 }

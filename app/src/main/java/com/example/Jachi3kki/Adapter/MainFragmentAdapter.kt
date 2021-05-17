@@ -274,6 +274,8 @@ class MainFragmentAdapter(
                     main_img_bookmark_icon.setImageResource(R.drawable.icon_bookmark)
                 }
             }
+            main_tv_likeCnt.text = "${recipe.likeCnt}"
+            main_tv_viewCnt.text = "${recipe.viewCnt} "
         }
     }
 
