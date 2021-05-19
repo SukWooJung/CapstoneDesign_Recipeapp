@@ -114,7 +114,7 @@
             android:id="@+id/main_img_likeCnt"
             android:layout_width="15dp"
             android:layout_height="15dp"
-            android:src="@drawable/icon_bookmark"
+            android:src="@drawable/heart"
             app:layout_constraintEnd_toStartOf="@+id/main_tv_likeCnt"
             app:layout_constraintTop_toTopOf="@+id/main_tv_bookmark_content"
             android:layout_marginRight="5dp"
@@ -127,7 +127,7 @@
             android:layout_height="15dp"
             app:layout_constraintEnd_toStartOf="@+id/main_tv_viewCnt"
             app:layout_constraintTop_toTopOf="@+id/main_tv_bookmark_content"
-            android:src="@drawable/icon_bookmark"
+            android:src="@drawable/views"
             android:layout_marginRight="5dp"
             />
 

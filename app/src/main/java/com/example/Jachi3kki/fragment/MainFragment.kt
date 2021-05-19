@@ -3,18 +3,15 @@ package com.example.Jachi3kki.fragment
 import HorizontalItemDecorator
 import VerticalItemDecorator
 import android.app.AlertDialog
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
+import androidx.core.view.GravityCompat
 import androidx.core.view.get
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -30,9 +27,11 @@ import com.example.Jachi3kki.MainActivity
 import com.example.Jachi3kki.R.*
 import com.example.Jachi3kki.recipeInfo
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.kakao.usermgmt.UserManagement
 import com.kakao.usermgmt.callback.LogoutResponseCallback
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.viewpager_main.view.*
 
 class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -42,17 +41,22 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
     var vitaminList = arrayListOf<MainVitamin>()
     lateinit var navController: NavController
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-
         return inflater.inflate(layout.fragment_main, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        MainActivity.instance.setSupportActionBar(toolbar)
+        MainActivity.instance.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        MainActivity.instance.supportActionBar!!.setHomeAsUpIndicator(R.drawable.menu)
+
         navController = Navigation.findNavController(view)
         if (recipeList.isEmpty()) {
             addRecipeArray()
@@ -111,8 +115,10 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
             }
         }
 
-        // 왼쪽 네비바 설정
         navigationView.setNavigationItemSelectedListener(this)
+        
+//        toolbar.setNavigationOnClickListener { navigationView.display }
+
 
         // 네비바의 로그인기능 구현
         val headerView = navigationView.getHeaderView(0)
@@ -215,6 +221,13 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
         }
         return true
     }
+    /*fun onBackPressed() {
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawers()
+        }else{
+            super.onBackPressed()
+        }
+    }*/
 
     private fun alertLoginRequired() {
         AlertDialog.Builder(context)
