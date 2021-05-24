@@ -20,6 +20,9 @@ import java.io.OutputStream
 import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainFragmentAdapter(
     val items: ArrayList<Recipe>,
@@ -55,9 +58,11 @@ class MainFragmentAdapter(
             //조회수 증가
             val recipeName = items[position].name
             items[position].viewCnt += 1
+            items[position].todayView += 1
             val viewCnt = (items[position].viewCnt).toString()
+            val todayView = (items[position].todayView).toString()
             var task = IncreaseView();
-            task.execute("http://118.67.132.138/increaseView.php", recipeName, viewCnt)
+            task.execute("http://118.67.132.138/increaseView.php", recipeName, viewCnt, todayView)
 
             intent.putExtra("recipeNum",recipeNum)
             MainActivity.instance.startActivity(intent)
@@ -109,7 +114,8 @@ class MainFragmentAdapter(
             val serverURL: String? = params[0]
             val recipeName: String? = params[1]
             val viewCnt: String? = params[2]
-            val postParameters: String = "recipeName=$recipeName&viewCnt=$viewCnt"
+            val todayView: String? = params[3]
+            val postParameters: String = "recipeName=$recipeName&viewCnt=$viewCnt&todayView=$todayView"
 
             try{
                 val url = URL(serverURL)

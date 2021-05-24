@@ -8,12 +8,10 @@ import android.view.View
 import android.widget.Button
 import android.widget.NumberPicker
 import androidx.appcompat.app.AlertDialog
-import com.example.Jachi3kki.fragment.ViewPagerMainFragment
-import kotlinx.android.synthetic.main.dialog_number_picker.*
 
 /**
  * Created by maochuns.sun@gmail.com on 2020/7/9
- */
+ * */
 class NumberPickerDialog {
     private var mAlertDialog: AlertDialog? = null
     var mLoadView: View? = null
@@ -36,8 +34,6 @@ class NumberPickerDialog {
         mAlertDialog!!.setView(mLoadView, 0, 0, 0, 0)
         mAlertDialog!!.setCanceledOnTouchOutside(true)
 
-        val btnCancel = mLoadView?.findViewById<Button>(R.id.button_common_alert_cancel)
-        val btnOk = mLoadView?.findViewById<Button>(R.id.button_common_alert_ok)
         val numPicket = mLoadView?.findViewById<NumberPicker>(R.id.numberPicker)
 
         numPicket?.maxValue = mMax
@@ -72,8 +68,6 @@ class NumberPickerDialog {
             e.printStackTrace()
         }
     }
-
-
 
     fun dismiss() {
         if (mAlertDialog != null) {

@@ -4,7 +4,10 @@
         <shape>
             <solid android:color="#e1e1e1"/>
             <stroke android:width="0dp" android:color="#717171" />
-            <corners android:bottomRightRadius="5dp"/>
+            <corners android:bottomRightRadius="5dp"
+                android:bottomLeftRadius="5dp"
+                android:topLeftRadius="0dp"
+                android:topRightRadius="0dp"/>
         </shape>
     </item>
 
@@ -13,7 +16,10 @@
         <shape>
             <solid android:color="@color/white"/>
             <stroke android:width="0dp" android:color="#000000" />
-            <corners android:bottomRightRadius="5dp"/>
+            <corners android:bottomRightRadius="5dp"
+                android:bottomLeftRadius="5dp"
+                android:topLeftRadius="0dp"
+                android:topRightRadius="0dp"/>
         </shape>
     </item>
 

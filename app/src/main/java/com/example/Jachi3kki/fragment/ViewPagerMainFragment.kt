@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.example.Jachi3kki.Adapter.ViewPagerAdapter
@@ -16,6 +17,7 @@ import com.example.Jachi3kki.DroidSpeech.OnDSListener
 import com.example.Jachi3kki.DroidSpeech.OnDSPermissionsListener
 import com.example.Jachi3kki.NumberPickerDialog
 import com.example.Jachi3kki.R
+import com.example.Jachi3kki.Stt_dialog
 import kotlinx.android.synthetic.main.activity_droid_speech.*
 import kotlinx.android.synthetic.main.dialog_number_picker.*
 import kotlinx.android.synthetic.main.viewpager_content.*
@@ -40,6 +42,8 @@ class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
     private var droidSpeech: DroidSpeech? = null
     private var finalSpeechResult: TextView? = null
     var dialog = NumberPickerDialog()
+    var question_dialog = Stt_dialog()
+
     var pass = 0;
     var recipeNum = recipeNum
 
@@ -138,6 +142,10 @@ class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
 
         Text_view_countdown?.setOnClickListener{
             set_timer_Clicked()
+        }
+
+        question_dialog_button?.setOnClickListener {
+            question_mark()
         }
 
         start_timer?.setOnClickListener{
@@ -255,6 +263,13 @@ class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
             customize(pass.toLong())
         }
     }
+
+    private fun question_mark() {
+        question_dialog.show(this.context)
+    }
+
+
+
 
     private fun customize(time: Long){
         getNum(time)
@@ -410,6 +425,9 @@ class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
 
     override fun onDroidSpeechFinalResult(finalSpeechResult: String) {
         // Setting the final speech result
+
+        Toast.makeText(this.requireContext(), finalSpeechResult , Toast.LENGTH_SHORT).show()
+
 
         if(finalSpeechResult == "이전"){
             print("\n\n 이전 페이지 입니다.")

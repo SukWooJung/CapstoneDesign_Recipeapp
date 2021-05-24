@@ -11,5 +11,7 @@ data class Recipe (
     val manualList: ArrayList<String>,  //조리 방법 메뉴얼
     val imgList: ArrayList<String>,  //조리 단계별 이미지
     var likeCnt: Int,   //좋아요 수
-    var viewCnt: Int    //조회수
+    var viewCnt: Int,    //조회수
+    var todayView: Int,
+    var yesterdayView: Int
 )

@@ -1,6 +1,9 @@
 package com.example.Jachi3kki
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -32,6 +35,20 @@ import com.kakao.util.exception.KakaoException
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import java.security.MessageDigest
+import java.text.SimpleDateFormat
+import java.util.*
+
+private const val TAG = "MyBroadcastReceiver"
+class MyBroadcastReceiver : BroadcastReceiver() {
+    override fun onReceive(context: Context?, intent: Intent?) {
+        if(Intent.ACTION_DATE_CHANGED == intent!!.action){
+            recipeInfo.fetchJson_RecipeInfo()
+            for(i in 0 until recipeInfo.RECIPELIST.size)
+                println("${i}번째 레시피의 오늘자 조회수: "+recipeInfo.RECIPELIST[i].todayView)
+            Toast.makeText(context,"조회수 갱신됨",Toast.LENGTH_SHORT).show()
+        }
+    }
+}
 
 class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
     companion object {
@@ -41,12 +58,18 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         var email: String? = null
         var id: String? = null
         var profile: Profile? = null
+        val br: BroadcastReceiver = MyBroadcastReceiver()
     }
 
     lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+
+        val filter = IntentFilter()
+        filter.addAction(Intent.ACTION_DATE_CHANGED)
+        registerReceiver(br, filter)
 
         setContentView(R.layout.activity_main)
         // 로그인 세션
@@ -73,20 +96,22 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             android.R.id.home->{ // 메뉴 버튼
-                println("메뉴버튼 눌림")
-                drawerLayout.openDrawer(GravityCompat.START)
-                return true
 
+                val draw : DrawerLayout = findViewById(R.id.drawer)
+                if(draw.isDrawerOpen(GravityCompat.START)){
+                    draw.closeDrawer(GravityCompat.START)
+                }
+                draw.openDrawer(GravityCompat.START)
+                return true
             }
         }
-        return super.onOptionsItemSelected(item)
+        return false
     }
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
         when (p0.itemId) {
             R.id.menu_home -> {
                 navController.navigate(R.id.action_global_mainFragment)
-
             }
             R.id.menu_ingredient -> {
                 navController.navigate(R.id.action_global_ingredientFragment)
@@ -111,6 +136,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
     private final var FINISH_INTERVAL_TIME: Long = 2000
 
     override fun onBackPressed() {
+
         if (!navController.popBackStack()) { // currentBackStackEntry가 비어있으면 false 리턴. 따라서, 비어있는 경우
             val currentTime = System.currentTimeMillis()
             val intervalTime = currentTime - backPressedTime

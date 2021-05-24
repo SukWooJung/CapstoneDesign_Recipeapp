@@ -2,16 +2,23 @@ package com.example.Jachi3kki.Adapter
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.Jachi3kki.*
 import com.example.Jachi3kki.Class.Recipe
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.bookmark_list_item.*
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ExtensionRecipeAdapter(
     val items: ArrayList<Recipe>,
@@ -31,6 +38,7 @@ class ExtensionRecipeAdapter(
                 parent,
                 false
         )
+
         return RecipeViewHolder(view, itemSelect)
     }
 
@@ -47,9 +55,11 @@ class ExtensionRecipeAdapter(
             //조회수 증가
             val recipeName = items[position].name
             items[position].viewCnt += 1
+            items[position].todayView += 1
             val viewCnt = (items[position].viewCnt).toString()
+            val todayView = (items[position].todayView).toString()
             var task = MainFragmentAdapter.IncreaseView();
-            task.execute("http://118.67.132.138/increaseView.php", recipeName, viewCnt)
+            task.execute("http://118.67.132.138/increaseView.php", recipeName, viewCnt, todayView)
 
             intent.putExtra("recipeNum", recipeNum)
             MainActivity.instance.startActivity(intent)

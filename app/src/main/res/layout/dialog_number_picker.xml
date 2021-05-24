@@ -23,6 +23,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:textStyle="bold"
             android:gravity="center"
             android:text="타이머 설정"
             android:textColor="#282828"
@@ -92,7 +93,7 @@
                 android:onClick="onOKButtonClick"
 
                 android:textSize="15sp"
-                android:text="OK" />
+                android:text="확인" />
 
             <View
                 android:layout_width="1dp"
@@ -112,7 +113,7 @@
 
                 android:textSize="15sp"
                 android:textColor="#9C9C9C"
-                android:text="Cancel" />
+                android:text="닫기" />
 
 
         </LinearLayout>

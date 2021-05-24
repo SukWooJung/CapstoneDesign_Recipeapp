@@ -135,6 +135,22 @@
         app:layout_constraintStart_toStartOf="parent"
         android:visibility="invisible">
 
+        <ImageButton
+            android:id="@+id/question_dialog_button"
+            android:layout_marginLeft="70dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_gravity="center"
+            android:src="@drawable/question_mark"
+            android:scaleType="fitXY"
+            android:visibility="visible"
+            android:background="@android:color/transparent"
+            >
+
+
+        </ImageButton>
+
         <FrameLayout
             android:id="@+id/Bottom_view_2"
             android:layout_width="match_parent"

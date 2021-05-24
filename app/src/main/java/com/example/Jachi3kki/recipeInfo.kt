@@ -62,7 +62,6 @@ class recipeInfo {
                     val jsonArray = jsonObject.getJSONArray("recipe_manual")   //레시피 상세정보가 들어감. 조리 방법 등등. null값도 있으므로 조심
                     val jsonArray2 = jsonObject.getJSONArray("recipe_ingredient")//(레시피에 들어가는 재료가 포함됨. null값도 있으므로 조심)
                     var arrayNum = jsonArray.length() //레시피의 개수
-                    var arrayNum2 = jsonArray2.length()//레시피의 개수
 
                     //recipe_manual 에서 가져올 데이터들
                     var idArray: ArrayList<Int> = ArrayList<Int>()  //레시피 아이디
@@ -73,7 +72,8 @@ class recipeInfo {
                     var ingredientsArray: ArrayList<String> = ArrayList<String>()   //한줄로된 필요 재료들
                     var likeArray: ArrayList<Int> = ArrayList<Int>()    //좋아요수
                     var viewArray: ArrayList<Int> = ArrayList<Int>()    //조회수
-
+                    var todayViewArray: ArrayList<Int> = ArrayList<Int>()   //오늘자 갱신된 좋아요 수
+                    var yesterdayViewArray: ArrayList<Int> = ArrayList<Int>()   //어제의 총 좋아요 수
                     var tempIngredientArray = mutableSetOf<String>()    //재료들을 어레이리스트로 담을 배열
                     var tempManualArray = mutableListOf<String>()        //레시피 별 단계들을 어레이 리스트로 담을 배열열
                     var tempImgArray = mutableListOf<String>()           //단계별 이미지를 어레이리스트로 담을 배열. null일 경우 no_image로 설정할 것임
@@ -87,6 +87,8 @@ class recipeInfo {
                         ingredientsArray.add(jsonArray.getJSONObject(i).getString("recipeIngredients"))
                         likeArray.add(jsonArray.getJSONObject(i).getInt("recipeLikeCnt"))
                         viewArray.add(jsonArray.getJSONObject(i).getInt("recipeViewCnt"))
+                        todayViewArray.add(jsonArray.getJSONObject(i).getInt("todayView"))
+                        yesterdayViewArray.add(jsonArray.getJSONObject(i).getInt("yesterdayView"))
                     }
 
                     RECIPELIST.clear()
@@ -121,7 +123,7 @@ class recipeInfo {
 
                         RECIPELIST.add(
                             Recipe(idArray[i], nameArray[i], contentArray[i], categoryArray[i], imgSrcArray[i], ingredientsArray[i]
-                                , tempIngredientList, tempManualList, tempImgList, likeArray[i], viewArray[i])
+                                , tempIngredientList, tempManualList, tempImgList, likeArray[i], viewArray[i], todayViewArray[i], yesterdayViewArray[i])
                         )
                         tempIngredientArray.clear() //얘네는 다음 번의 메뉴얼, 재료, 이미지들이 들어가야하므로 비워줘야함.
                         tempManualArray.clear()
@@ -149,7 +151,9 @@ class recipeInfo {
                 arrayListOf("조리 1단계 이미지", "조리 2단계 이미지", "조리 3단계 이미지", "조리 4단계 이미지"),
                 arrayListOf("김치", "두부", "고춧가루", "간장","두부","등등"),
                 0,  //좋아요수
-                0   //조회수
+                0,   //조회수
+                0,
+                0
             ),
             Recipe(
                 1,
@@ -162,7 +166,9 @@ class recipeInfo {
                 arrayListOf("조리 1단계 이미지", "조리 2단계 이미지", "조리 3단계 이미지", "조리 4단계 이미지"),
                 arrayListOf("김치", "두부", "고춧가루", "간장","두부","등등"),
                 0,  //좋아요수
-                0   //조회수
+                0,  //조회수
+                0,
+                0
             )
         )
     }

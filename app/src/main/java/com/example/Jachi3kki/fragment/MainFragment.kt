@@ -32,6 +32,8 @@ import com.kakao.usermgmt.UserManagement
 import com.kakao.usermgmt.callback.LogoutResponseCallback
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.viewpager_main.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -48,6 +50,10 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        val inputFormat = SimpleDateFormat("HH:mm:ss.SSS")
+        val date = Date()
+        val now = inputFormat.format(date.time)
+
         return inflater.inflate(layout.fragment_main, container, false)
     }
 
@@ -202,8 +208,67 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
     }
 
     private fun addRecipeArray() {  //그냥 데이터 채워넣기
-        recipeList.add(recipeInfo.RECIPELIST[0])
-        recipeList.add(recipeInfo.RECIPELIST[1])
+        //어제자 조회수로 가장 높았던 것 중 5개를 골라 그 중 랜덤한 2개를 선별
+        var indexList: MutableList<Int> = mutableListOf(0, 0, 0, 0, 0)
+        var tempList: MutableList<Int> = mutableListOf(-1, -1, -1, -1, -1)
+        var temp1 = 0
+        var temp2 = 0
+        for(i in 0 until recipeInfo.RECIPELIST.size){
+            if(tempList[0] < recipeInfo.RECIPELIST[i].yesterdayView){
+                if(tempList[0] != -1){
+                    for(j in 4 downTo 1){
+                        indexList[j] = indexList[j-1]
+                        tempList[j] = tempList[j-1]
+                    }
+                }
+                indexList[0] = i
+                tempList[0] = recipeInfo.RECIPELIST[i].yesterdayView
+            }
+            else if(tempList[1] < recipeInfo.RECIPELIST[i].yesterdayView){
+                if(tempList[1] != -1){
+                    for(j in 4 downTo 2){
+                        indexList[j] = indexList[j-1]
+                        tempList[j] = tempList[j-1]
+                    }
+                }
+                indexList[1] = i
+                tempList[1] = recipeInfo.RECIPELIST[i].yesterdayView
+            }
+            else if(tempList[2] < recipeInfo.RECIPELIST[i].yesterdayView){
+                if(tempList[2] != -1){
+                    for(j in 4 downTo 3){
+                        indexList[j] = indexList[j-1]
+                        tempList[j] = tempList[j-1]
+                    }
+                }
+                indexList[2] = i
+                tempList[2] = recipeInfo.RECIPELIST[i].yesterdayView
+            }
+            else if(tempList[3] < recipeInfo.RECIPELIST[i].yesterdayView){
+                if(tempList[3] != -1){
+                    indexList[4] = indexList[3]
+                    tempList[4] = tempList[3]
+                }
+                indexList[3] = i
+                tempList[3] = recipeInfo.RECIPELIST[i].yesterdayView
+            }
+            else if(tempList[4] < recipeInfo.RECIPELIST[i].yesterdayView){
+                    indexList[4] = i
+                    tempList[4] = recipeInfo.RECIPELIST[i].yesterdayView
+            }
+        }
+
+        val random = Random()
+        var num1 = random.nextInt(5)
+        var num2 = random.nextInt(5)
+        if(num1 == num2){
+            while(num1 == num2){
+                num2 = random.nextInt(5)
+            }
+        }
+
+        recipeList.add(recipeInfo.RECIPELIST[indexList[num1]])
+        recipeList.add(recipeInfo.RECIPELIST[indexList[num2]])
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -213,8 +278,7 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
                     // 로그인 필요 다이얼로그 표시
                     alertLoginRequired()
                 } else {
-                    Toast.makeText(activity, "bookmark clicked", Toast.LENGTH_SHORT).show()
-                    navController.navigate(R.id.action_global_bookmarkFragment)
+                    navController.navigate(R.id.action_mainFragment_to_bookmarkFragment)
                 }
             }
 
