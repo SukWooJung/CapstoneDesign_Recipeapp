@@ -4,22 +4,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.Jachi3kki.Adapter.ClassListAdapter
 import com.example.Jachi3kki.Adapter.SelectedListAdapter
-import com.example.Jachi3kki.Category
+import com.example.Jachi3kki.OuterDB.Category
 import com.example.Jachi3kki.Class.CategoryListItem
-import com.example.Jachi3kki.L
-import com.example.Jachi3kki.R
 import com.example.Jachi3kki.Class.SelectedListItem
 import com.example.Jachi3kki.InternalDB.AppDatabase
 import com.example.Jachi3kki.InternalDB.FridgeIngredient
-import com.example.Jachi3kki.MainActivity
+import com.example.Jachi3kki.log.L
+import com.example.Jachi3kki.R
 import com.example.Jachi3kki.databinding.FragmentIngredientBinding
-import kotlinx.android.synthetic.main.fragment_add.*
 import kotlinx.android.synthetic.main.fragment_ingredient.*
 
 // 냉장고 재료추가 프래그먼트
@@ -27,6 +24,7 @@ class AddFragment : Fragment() {
     private lateinit var navController: NavController
     private lateinit var binding: FragmentIngredientBinding
     var fridgeSet = mutableSetOf<String>()
+
     //대분류 중분류 소분류 선택 리사이클러뷰의 어뎁터
     private lateinit var MainCategoryAdapter: ClassListAdapter
     private lateinit var MiddleCategoryAdapter: ClassListAdapter
@@ -83,7 +81,7 @@ class AddFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
         btn_goRecipe.setOnClickListener {
-        //얘가 냉장고로 돌아가는 버튼인듯
+            //얘가 냉장고로 돌아가는 버튼인듯
             val selectedDataSet = arrayListOf<SelectedListItem>() //arraylistof로 아이템을 담아서
 
             selectedCategorys.entries.map {
@@ -93,16 +91,16 @@ class AddFragment : Fragment() {
                     )
                 )
             }
-            var size: Int = selectedDataSet.size    //고른 재료를 냉장고에서 활성화시키기 위함
+            val size: Int = selectedDataSet.size    //고른 재료를 냉장고에서 활성화시키기 위함
             for (i in 0 until size) {
                 fridgeSet.add(selectedDataSet.get(i).data)  //data에서 고른 재료의 이름만 뽑아냄
             }
-            var fridgeArray: Array<String> = fridgeSet.toTypedArray()   //다시 배열로 변환
+            val fridgeArray: Array<String> = fridgeSet.toTypedArray()   //다시 배열로 변환
 
             activateIngredient(fridgeArray)   //냉장고에 재료들을 활성화시키는 함수 호출
 
             navController.navigate(
-                R.id.action_addFragment_to_fridgeFragment
+                R.id.action_addFragment_to_FridgeFragment
             )
         }
     }
@@ -226,7 +224,7 @@ class AddFragment : Fragment() {
     }
 
 
-    private fun reLoadSelectedCategory(){
+    private fun reLoadSelectedCategory() {
         //다시 카테고리 화면 돌아올시.. 선택한 메뉴들 ListUp 오른쪽에 back화살표 모양
         val selectedDataSet = arrayListOf<CategoryListItem>()
         selectedCategorys.entries.forEach {
@@ -249,28 +247,27 @@ class AddFragment : Fragment() {
         }?.toList()
     }
 
-    private fun activateIngredient(ingredient_list: Array<String>){     //냉장고에 추가할 재료들을 activate시켜 냉장고에 보이게 함
-        var db : AppDatabase? = null
+    private fun activateIngredient(ingredient_list: Array<String>) {     //냉장고에 추가할 재료들을 activate시켜 냉장고에 보이게 함
         var ingredientList = mutableListOf<FridgeIngredient>()
         var tempSet = mutableSetOf<String>()
-        db = AppDatabase.getInstance(requireContext())
+        val db: AppDatabase? = AppDatabase.getInstance(requireContext())
         ingredientList = db?.ingredientDAO()?.getAll()!!
 
-        for( i in 0 until ingredientList.size) {
+        for (i in 0 until ingredientList.size) {
             if (ingredientList[i].activation != 0)
                 tempSet.add(ingredientList[i].name)
         }
 
-        for( i in ingredient_list.indices) {
-            for ( j in 0 until ingredientList.size ) {
-                if( ingredient_list[i].equals(ingredientList[j].name)) {
+        for (i in ingredient_list.indices) {
+            for (j in 0 until ingredientList.size) {
+                if (ingredient_list[i].equals(ingredientList[j].name)) {
                     db.ingredientDAO().activate(ingredient_list[i])
                     tempSet.add(ingredient_list[i])
-                    continue;
+                    continue
                 }
             }
         }
-        var tempArray: Array<String> = tempSet.toTypedArray()
+        val tempArray: Array<String> = tempSet.toTypedArray()
         Category.addFrom_fridge(tempArray)
     }
 }

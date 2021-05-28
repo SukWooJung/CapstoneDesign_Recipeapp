@@ -11,6 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.Jachi3kki.*
 import com.example.Jachi3kki.Class.Recipe
+import com.example.Jachi3kki.OuterDB.recipeInfo
+import com.example.Jachi3kki.activity.MainActivity
+import com.example.Jachi3kki.activity.PagerActivity
+import com.example.Jachi3kki.log.L
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.main_recipe_list_item.*
 import java.io.BufferedReader
@@ -20,8 +24,6 @@ import java.io.OutputStream
 import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 class MainFragmentAdapter(
@@ -42,7 +44,7 @@ class MainFragmentAdapter(
             parent,
             false
         )
-        return MainFragmentViewHolder(view, itemSelect)
+        return MainFragmentViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: MainFragmentViewHolder, position: Int) {
@@ -52,7 +54,7 @@ class MainFragmentAdapter(
             //Toast.makeText(context,"조회수",Toast.LENGTH_SHORT).show()
 
             // 매개변수 전달 TODO
-            var recipeNum = recipeInfo.RECIPELIST.indexOf(items[position])
+            val recipeNum = recipeInfo.RECIPELIST.indexOf(items[position])
             val intent = Intent(MainActivity.instance, PagerActivity::class.java)   //여기서 뷰페이저 연결하는 거 같은데
 
             //조회수 증가
@@ -61,7 +63,7 @@ class MainFragmentAdapter(
             items[position].todayView += 1
             val viewCnt = (items[position].viewCnt).toString()
             val todayView = (items[position].todayView).toString()
-            var task = IncreaseView();
+            val task = IncreaseView()
             task.execute("http://118.67.132.138/increaseView.php", recipeName, viewCnt, todayView)
 
             intent.putExtra("recipeNum",recipeNum)
@@ -78,7 +80,7 @@ class MainFragmentAdapter(
                     val recipeName = items[position].name
                     items[position].likeCnt -=1
                     val likeCnt = (items[position].likeCnt).toString()
-                    var task = DeleteData()
+                    val task = DeleteData()
                     task.execute("http://118.67.132.138/deleteDb.php", userId, recipeName, likeCnt)
                     recipeInfo.BOOKMARKLIST.remove(items[position]) //새로고침인 것처럼 코드에서 제거
 
@@ -93,7 +95,7 @@ class MainFragmentAdapter(
                     val recipeName = items[position].name
                     items[position].likeCnt +=1
                     val likeCnt = (items[position].likeCnt).toString()
-                    var task = InsertData()
+                    val task = InsertData()
                     task.execute("http://118.67.132.138/insertDb.php", userId, recipeName, likeCnt)
                     recipeInfo.BOOKMARKLIST.add(items[position])
 
@@ -260,8 +262,7 @@ class MainFragmentAdapter(
     }
 
     inner class MainFragmentViewHolder(
-        override val containerView: View,
-        itemSelect: (Recipe) -> Unit
+        override val containerView: View
     ) :
         RecyclerView.ViewHolder(containerView), LayoutContainer {
         fun bind(recipe: Recipe, context: Context, position: Int) {
@@ -282,6 +283,7 @@ class MainFragmentAdapter(
             }
             main_tv_likeCnt.text = "${recipe.likeCnt}"
             main_tv_viewCnt.text = "${recipe.viewCnt} "
+            itemSelect(recipe)
         }
     }
 

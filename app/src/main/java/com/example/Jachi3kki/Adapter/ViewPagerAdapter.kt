@@ -1,7 +1,6 @@
 package com.example.Jachi3kki.Adapter
 
 import android.annotation.SuppressLint
-import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableStringBuilder
@@ -15,14 +14,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.Jachi3kki.*
+import com.example.Jachi3kki.R
+import com.example.Jachi3kki.OuterDB.recipeInfo
 import kotlinx.android.synthetic.main.viewpager_content.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.FileNotFoundException
-import java.net.URL
 
 
 class ViewPagerAdapter(
@@ -30,7 +25,7 @@ class ViewPagerAdapter(
 ) :
     RecyclerView.Adapter<ViewPagerAdapter.PagerViewHolder>() {
 
-    var recipeId :Int = recipeNum
+    var recipeId: Int = recipeNum
     var id: Int = 0    //레시피 아이디
     lateinit var name: String   //레시피 이름
     lateinit var content: String    //레시피 조리 방법(변수명 바꾸고싶은데 바꾸면 다른 것도 바꿔야되므로 안바꿈)
@@ -40,7 +35,7 @@ class ViewPagerAdapter(
     lateinit var ingredientArr: ArrayList<String>//재료 리스트
     lateinit var manualList: ArrayList<String>  //조리 방법 메뉴얼
     lateinit var imgList: ArrayList<String>  //조리 단계별 이미지
-    var likeCnt: Int =0  //좋아요 수
+    var likeCnt: Int = 0  //좋아요 수
     var viewCnt: Int = 0    //조회수
 
     fun setData(recipeId: Int) {
@@ -67,13 +62,13 @@ class ViewPagerAdapter(
 
         @SuppressLint("SetTextI18n")
         fun bind(content: String, imageUrl: String, position: Int) {
-            if(position == 0) {
+            if (position == 0) {
                 pageNameView.text = "${position + 1} 페이지"
                 contentView.text = "" //레시피 단계 설명 부분. 첫번째 페이지 아니라 그냥 없앰
                 nameView.text = name   //레시피 이름
                 recipeView.setMovementMethod(ScrollingMovementMethod())
 
-                val spannable = SpannableStringBuilder("재료\n\n"+ingredients)
+                val spannable = SpannableStringBuilder("재료\n\n" + ingredients)
                 spannable.setSpan(
                     RelativeSizeSpan(1.6f),
                     0, // start
@@ -97,8 +92,7 @@ class ViewPagerAdapter(
                 } catch (e: FileNotFoundException) {
                     false
                 }
-            }
-            else{
+            } else {
 
                 pageNameView.text = "${position + 1} 페이지"
                 contentView.text = content  //레시피 단계 들어감
@@ -131,14 +125,13 @@ class ViewPagerAdapter(
         val pos = position
 
         setData(recipeId)
-        if(pos == 0) {
+        if (pos == 0) {
             holder.bind(
                 manualList[pos],
                 imgList[pos],
                 pos
             )
-        }
-        else {
+        } else {
             holder.bind(
                 manualList[pos - 1],
                 imgList[pos - 1],
@@ -150,6 +143,6 @@ class ViewPagerAdapter(
 
     override fun getItemCount(): Int {
         setData(recipeId)
-        return manualList.size+1
+        return manualList.size + 1
     }
 }

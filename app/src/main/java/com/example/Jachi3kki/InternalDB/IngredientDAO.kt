@@ -1,6 +1,9 @@
 package com.example.Jachi3kki.InternalDB
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Query
+import androidx.room.Update
 
 //RoomDB에 접근하는 메소드들
 @Dao

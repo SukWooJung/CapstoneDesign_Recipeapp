@@ -4,25 +4,26 @@ import VerticalItemDecorator
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.Jachi3kki.*
-import com.example.Jachi3kki.Adapter.ExtensionRecipeAdapter
 import com.example.Jachi3kki.Adapter.MainFragmentAdapter
-import com.example.Jachi3kki.Class.Bookmark
 import com.example.Jachi3kki.Class.Recipe
 import com.example.Jachi3kki.Class.SelectedListItem
-import com.example.Jachi3kki.databinding.BookmarkListItemBinding
+import com.example.Jachi3kki.OuterDB.recipeInfo
+import com.example.Jachi3kki.activity.MainActivity
+import com.example.Jachi3kki.activity.PagerActivity
 import com.example.Jachi3kki.databinding.FragmentBookmarkBinding
+import com.example.Jachi3kki.log.L
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bookmark_list_item.*
@@ -37,8 +38,8 @@ class BookmarkFragment : Fragment() {
     private val selectedAlignItem by lazy { arguments?.getParcelableArrayList<SelectedListItem>("alignmentItem") }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         bookmarkList = recipeInfo.BOOKMARKLIST
@@ -49,41 +50,31 @@ class BookmarkFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = nav_host_fragment.findNavController()
+
         // 조회된 레시피 수 출력
         tv_count.text = "${bookmarkList.count()}건"
 
-        if(bookmarkList.count() == 0){
-            background_bookmark?.visibility=View.VISIBLE
+        // 북마크에 추가된 레시피가 없을 경우 레시피가 없다는 사진 보여줌
+        if (bookmarkList.count() == 0) {
+            background_bookmark?.visibility = View.VISIBLE
         }
-        if(bookmarkList.count() != 0){
-            background_bookmark?.visibility=View.GONE
+        if (bookmarkList.count() != 0) {
+            background_bookmark?.visibility = View.GONE
+            if (!selectedAlignItem.isNullOrEmpty()) {
+                bookmarkList = sortedRecipe()
+            }
         }
+
         // recyclerView에 layout Manger 설정
         rv_data_list.layoutManager = LinearLayoutManager(
-                activity,
-                LinearLayoutManager.VERTICAL,
-                false
-        ) as RecyclerView.LayoutManager?
+            activity,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
 
         // 안전성을 위해 사이즈 고정
         rv_data_list.setHasFixedSize(true)
 
-        // 아이템간의 구분선 추가
-        activity?.let { VerticalItemDecorator(it, R.drawable.horizontal_line_divider, 0, 0) }?.let {
-            rv_data_list.addItemDecoration(
-                    it
-            )
-        }
-
-        // 정렬버튼
-        condition.setOnClickListener {
-            val fromInt = 1
-            navController.navigate(R.id.action_bookmarkFragment_to_alignmentFragment, bundleOf("fromInt" to fromInt))
-        }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
         // 리사이클러 뷰 출력을 위한 adapter 설정
         BookmarkCategoryAdapter = BookmarkAdapter(requireContext())
 
@@ -91,31 +82,37 @@ class BookmarkFragment : Fragment() {
             setHasFixedSize(true)
             adapter = BookmarkCategoryAdapter
         }
-        // 정렬 조건 반영
-        if (!selectedAlignItem.isNullOrEmpty()) {
-            bookmarkList = sortedRecipe()
-        }
-        BookmarkCategoryAdapter.replaceAll(bookmarkList)
 
+//        BookmarkCategoryAdapter.replaceAll(bookmarkList)
+
+        // 정렬버튼
+        condition.setOnClickListener {
+            val fromInt = 1
+            navController.navigate(
+                R.id.action_bookmarkFragment_to_alignmentFragment,
+                bundleOf("fromInt" to fromInt)
+            )
+        }
     }
 
 
-    private open inner class BookmarkAdapter(private val context: Context) : RecyclerView.Adapter<BookmarkAdapter.RecipeViewHolder>() {
+    private open inner class BookmarkAdapter(private val context: Context) :
+        RecyclerView.Adapter<BookmarkAdapter.RecipeViewHolder>() {
 
-        var items = mutableListOf<Recipe>()
+        var items = bookmarkList
 
         override fun getItemCount(): Int {
             return items.size
         }
 
         override fun onCreateViewHolder(
-                parent: ViewGroup,
-                viewType: Int
+            parent: ViewGroup,
+            viewType: Int
         ): BookmarkAdapter.RecipeViewHolder {
             val view = LayoutInflater.from(parent.context).inflate(
-                    R.layout.bookmark_list_item,
-                    parent,
-                    false
+                R.layout.bookmark_list_item,
+                parent,
+                false
             )
             return RecipeViewHolder(view)
         }
@@ -124,11 +121,11 @@ class BookmarkFragment : Fragment() {
             holder.bind(items[position], context, position)
             holder.itemView.setOnClickListener() {
                 L.i("조회수")
-                //Toast.makeText(context,"조회수",Toast.LENGTH_SHORT).show()
 
-                // 매개변수 전달 TODO
-                var recipeNum = recipeInfo.RECIPELIST.indexOf(items[position])
-                val intent = Intent(MainActivity.instance, PagerActivity::class.java)   //여기서 뷰페이저 연결하는 거 같은데
+                // 매개변수 전달
+                val recipeNum = recipeInfo.RECIPELIST.indexOf(items[position])
+                val intent =
+                    Intent(MainActivity.instance, PagerActivity::class.java)   //여기서 뷰페이저 연결하는 거 같은데
 
                 //조회수 증가
                 val recipeName = items[position].name
@@ -150,8 +147,13 @@ class BookmarkFragment : Fragment() {
                         val recipeName = items[position].name
                         items[position].likeCnt -= 1
                         val likeCnt = (items[position].likeCnt).toString()
-                        var task = MainFragmentAdapter.DeleteData()
-                        task.execute("http://118.67.132.138/deleteDb.php", userId, recipeName, likeCnt)
+                        val task = MainFragmentAdapter.DeleteData()
+                        task.execute(
+                            "http://118.67.132.138/deleteDb.php",
+                            userId,
+                            recipeName,
+                            likeCnt
+                        )
                         recipeInfo.BOOKMARKLIST.remove(items[position]) //얘 안해주면 메인이나 다른 레시피 목록에서 북마크리스트 적용안됨
 
                         holder.img_bookmark_icon.setImageResource(R.drawable.icon_bookmark)
@@ -167,7 +169,6 @@ class BookmarkFragment : Fragment() {
         }
 
 
-
         fun removeItem(position: Int) {
             if (position < this.items.size) {
                 items.removeAt(position) //이미 위에서 해당 레시피 제거해서, 여기서 또 하면 인덱스 오류남
@@ -175,8 +176,8 @@ class BookmarkFragment : Fragment() {
                 notifyItemRangeChanged(position, items.size)
                 //bookmarkList.removeAt(position) 얘도 제거하면 인덱스 오류남. 둘 다 recipeInfo.BOOKMARKLIST의 레퍼런스 주소로 값을 공유하기 때문
 
-                if(bookmarkList.count() == 0){
-                    background_bookmark?.visibility=View.VISIBLE
+                if (bookmarkList.count() == 0) {
+                    background_bookmark?.visibility = View.VISIBLE
                 }
                 binding.tvCount.text = "${items.count()}건"
 
@@ -194,9 +195,9 @@ class BookmarkFragment : Fragment() {
         }
 
         inner class RecipeViewHolder(
-                override val containerView: View
+            override val containerView: View
         ) :
-                RecyclerView.ViewHolder(containerView), LayoutContainer {
+            RecyclerView.ViewHolder(containerView), LayoutContainer {
             fun bind(recipe: Recipe, context: Context, position: Int) {
                 Glide.with(context).load(recipe.img_src).into(img_bookmark_picture)
                 tv_bookmark_title.text = recipe.name
@@ -212,8 +213,8 @@ class BookmarkFragment : Fragment() {
         }
     }
 
-    fun sortedRecipe(): MutableList<Recipe> {
-        var sortedRecipe = bookmarkList
+    private fun sortedRecipe(): MutableList<Recipe> {
+        val sortedRecipe = bookmarkList as ArrayList<Recipe>
         if (!selectedAlignItem.isNullOrEmpty()) {
             val likeCnt = selectedAlignItem!![0].data
             val viewCnt = selectedAlignItem!![1].data

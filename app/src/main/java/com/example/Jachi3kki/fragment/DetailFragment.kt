@@ -1,14 +1,12 @@
 package com.example.Jachi3kki.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.CompoundButton
-import android.widget.ImageButton
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.Jachi3kki.Class.SelectedListItem
@@ -23,12 +21,12 @@ class DetailFragment : Fragment(), View.OnClickListener {
     private val selectedDataSet2 = arrayListOf<SelectedListItem>()
     private val selectedMenuItem by lazy { arguments?.getParcelableArrayList<SelectedListItem>("item") }
     private val selectedAlignItem by lazy { arguments?.getParcelableArrayList<SelectedListItem>("alignmentItem") }
+    private val selectedKeyword by lazy { arguments?.getString("keyword") }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_detail, container, false)
     }
 
@@ -202,7 +200,8 @@ class DetailFragment : Fragment(), View.OnClickListener {
                         "detailItem1" to selectedDataSet1,
                         "detailItem2" to selectedDataSet2,
                         "item" to selectedMenuItem,
-                        "alignmentItem" to selectedAlignItem
+                        "alignmentItem" to selectedAlignItem,
+                        "keyword" to selectedKeyword
                     )
                 )
             }

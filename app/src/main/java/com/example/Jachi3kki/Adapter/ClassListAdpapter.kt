@@ -6,9 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.Jachi3kki.Class.CategoryListItem
-import com.example.Jachi3kki.R
 import com.example.Jachi3kki.databinding.CategoryGroupListItemBinding
-import com.example.Jachi3kki.fragment.IngredientFragment
 
 abstract class ClassListAdapter(private val context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {

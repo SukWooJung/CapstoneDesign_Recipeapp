@@ -19,8 +19,8 @@
             android:id="@+id/action_mainFragment_to_bookmarkFragment"
             app:destination="@id/bookmarkFragment" />
         <action
-            android:id="@+id/action_mainFragment_to_fridgeFragment"
-            app:destination="@id/fridgeFragment" />
+            android:id="@+id/action_mainFragment_to_FridgeFragment"
+            app:destination="@id/FridgeFragment" />
         <action
             android:id="@+id/action_mainFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
@@ -52,16 +52,16 @@
     </fragment>
 
     <fragment
-        android:id="@+id/fridgeFragment"
-        android:name="com.example.Jachi3kki.fragment.fridgeFragment"
+        android:id="@+id/FridgeFragment"
+        android:name="com.example.Jachi3kki.fragment.FridgeFragment"
         android:label="fragment_fridge"
         tools:layout="@layout/fragment_fridge" >
         <action
-            android:id="@+id/action_fridgeFragment_to_recipeFragment"
+            android:id="@+id/action_FridgeFragment_to_recipeFragment"
             app:destination="@id/recipeFragment" />
     </fragment>
         <action
-            android:id="@+id/action_fridgeFragment_to_addFragment"
+            android:id="@+id/action_FridgeFragment_to_addFragment"
             app:destination="@id/addFragment" />
     <fragment
         android:id="@+id/searchFragment"
@@ -72,6 +72,9 @@
         <action
             android:id="@+id/action_searchFragment_to_searchResultFragment"
             app:destination="@id/searchResultFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_recipeFragment"
+            app:destination="@id/recipeFragment" />
     </fragment>
 
 
@@ -105,8 +108,8 @@
         tools:layout="@layout/fragment_add"
         app:startDestination="@id/action_alignmentFragment_to_recipeFragment">
         <action
-            android:id="@+id/action_addFragment_to_fridgeFragment"
-            app:destination="@id/fridgeFragment" />
+            android:id="@+id/action_addFragment_to_FridgeFragment"
+            app:destination="@id/FridgeFragment" />
     </fragment>
     <fragment
         android:id="@+id/alignmentFragment"
@@ -145,8 +148,8 @@
         app:destination="@id/bookmarkFragment"
         app:popUpTo="@id/mainFragment" />
     <action
-        android:id="@+id/action_global_fridgeFragment"
-        app:destination="@id/fridgeFragment"
+        android:id="@+id/action_global_FridgeFragment"
+        app:destination="@id/FridgeFragment"
         app:popUpTo="@id/mainFragment" />
     <action
         android:id="@+id/action_global_searchFragment"

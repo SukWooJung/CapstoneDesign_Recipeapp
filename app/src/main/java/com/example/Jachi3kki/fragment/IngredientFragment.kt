@@ -10,11 +10,11 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.Jachi3kki.Adapter.ClassListAdapter
 import com.example.Jachi3kki.Adapter.SelectedListAdapter
-import com.example.Jachi3kki.Category
+import com.example.Jachi3kki.OuterDB.Category
 import com.example.Jachi3kki.Class.CategoryListItem
-import com.example.Jachi3kki.L
-import com.example.Jachi3kki.R
 import com.example.Jachi3kki.Class.SelectedListItem
+import com.example.Jachi3kki.log.L
+import com.example.Jachi3kki.R
 import com.example.Jachi3kki.databinding.FragmentIngredientBinding
 import kotlinx.android.synthetic.main.fragment_ingredient.*
 
@@ -95,7 +95,7 @@ class IngredientFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         if (selectedVitaminItem != null) {
-            fromVitamin = true;
+            fromVitamin = true
         }
         binding = FragmentIngredientBinding.inflate(inflater, container, false)
         return binding.root
@@ -255,22 +255,22 @@ class IngredientFragment : Fragment() {
             }
         }
 
-        binding.rvMainCategory.run{
+        binding.rvMainCategory.run {
             setHasFixedSize(true)
             adapter = MainCategoryAdapter
         }
 
-        binding.rvMiddleCategory.run{
+        binding.rvMiddleCategory.run {
             setHasFixedSize(true)
             adapter = MiddleCategoryAdapter
         }
 
-        binding.rvSubjectCategory.run{
+        binding.rvSubjectCategory.run {
             setHasFixedSize(true)
             adapter = SubjectCategoryAdapter
         }
 
-        binding.rvSelectedCategory.run{
+        binding.rvSelectedCategory.run {
             setHasFixedSize(true)
             adapter = SelectedCategoryAdapter
         }
@@ -308,7 +308,7 @@ class IngredientFragment : Fragment() {
     }
 
     private fun findMiddleData(vitaminArr: Array<String>?): MutableList<String> {
-        var tempMiddleList = mutableSetOf<String>()
+        val tempMiddleList = mutableSetOf<String>()
         Category.CLASS3.entries.map {
             if (vitaminArr != null) {
                 for (ingredient in vitaminArr) {
@@ -317,12 +317,10 @@ class IngredientFragment : Fragment() {
             }
         }
 
-        var MiddleList = mutableSetOf<String>()
+        val MiddleList = mutableSetOf<String>()
         Category.CLASS2.entries.map {
-            if (tempMiddleList != null) {
-                for (ingredient in tempMiddleList) {
-                    if (it.value.src.contains(ingredient)) MiddleList.add(it.key)
-                }
+            for (ingredient in tempMiddleList) {
+                if (it.value.src.contains(ingredient)) MiddleList.add(it.key)
             }
         }
         return MiddleList.toMutableList()

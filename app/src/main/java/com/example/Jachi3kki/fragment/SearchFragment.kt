@@ -12,9 +12,8 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.example.Jachi3kki.MainActivity
+import com.example.Jachi3kki.activity.MainActivity
 import com.example.Jachi3kki.R
-import com.kakao.usermgmt.StringSet.tag
 import kotlinx.android.synthetic.main.fragment_search.*
 
 class SearchFragment : Fragment() {
@@ -60,6 +59,9 @@ class SearchFragment : Fragment() {
     //동근님 화이팅....
     private fun search(Search: String) {
         Toast.makeText(context, "$Search 와 관련된 검색 결과", Toast.LENGTH_SHORT).show()
-        navController.navigate(R.id.action_searchFragment_to_searchResultFragment,bundleOf("keyword" to Search))
+        navController.navigate(
+            R.id.action_searchFragment_to_recipeFragment,
+            bundleOf("keyword" to Search)
+        )
     }
 }

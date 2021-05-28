@@ -2,55 +2,52 @@ package com.example.Jachi3kki.Adapter
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.Jachi3kki.*
 import com.example.Jachi3kki.Class.Recipe
+import com.example.Jachi3kki.OuterDB.recipeInfo
+import com.example.Jachi3kki.activity.MainActivity
+import com.example.Jachi3kki.activity.PagerActivity
+import com.example.Jachi3kki.log.L
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.bookmark_list_item.*
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.*
-import kotlin.collections.ArrayList
 
 class ExtensionRecipeAdapter(
     val items: ArrayList<Recipe>,
-    val context: Context,
-    val itemSelect: (Recipe) -> Unit
+    val context: Context
 ) : RecyclerView.Adapter<ExtensionRecipeAdapter.RecipeViewHolder>() {
     override fun getItemCount(): Int {
         return items.size
     }
 
     override fun onCreateViewHolder(
-            parent: ViewGroup,
-            viewType: Int
+        parent: ViewGroup,
+        viewType: Int
     ): RecipeViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(
-                R.layout.bookmark_list_item,
-                parent,
-                false
+            R.layout.bookmark_list_item,
+            parent,
+            false
         )
 
-        return RecipeViewHolder(view, itemSelect)
+        return RecipeViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         holder.bind(items[position], context, position)
         holder.itemView.setOnClickListener() {
             L.i("조회수")
-            //Toast.makeText(context,"조회수",Toast.LENGTH_SHORT).show()
 
-            // 매개변수 전달 TODO
+            // 매개변수 전달
             var recipeNum = recipeInfo.RECIPELIST.indexOf(items[position])
-            val intent = Intent(MainActivity.instance, PagerActivity::class.java)   //여기서 뷰페이저 연결하는 거 같은데
+
+            // 뷰페이저 연결 엑티비티 전환
+            val intent = Intent(MainActivity.instance, PagerActivity::class.java)
 
             //조회수 증가
             val recipeName = items[position].name
@@ -83,7 +80,7 @@ class ExtensionRecipeAdapter(
                     Toast.makeText(context, "북마크에서 제거되었습니다", Toast.LENGTH_SHORT).show()
 
                 } else {
-                    var userId = MainActivity.id
+                    val userId = MainActivity.id
                     var recipeName = items[position].name
                     items[position].likeCnt += 1
                     val likeCnt = (items[position].likeCnt).toString()
@@ -102,10 +99,9 @@ class ExtensionRecipeAdapter(
     }
 
     inner class RecipeViewHolder(
-            override val containerView: View,
-            itemSelect: (Recipe) -> Unit
+        override val containerView: View
     ) :
-            RecyclerView.ViewHolder(containerView), LayoutContainer {
+        RecyclerView.ViewHolder(containerView), LayoutContainer {
         fun bind(recipe: Recipe, context: Context, position: Int) {
             Glide.with(context).load(recipe.img_src).into(img_bookmark_picture)
             tv_bookmark_title.text = recipe.name

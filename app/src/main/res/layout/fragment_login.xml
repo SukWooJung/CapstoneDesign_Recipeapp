@@ -9,7 +9,7 @@
 
 
     <!--    <Button-->
-    <!--        android:id="@+id/next_page"-->
+    <!--        android:id="@+id/nextPage"-->
     <!--        android:layout_width="275dp"-->
     <!--        android:layout_height="80dp"-->
     <!--        android:background="#00ff0000"-->

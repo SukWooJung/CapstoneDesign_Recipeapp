@@ -1,6 +1,6 @@
 package com.example.Jachi3kki.Class
 
-data class Recipe (
+data class Recipe(
     val id: Int,    //레시피 아이디
     val name: String,   //레시피 이름
     val content: String,    //레시피 조리 방법(변수명 바꾸고싶은데 바꾸면 다른 것도 바꿔야되므로 안바꿈)

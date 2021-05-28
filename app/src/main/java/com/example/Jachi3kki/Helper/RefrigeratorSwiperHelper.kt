@@ -14,42 +14,47 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-abstract class RefrigeratorSwiperHelper(context: Context?, private val recyclerView: RecyclerView, internal val buttonWidth:Int)
-    : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
+abstract class RefrigeratorSwiperHelper(
+    context: Context?,
+    private val recyclerView: RecyclerView,
+    internal val buttonWidth: Int
+) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
 
-    var buttonList:MutableList<RefrigeratorDeleteButton>?=null
+    var buttonList: MutableList<RefrigeratorDeleteButton>? = null
     lateinit var gestureDetector: GestureDetector
     var swipePosition = -1
     var swipeThreshold = 0.5f
-    lateinit var buttonBuffer:MutableMap<Int,MutableList<RefrigeratorDeleteButton>>
+    lateinit var buttonBuffer: MutableMap<Int, MutableList<RefrigeratorDeleteButton>>
 
     lateinit var removerQueue: LinkedList<Int>
 
-    abstract fun instantiateMyButton(viewHolder: RecyclerView.ViewHolder,buffer: MutableList<RefrigeratorDeleteButton>)
+    abstract fun instantiateMyButton(
+        viewHolder: RecyclerView.ViewHolder,
+        buffer: MutableList<RefrigeratorDeleteButton>
+    )
 
-    private val gestureListener = object : GestureDetector.SimpleOnGestureListener(){
+    private val gestureListener = object : GestureDetector.SimpleOnGestureListener() {
         override fun onSingleTapUp(e: MotionEvent?): Boolean {
-            for(button in buttonList!!)
-                if(button.onclick(e!!.x, e!!.y))
+            for (button in buttonList!!)
+                if (button.onclick(e!!.x, e!!.y))
                     break
             return true
         }
     }
 
-    private  val onTouchListener = View.OnTouchListener{_,motionEvent ->
-        try{
-            if(swipePosition < 0) return@OnTouchListener false
+    private val onTouchListener = View.OnTouchListener { _, motionEvent ->
+        try {
+            if (swipePosition < 0) return@OnTouchListener false
             val point = Point(motionEvent.rawX.toInt(), motionEvent.rawY.toInt())
             val swipeViewHolder = recyclerView.findViewHolderForAdapterPosition(swipePosition)
             val swipedItem = swipeViewHolder!!.itemView
             val rect = Rect()
             swipedItem.getGlobalVisibleRect(rect)
 
-            if(motionEvent.action == MotionEvent.ACTION_DOWN || motionEvent.action == MotionEvent.ACTION_MOVE || motionEvent.action == MotionEvent.ACTION_UP){
-                if(rect.top < point.y && rect.bottom > point.y){
+            if (motionEvent.action == MotionEvent.ACTION_DOWN || motionEvent.action == MotionEvent.ACTION_MOVE || motionEvent.action == MotionEvent.ACTION_UP) {
+                if (rect.top < point.y && rect.bottom > point.y) {
                     gestureDetector.onTouchEvent(motionEvent)
-                }
-                else{
+                } else {
                     removerQueue.add(swipePosition)
                     swipePosition = -1
                     recoverSwipeItem()
@@ -57,22 +62,22 @@ abstract class RefrigeratorSwiperHelper(context: Context?, private val recyclerV
             }
             false
 
-        }catch (e:NullPointerException){
+        } catch (e: NullPointerException) {
             false
         }
     }
 
     @Synchronized
-    private fun recoverSwipeItem(){
-        while (!removerQueue.isEmpty()){
+    private fun recoverSwipeItem() {
+        while (!removerQueue.isEmpty()) {
             val pos = removerQueue.poll()!!.toInt()
 
-            if(pos > -1)
+            if (pos > -1)
                 recyclerView.adapter!!.notifyItemChanged(pos)
         }
     }
 
-    init{
+    init {
         this.buttonList = ArrayList()
         this.gestureDetector = GestureDetector(context, gestureListener)
         this.recyclerView.setOnTouchListener(onTouchListener)
@@ -105,7 +110,7 @@ abstract class RefrigeratorSwiperHelper(context: Context?, private val recyclerV
         }
 
         override fun add(element: Int): Boolean {
-            return if(contains(element))
+            return if (contains(element))
                 false
             else super.add(element)
         }
@@ -121,18 +126,17 @@ abstract class RefrigeratorSwiperHelper(context: Context?, private val recyclerV
 
     override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
         val pos = viewHolder.adapterPosition
-        if(swipePosition != pos)
+        if (swipePosition != pos)
             removerQueue.add(swipePosition)
         swipePosition = pos
-        if(buttonBuffer.containsKey(swipePosition)){
+        if (buttonBuffer.containsKey(swipePosition)) {
             buttonList = buttonBuffer[swipePosition]
 
-        }
-        else{
+        } else {
             buttonList!!.clear()
         }
         buttonBuffer.clear()
-        swipeThreshold = 0.5f*buttonList!!.size.toFloat()*buttonWidth.toFloat()
+        swipeThreshold = 0.5f * buttonList!!.size.toFloat() * buttonWidth.toFloat()
         recoverSwipeItem()
     }
 
@@ -142,11 +146,11 @@ abstract class RefrigeratorSwiperHelper(context: Context?, private val recyclerV
     }//닫았을때 동작
 
     override fun getSwipeEscapeVelocity(defaultValue: Float): Float {
-        return 0.1f*defaultValue
+        return 0.1f * defaultValue
     }//열었을때 동작
 
     override fun getSwipeVelocityThreshold(defaultValue: Float): Float {
-        return 5.0f*defaultValue
+        return 5.0f * defaultValue
     }
 
     override fun onChildDraw(
@@ -161,33 +165,51 @@ abstract class RefrigeratorSwiperHelper(context: Context?, private val recyclerV
         val pos = viewHolder.adapterPosition
         var translationX = dX
         var itemView = viewHolder.itemView
-        if(pos < 0) {
+        if (pos < 0) {
             swipePosition = pos
             return
         }
-        if(actionState == ItemTouchHelper.ACTION_STATE_SWIPE){
-            if(dX < 0){
-                var buffer : MutableList<RefrigeratorDeleteButton> = ArrayList()
-                if(!buttonBuffer.containsKey(pos)){
+        if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+            if (dX < 0) {
+                var buffer: MutableList<RefrigeratorDeleteButton> = ArrayList()
+                if (!buttonBuffer.containsKey(pos)) {
                     instantiateMyButton(viewHolder, buffer)
                     buttonBuffer[pos] = buffer
-                }
-                else{
+                } else {
                     buffer = buttonBuffer[pos]!!
                 }
-                translationX = dX*buffer.size.toFloat()*buttonWidth.toFloat()/itemView.width/2
+                translationX =
+                    dX * buffer.size.toFloat() * buttonWidth.toFloat() / itemView.width / 2
                 drawButton(c, itemView, buffer, pos, translationX)
             }
         }
-        super.onChildDraw(c, recyclerView, viewHolder, translationX, dY, actionState, isCurrentlyActive)
+        super.onChildDraw(
+            c,
+            recyclerView,
+            viewHolder,
+            translationX,
+            dY,
+            actionState,
+            isCurrentlyActive
+        )
     }
 
-    private fun drawButton(c: Canvas, itemView: View, buffer: MutableList<RefrigeratorDeleteButton>, pos: Int, translationX: Float) {
+    private fun drawButton(
+        c: Canvas,
+        itemView: View,
+        buffer: MutableList<RefrigeratorDeleteButton>,
+        pos: Int,
+        translationX: Float
+    ) {
         var right = itemView.right.toFloat()
-        val dButtonWidth = -1*translationX/buffer.size
-        for(button in buffer){
+        val dButtonWidth = -1 * translationX / buffer.size
+        for (button in buffer) {
             val left = right - dButtonWidth
-            button.onDraw(c, RectF(left, itemView.top.toFloat(), right, itemView.bottom.toFloat()),pos)
+            button.onDraw(
+                c,
+                RectF(left, itemView.top.toFloat(), right, itemView.bottom.toFloat()),
+                pos
+            )
             right = left
         }
     }

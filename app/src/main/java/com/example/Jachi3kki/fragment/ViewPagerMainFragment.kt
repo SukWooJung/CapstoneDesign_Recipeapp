@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
@@ -15,17 +14,14 @@ import com.example.Jachi3kki.Adapter.ViewPagerAdapter
 import com.example.Jachi3kki.DroidSpeech.DroidSpeech
 import com.example.Jachi3kki.DroidSpeech.OnDSListener
 import com.example.Jachi3kki.DroidSpeech.OnDSPermissionsListener
-import com.example.Jachi3kki.NumberPickerDialog
+import com.example.Jachi3kki.timer.NumberPickerDialog
 import com.example.Jachi3kki.R
-import com.example.Jachi3kki.Stt_dialog
-import kotlinx.android.synthetic.main.activity_droid_speech.*
-import kotlinx.android.synthetic.main.dialog_number_picker.*
-import kotlinx.android.synthetic.main.viewpager_content.*
+import com.example.Jachi3kki.Class.Stt_dialog
 import kotlinx.android.synthetic.main.viewpager_main.*
 import java.util.*
 
 
-class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
+open class ViewPagerMainFragment(private var recipeNum: Int) : Fragment(),
     OnDSListener,
     OnDSPermissionsListener {
     //ViewPager 부모프래그먼트
@@ -35,23 +31,19 @@ class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
 
     val TAG = "Activity_DroidSpeech"
 
-    lateinit var voiceinput:String
-    private var mLoadView2: View? = null
+    lateinit var voiceinput: String
 
 
     private var droidSpeech: DroidSpeech? = null
-    private var finalSpeechResult: TextView? = null
     var dialog = NumberPickerDialog()
     var question_dialog = Stt_dialog()
 
-    var pass = 0;
-    var recipeNum = recipeNum
+    var pass = 0
 
 
     open fun getXml(): Int {
         return R.layout.viewpager_main
     }
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,7 +52,7 @@ class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
         // Initializing the droid speech and setting the listener
         droidSpeech = DroidSpeech(
             requireActivity().applicationContext,
-            requireActivity().getFragmentManager()
+            requireActivity().fragmentManager
         ).apply {
             setOnDroidSpeechListener(this@ViewPagerMainFragment)
             setShowRecognitionProgressView(false)
@@ -78,24 +70,11 @@ class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.activity_droid_speech, container, false)
         return inflater.inflate(getXml(), container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        // Adapter를 생성하면서 넘길 색상이 담긴 ArrayList<Int> 생성
-//        var bgColors = arrayListOf<Int>(
-//            R.color.red,
-//            R.color.orange,
-//            R.color.yellow,
-//            R.color.green,
-//            R.color.blue
-//        )
-
-        // RecyclerView.Adapter<ViewHolder>()
-
 
         viewPager.adapter = ViewPagerAdapter(recipeNum)
 
@@ -109,12 +88,12 @@ class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
                 super.onPageSelected(position)
                 Log.d("ViewPagerFragment", "Page ${position + 1}")
                 Log.d("ViewPagerFragment", "Page ${position + 1}")
-                if(position == 0){
+                if (position == 0) {
                     Bottom_view?.visibility = View.INVISIBLE
                     Top_view?.visibility = View.INVISIBLE
                     Bottom_view_2?.visibility = View.INVISIBLE
                     timer_container?.visibility = View.GONE
-                }else{
+                } else {
                     Bottom_view?.visibility = View.VISIBLE
                     Top_view?.visibility = View.VISIBLE
                     Bottom_view_2?.visibility = View.VISIBLE
@@ -140,7 +119,7 @@ class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
             stopClicked()
         }
 
-        Text_view_countdown?.setOnClickListener{
+        Text_view_countdown?.setOnClickListener {
             set_timer_Clicked()
         }
 
@@ -148,7 +127,7 @@ class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
             question_mark()
         }
 
-        start_timer?.setOnClickListener{
+        start_timer?.setOnClickListener {
             //start_timer_Clicked()
             if (mTimerRunning) {
                 pauseTimer()
@@ -157,22 +136,22 @@ class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
             }
         }
 
-        imageButton_left?.setOnClickListener{
+        imageButton_left?.setOnClickListener {
             //stop_timer_Clicked()
-            Previous_page()
+            previousPage()
         }
 
-        imageButton_right?.setOnClickListener{
+        imageButton_right?.setOnClickListener {
             //stop_timer_Clicked()
-            Next_page()
+            nextPage()
         }
 
-        stop_timer?.setOnClickListener{
+        stop_timer?.setOnClickListener {
             //stop_timer_Clicked()
             pauseTimer()
         }
 
-        reset_timer?.setOnClickListener{
+        reset_timer?.setOnClickListener {
             resetTimer()
         }
     }
@@ -234,7 +213,7 @@ class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
 
 
     private fun updateCountDownText() {
-        val hour = ((mTimeLeftInMillis / (1000 * 60 *60 )) % 24 );
+        val hour = ((mTimeLeftInMillis / (1000 * 60 * 60)) % 24)
         val minutes = (mTimeLeftInMillis / (1000 * 60)).toInt() % 60
         val seconds = (mTimeLeftInMillis / 1000).toInt() % 60
         // val milliseconds = (mTimeLeftInMillis % 1000) / 10
@@ -254,11 +233,11 @@ class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
 
         dialog.okbutton = dialog.mLoadView?.findViewById(R.id.button_common_alert_ok)
 
-        dialog.okbutton?.setOnClickListener{
+        dialog.okbutton?.setOnClickListener {
             dialog.dismiss()
             println("시간: " + dialog.mCurrent + "분" + dialog.mCurrent2 + "초" + dialog.mCurrent3)
 
-            pass = dialog.mCurrent*3600000 + dialog.mCurrent2*60000 + dialog.mCurrent3*1000
+            pass = dialog.mCurrent * 3600000 + dialog.mCurrent2 * 60000 + dialog.mCurrent3 * 1000
 
             customize(pass.toLong())
         }
@@ -269,99 +248,66 @@ class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
     }
 
 
-
-
-    private fun customize(time: Long){
+    private fun customize(time: Long) {
         getNum(time)
         resetTimer()
     }
 
     //타이머 설정
 
-    private fun timer_function(voiceinput: String){ // 타이머 음성인식을 받습니다.
+    private fun timer_function(voiceinput: String) { // 타이머 음성인식을 받습니다.
         val buf = voiceinput
 
 
-        if((voiceinput.contains("분")) and (voiceinput.contains("초")) and (voiceinput.contains("시간"))){
+        if ((voiceinput.contains("분")) and (voiceinput.contains("초")) and (voiceinput.contains("시간"))) {
             val set = buf.split("분", "시간").toTypedArray()
             for (i in 0..2)
                 set[i] = set[i].replace("[^0-9]".toRegex(), "")
-            val data3 = "h:m:s-" + set[0] + ":" + set[1] + ":" + set[2]
+            "h:m:s-" + set[0] + ":" + set[1] + ":" + set[2]
 
-            pass = set[0].toInt()*3600000 + set[1].toInt()*60000 + set[2].toInt()*1000
+            pass = set[0].toInt() * 3600000 + set[1].toInt() * 60000 + set[2].toInt() * 1000
             customize(pass.toLong())
-        }
-
-        else if((voiceinput.contains("분")) and (voiceinput.contains("초"))){
+        } else if ((voiceinput.contains("분")) and (voiceinput.contains("초"))) {
             val set = buf.split("분").toTypedArray()
             for (i in 0..1)
                 set[i] = set[i].replace("[^0-9]".toRegex(), "")
-            val data3 = "m:s-" + set[0] + ":" + set[1]
-            pass = set[0].toInt()*60000 + set[1].toInt()*1000
+            "m:s-" + set[0] + ":" + set[1]
+            pass = set[0].toInt() * 60000 + set[1].toInt() * 1000
             customize(pass.toLong())
-        }
-
-        else if((voiceinput.contains("시간")) and (voiceinput.contains("초"))){
+        } else if ((voiceinput.contains("시간")) and (voiceinput.contains("초"))) {
             val set = buf.split("시간").toTypedArray()
             for (i in 0..1)
                 set[i] = set[i].replace("[^0-9]".toRegex(), "")
-            val data3 = "h:s-" + set[0] + ":" + set[1]
-            pass = set[0].toInt()*3600000 + set[1].toInt()*1000
+            "h:s-" + set[0] + ":" + set[1]
+            pass = set[0].toInt() * 3600000 + set[1].toInt() * 1000
             customize(pass.toLong())
-        }
-
-        else if(voiceinput.contains("초")){
+        } else if (voiceinput.contains("초")) {
             val data = buf.replace("[^0-9]".toRegex(), "")
-            pass = data.toInt()*1000
+            pass = data.toInt() * 1000
             customize(pass.toLong())
-        }
-
-        else if(voiceinput.contains("분")){
+        } else if (voiceinput.contains("분")) {
             val data2 = buf.replace("[^0-9]".toRegex(), "")
-            pass = data2.toInt()*60000
+            pass = data2.toInt() * 60000
             customize(pass.toLong())
-        }
-
-        else if(voiceinput.contains("시간")){
+        } else if (voiceinput.contains("시간")) {
             val data = buf.replace("[^0-9]".toRegex(), "")
-            pass = data.toInt()*3600000
+            pass = data.toInt() * 3600000
             customize(pass.toLong())
-        }
-
-        else if(voiceinput.contains("시작")){
+        } else if (voiceinput.contains("시작")) {
             startTimer()
-        }
-
-        else if(voiceinput.contains("정지")){
+        } else if (voiceinput.contains("정지")) {
             pauseTimer()
         }
     }
 
     // page부분 current는 페이지수 -1이 마지막 입니다. (ex 현재 총 페이지 수 = 5 따라서 current = 4)
-    private fun Previous_page(){
-        var current = viewPager.currentItem
-        /*
-        if (current == 0){
-            viewPager.setCurrentItem(5, true)
-        }
-        else{
-            viewPager.setCurrentItem(current - 1, true)
-
-        }
-        */
+    private fun previousPage() {
+        val current = viewPager.currentItem
         viewPager.setCurrentItem(current - 1, true)
     }
 
-    private fun Next_page(){
-        var current = viewPager.currentItem
-        /*
-        if (current == 4){
-            viewPager.setCurrentItem(0, true)
-        }
-        else{
-            viewPager.setCurrentItem(current + 1, true)
-        }
-        */
+    private fun nextPage() {
+        val current = viewPager.currentItem
         viewPager.setCurrentItem(current + 1, true)
     }
 
@@ -426,20 +372,16 @@ class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
     override fun onDroidSpeechFinalResult(finalSpeechResult: String) {
         // Setting the final speech result
 
-        Toast.makeText(this.requireContext(), finalSpeechResult , Toast.LENGTH_SHORT).show()
+        Toast.makeText(this.requireContext(), finalSpeechResult, Toast.LENGTH_SHORT).show()
 
 
-        if(finalSpeechResult == "이전"){
+        if (finalSpeechResult == "이전") {
             print("\n\n 이전 페이지 입니다.")
-            Previous_page()
-        }
-
-        else if(finalSpeechResult == "다음"){
+            previousPage()
+        } else if (finalSpeechResult == "다음") {
             print("\n\n 다음 페이지 입니다.")
-            Next_page()
-        }
-
-        else if(finalSpeechResult.contains("타이머")){
+            nextPage()
+        } else if (finalSpeechResult.contains("타이머")) {
             voiceinput = finalSpeechResult
             print("\n\n 타이머 입니다.")
             timer_function(voiceinput)
@@ -492,9 +434,7 @@ class ViewPagerMainFragment(recipeNum: Int) : Fragment(),
                 start_record?.performClick()
             }
         } else {
-            if (errorMsgIfAny != null) {
-                // Permissions error
-            }
+            // Permissions error
             end_record?.post { // Stop listening
                 end_record?.performClick()
             }

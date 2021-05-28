@@ -10,28 +10,28 @@
     </queries>
 
     <application
-        android:name=".GlobalApplication"
+        android:name=".globalApplication.GlobalApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.자취3끼"
         android:usesCleartextTraffic="true">
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
-        <activity android:name=".SplashActivity">
+        <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".PagerActivity" />
+        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.PagerActivity" />
 
-        <receiver android:name=".MyBroadcastReceiver"
+        <receiver android:name=".activity.MyBroadcastReceiver"
             android:enabled="true"
             android:exported="true">
         </receiver>

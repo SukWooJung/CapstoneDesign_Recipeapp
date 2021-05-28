@@ -1,36 +1,31 @@
 package com.example.Jachi3kki.fragment
 
-import VerticalItemDecorator
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.Jachi3kki.Adapter.ExtensionRecipeAdapter
-import com.example.Jachi3kki.Adapter.MainFragmentAdapter
 import com.example.Jachi3kki.Adapter.SelectedListAdapter
 import com.example.Jachi3kki.Class.CategoryListItem
-import com.example.Jachi3kki.L
-import com.example.Jachi3kki.R
 import com.example.Jachi3kki.Class.Recipe
 import com.example.Jachi3kki.Class.SelectedListItem
-import com.example.Jachi3kki.recipeInfo
+import com.example.Jachi3kki.log.L
+import com.example.Jachi3kki.R
+import com.example.Jachi3kki.OuterDB.recipeInfo
 import kotlinx.android.synthetic.main.fragment_main.rv_data_list
 import kotlinx.android.synthetic.main.fragment_recipe.*
-import kotlinx.android.synthetic.main.fragment_recipe.rc_count
-import kotlinx.android.synthetic.main.viewpager_content.*
 
 class RecipeFragment : Fragment() {
     lateinit var recipeList: ArrayList<Recipe>
     lateinit var navController: NavController
     var selectedMenuItems = mutableSetOf<String>()
     private lateinit var selectedAdapter: SelectedListAdapter
+    private val selectedKeyword by lazy { arguments?.getString("keyword") }
     private val selectedMenuItem by lazy { arguments?.getParcelableArrayList<SelectedListItem>("item") }
     private val selectedAlignItem by lazy { arguments?.getParcelableArrayList<SelectedListItem>("alignmentItem") }
     private val selectedDetailItem1 by lazy { arguments?.getParcelableArrayList<SelectedListItem>("detailItem1") }
@@ -50,15 +45,18 @@ class RecipeFragment : Fragment() {
 
         L.i("::::intent " + selectedMenuItem)
 
-        // 선택된 재료로 레시피 검색, 편의를 위한 데이터 형변환
-        selectedMenuItem?.forEach {
-            selectedMenuItems.add(it.data)
+        // 레시피 검색
+        if(!selectedKeyword.isNullOrEmpty()){
+            recipeList = searchedRecipe(selectedKeyword) 
+        } else{
+            // 선택된 재료로 레시피 검색, 편의를 위한 데이터 형변환
+            selectedMenuItem?.forEach {
+                selectedMenuItems.add(it.data)
+            }
+            // DB에 레시피 데이터가 있어야됨
+            recipeList = findRecipe(selectedMenuItems.toMutableList() as ArrayList<String>)
         }
 
-
-        // 레시피 검색
-        // DB에 레시피 데이터가 있어야됨
-        recipeList = findRecipe(selectedMenuItems.toMutableList() as ArrayList<String>)
 
         // 필터 조건 반영
         if (!selectedDetailItem1.isNullOrEmpty()) {
@@ -95,7 +93,13 @@ class RecipeFragment : Fragment() {
             }
             navController.navigate(
                 R.id.action_recipeFragment_to_detailFragment,
-                bundleOf("item" to selectedDataSet, "alignmentItem" to selectedAlignItem, "detailItem1" to selectedDetailItem1, "detailItem2" to selectedDetailItem2)
+                bundleOf(
+                    "item" to selectedDataSet,
+                    "alignmentItem" to selectedAlignItem,
+                    "detailItem1" to selectedDetailItem1,
+                    "detailItem2" to selectedDetailItem2,
+                    "keyword" to selectedKeyword
+                )
             )
         }
 
@@ -111,9 +115,16 @@ class RecipeFragment : Fragment() {
             val fromInt = 0
             navController.navigate(
                 R.id.action_recipeFragment_to_alignmentFragment,
-                bundleOf("item" to selectedDataSet, "detailItem1" to selectedDetailItem1, "detailItem2" to selectedDetailItem2, "fromInt" to fromInt)
+                bundleOf(
+                    "item" to selectedDataSet,
+                    "detailItem1" to selectedDetailItem1,
+                    "detailItem2" to selectedDetailItem2,
+                    "fromInt" to fromInt,
+                    "keyword" to selectedKeyword
+                )
             )
         }
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -124,24 +135,15 @@ class RecipeFragment : Fragment() {
             activity,
             LinearLayoutManager.VERTICAL,
             false
-        ) as RecyclerView.LayoutManager?
+        )
 
         // 안전성을 위해 사이즈 고정
         rv_data_list.setHasFixedSize(true)
 
-        // 아이템간의 구분선 추가
-//        activity?.let { VerticalItemDecorator(it, R.drawable.vertical_line_divider, 0, 0) }?.let {
-//            rv_data_list.addItemDecoration(
-//                it
-//            )
-//        }
-
         rv_data_list.adapter = ExtensionRecipeAdapter(
             recipeList,
             requireContext()
-        ) {
-            Toast.makeText(activity, "메인 메뉴에 있는 레시피가 클릭되었다.", Toast.LENGTH_SHORT).show()
-        }
+        )
 
         // 셀렉티드 업덥터
         selectedAdapter = object : SelectedListAdapter(requireContext()) {
@@ -164,9 +166,7 @@ class RecipeFragment : Fragment() {
                 rv_data_list.adapter = ExtensionRecipeAdapter(
                     recipeList,
                     requireContext()
-                ) {
-                    Toast.makeText(activity, "메인 메뉴에 있는 레시피가 클릭되었다.", Toast.LENGTH_SHORT).show()
-                }
+                )
             }
         }
 
@@ -179,7 +179,7 @@ class RecipeFragment : Fragment() {
     }
 
     private fun sortedRecipe(): ArrayList<Recipe> {
-        var sortedRecipe = recipeList
+        val sortedRecipe = recipeList
         if (!selectedAlignItem.isNullOrEmpty()) {
             val likeCnt = selectedAlignItem!![0].data
             val viewCnt = selectedAlignItem!![1].data
@@ -206,8 +206,8 @@ class RecipeFragment : Fragment() {
     }
 
     private fun filteredRecipe(): ArrayList<Recipe> {
-        var tempRecipeList = ArrayList<Recipe>()
-        var tempRecipeList2 = ArrayList<Recipe>()
+        val tempRecipeList = ArrayList<Recipe>()
+        val tempRecipeList2 = ArrayList<Recipe>()
 
         // 조리방법, 음식방법
         val content = selectedDetailItem1!![0].data
@@ -215,39 +215,39 @@ class RecipeFragment : Fragment() {
         if (content == "선택안함" && category == "선택안함") {
             return recipeList
         } else if (content == "선택안함" && category != "선택안함") {
-            recipeList.forEach{
+            recipeList.forEach {
                 val recipe = it
-                selectedDetailItem2!!.forEach{
-                    if(recipe.category == it.data){
+                selectedDetailItem2!!.forEach {
+                    if (recipe.category == it.data) {
                         tempRecipeList.add(recipe)
                     }
                 }
             }
             return tempRecipeList
         } else if (content != "선택안함" && category == "선택안함") {
-            recipeList.forEach{
+            recipeList.forEach {
                 val recipe = it
-                selectedDetailItem1!!.forEach{
-                    if(recipe.content == it.data){
+                selectedDetailItem1!!.forEach {
+                    if (recipe.content == it.data) {
                         tempRecipeList.add(recipe)
                     }
                 }
             }
             return tempRecipeList
-        } else{
-            recipeList.forEach{
+        } else {
+            recipeList.forEach {
                 val recipe = it
-                selectedDetailItem2!!.forEach{
-                    if(recipe.category == it.data){
+                selectedDetailItem2!!.forEach {
+                    if (recipe.category == it.data) {
                         tempRecipeList.add(recipe)
                     }
                 }
             }
 
-            tempRecipeList.forEach{
+            tempRecipeList.forEach {
                 val recipe = it
-                selectedDetailItem1!!.forEach{
-                    if(recipe.content == it.data){
+                selectedDetailItem1!!.forEach {
+                    if (recipe.content == it.data) {
                         tempRecipeList2.add(recipe)
                     }
                 }
@@ -259,7 +259,7 @@ class RecipeFragment : Fragment() {
 
     // 선택된 재료들을 모두 포함하는 모든 레시피를 찾음
     private fun findRecipe(ingredientArr: ArrayList<String>): ArrayList<Recipe> {
-        var tempRecipeList = ArrayList<Recipe>()
+        val tempRecipeList = ArrayList<Recipe>()
         recipeInfo.RECIPELIST.forEach {
             if (it.ingredientArr.containsAll(ingredientArr))
                 tempRecipeList.add(it)
@@ -275,5 +275,15 @@ class RecipeFragment : Fragment() {
         }
         L.i("::::selectedDataSet " + selectedDataSet)
         selectedAdapter.replaceAll(selectedDataSet)
+    }
+
+    private fun searchedRecipe(str: String?): ArrayList<Recipe> {
+        val tempRecipeList = ArrayList<Recipe>()
+        recipeInfo.RECIPELIST.forEach {
+            if (it.name.contains(str.toString())) {
+                tempRecipeList.add(it)
+            }
+        }
+        return tempRecipeList
     }
 }

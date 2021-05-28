@@ -1,23 +1,23 @@
 package com.example.Jachi3kki.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.example.Jachi3kki.Adapter.ClassListAdapter
 import com.example.Jachi3kki.Adapter.SelectedListAdapter
-import com.example.Jachi3kki.Category
+import com.example.Jachi3kki.OuterDB.Category
 import com.example.Jachi3kki.Class.CategoryListItem
-import com.example.Jachi3kki.L
-import com.example.Jachi3kki.R
 import com.example.Jachi3kki.Class.SelectedListItem
+import com.example.Jachi3kki.log.L
+import com.example.Jachi3kki.R
 import com.example.Jachi3kki.databinding.FragmentVitaminBinding
 import kotlinx.android.synthetic.main.fragment_vitamin.*
 
@@ -129,11 +129,11 @@ class VitaminFragment : Fragment() {
                     if (vitamin != null) {
                         binding.vitDescription.text = vitamin.description
                         if (vitamin.img_src != "") {
-                            var nutritionImg: ImageView = binding.imgVitamin
-                            var imageUrl = "http://" + vitamin.img_src
+                            val nutritionImg: ImageView = binding.imgVitamin
+                            val imageUrl = "http://" + vitamin.img_src
                             Glide.with(requireContext()).load(imageUrl).into(nutritionImg)
                         } else {
-                            binding.imgVitamin?.setImageResource(R.mipmap.ic_launcher)
+                            binding.imgVitamin.setImageResource(R.mipmap.ic_launcher)
                         }
                     }
                 }

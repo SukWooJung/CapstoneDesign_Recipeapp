@@ -1,37 +1,36 @@
 package com.example.Jachi3kki.fragment
 
 import HorizontalItemDecorator
-import VerticalItemDecorator
 import android.app.AlertDialog
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.*
-import androidx.fragment.app.Fragment
-import android.widget.*
-import androidx.annotation.RequiresApi
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.os.bundleOf
-import androidx.core.view.GravityCompat
-import androidx.core.view.get
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.Jachi3kki.Adapter.MainFragmentAdapter
 import com.example.Jachi3kki.Adapter.MainVitaminAdapter
-import com.example.Jachi3kki.R
 import com.example.Jachi3kki.Class.Recipe
 import com.example.Jachi3kki.Class.SelectedListItem
-import com.example.Jachi3kki.MainActivity
-import com.example.Jachi3kki.R.*
-import com.example.Jachi3kki.recipeInfo
+import com.example.Jachi3kki.activity.MainActivity
+import com.example.Jachi3kki.R
+import com.example.Jachi3kki.R.drawable
+import com.example.Jachi3kki.R.layout
+import com.example.Jachi3kki.OuterDB.recipeInfo
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
 import com.kakao.usermgmt.UserManagement
 import com.kakao.usermgmt.callback.LogoutResponseCallback
 import kotlinx.android.synthetic.main.fragment_main.*
-import kotlinx.android.synthetic.main.viewpager_main.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -44,7 +43,6 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
     lateinit var navController: NavController
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,7 +50,7 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
         // Inflate the layout for this fragment
         val inputFormat = SimpleDateFormat("HH:mm:ss.SSS")
         val date = Date()
-        val now = inputFormat.format(date.time)
+        inputFormat.format(date.time)
 
         return inflater.inflate(layout.fragment_main, container, false)
     }
@@ -61,7 +59,7 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
         super.onViewCreated(view, savedInstanceState)
         MainActivity.instance.setSupportActionBar(toolbar)
         MainActivity.instance.supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        MainActivity.instance.supportActionBar!!.setHomeAsUpIndicator(R.drawable.menu)
+        MainActivity.instance.supportActionBar!!.setHomeAsUpIndicator(drawable.menu)
 
         navController = Navigation.findNavController(view)
         if (recipeList.isEmpty()) {
@@ -77,7 +75,7 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
             activity,
             LinearLayoutManager.VERTICAL,
             false
-        ) as RecyclerView.LayoutManager?
+        )
         rv_vitamin_list.layoutManager = LinearLayoutManager(
             activity,
             LinearLayoutManager.HORIZONTAL,
@@ -88,12 +86,6 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
         rv_data_list.setHasFixedSize(true)
         rv_vitamin_list.setHasFixedSize(true)
 
-//        // 아이템간의 구분선 추가
-//        activity?.let { VerticalItemDecorator(it, drawable.vertical_line_divider, 0, 0) }?.let {
-//            rv_data_list.addItemDecoration(
-//                it
-//            )
-//        }
         activity?.let { HorizontalItemDecorator(it, drawable.horizontal_line_divider, 0, 0) }?.let {
             rv_vitamin_list.addItemDecoration(
                 it
@@ -103,8 +95,6 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
         rv_data_list.adapter = activity?.let { it ->
             MainFragmentAdapter(recipeList, it) {
                 Log.e("Index", it.name) //어떤 아이템을 클릭했는지 확인하기위해 로그를 넣음
-                Toast.makeText(activity, "메인 메뉴에 있는 레시피가 클릭되었다.", Toast.LENGTH_SHORT).show()
-                //넘어갈때 00데이터 전송 ----> 반대에서 받ㄷ아서 데이터 출력ㄱ
             }
         }
 
@@ -122,8 +112,7 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
         }
 
         navigationView.setNavigationItemSelectedListener(this)
-        
-//        toolbar.setNavigationOnClickListener { navigationView.display }
+
 
 
         // 네비바의 로그인기능 구현
@@ -135,12 +124,13 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
 
         // 로그인 정보 업데이트
         if (MainActivity.id != null) {
-            if(MainActivity.email != null){
-                headerView.findViewById<TextView>(R.id.email).text = "${MainActivity?.email}"
+            if (MainActivity.email != null) {
+                headerView.findViewById<TextView>(R.id.email).text = "${MainActivity.email}"
             }
             headerView.findViewById<TextView>(R.id.nickName).text =
-                "${MainActivity?.profile?.nickname}"
-            Glide.with(MainActivity.instance).load(MainActivity?.profile?.thumbnailImageUrl)
+                "${MainActivity.profile?.nickname}"
+            Glide.with(MainActivity.instance).load(
+                MainActivity.profile?.thumbnailImageUrl)
                 .into(headerView.findViewById<ImageView>(R.id.profileImage))
 
             headerView.findViewById<Button>(R.id.btn_logout).setVisibility(View.VISIBLE)
@@ -209,60 +199,54 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
 
     private fun addRecipeArray() {  //그냥 데이터 채워넣기
         //어제자 조회수로 가장 높았던 것 중 5개를 골라 그 중 랜덤한 2개를 선별
-        var indexList: MutableList<Int> = mutableListOf(0, 0, 0, 0, 0)
-        var tempList: MutableList<Int> = mutableListOf(-1, -1, -1, -1, -1)
-        var temp1 = 0
-        var temp2 = 0
-        for(i in 0 until recipeInfo.RECIPELIST.size){
-            if(tempList[0] < recipeInfo.RECIPELIST[i].yesterdayView){
-                if(tempList[0] != -1){
-                    for(j in 4 downTo 1){
-                        indexList[j] = indexList[j-1]
-                        tempList[j] = tempList[j-1]
+        val indexList: MutableList<Int> = mutableListOf(0, 0, 0, 0, 0)
+        val tempList: MutableList<Int> = mutableListOf(-1, -1, -1, -1, -1)
+        for (i in 0 until recipeInfo.RECIPELIST.size) {
+            if (tempList[0] < recipeInfo.RECIPELIST[i].yesterdayView) {
+                if (tempList[0] != -1) {
+                    for (j in 4 downTo 1) {
+                        indexList[j] = indexList[j - 1]
+                        tempList[j] = tempList[j - 1]
                     }
                 }
                 indexList[0] = i
                 tempList[0] = recipeInfo.RECIPELIST[i].yesterdayView
-            }
-            else if(tempList[1] < recipeInfo.RECIPELIST[i].yesterdayView){
-                if(tempList[1] != -1){
-                    for(j in 4 downTo 2){
-                        indexList[j] = indexList[j-1]
-                        tempList[j] = tempList[j-1]
+            } else if (tempList[1] < recipeInfo.RECIPELIST[i].yesterdayView) {
+                if (tempList[1] != -1) {
+                    for (j in 4 downTo 2) {
+                        indexList[j] = indexList[j - 1]
+                        tempList[j] = tempList[j - 1]
                     }
                 }
                 indexList[1] = i
                 tempList[1] = recipeInfo.RECIPELIST[i].yesterdayView
-            }
-            else if(tempList[2] < recipeInfo.RECIPELIST[i].yesterdayView){
-                if(tempList[2] != -1){
-                    for(j in 4 downTo 3){
-                        indexList[j] = indexList[j-1]
-                        tempList[j] = tempList[j-1]
+            } else if (tempList[2] < recipeInfo.RECIPELIST[i].yesterdayView) {
+                if (tempList[2] != -1) {
+                    for (j in 4 downTo 3) {
+                        indexList[j] = indexList[j - 1]
+                        tempList[j] = tempList[j - 1]
                     }
                 }
                 indexList[2] = i
                 tempList[2] = recipeInfo.RECIPELIST[i].yesterdayView
-            }
-            else if(tempList[3] < recipeInfo.RECIPELIST[i].yesterdayView){
-                if(tempList[3] != -1){
+            } else if (tempList[3] < recipeInfo.RECIPELIST[i].yesterdayView) {
+                if (tempList[3] != -1) {
                     indexList[4] = indexList[3]
                     tempList[4] = tempList[3]
                 }
                 indexList[3] = i
                 tempList[3] = recipeInfo.RECIPELIST[i].yesterdayView
-            }
-            else if(tempList[4] < recipeInfo.RECIPELIST[i].yesterdayView){
-                    indexList[4] = i
-                    tempList[4] = recipeInfo.RECIPELIST[i].yesterdayView
+            } else if (tempList[4] < recipeInfo.RECIPELIST[i].yesterdayView) {
+                indexList[4] = i
+                tempList[4] = recipeInfo.RECIPELIST[i].yesterdayView
             }
         }
 
         val random = Random()
-        var num1 = random.nextInt(5)
+        val num1 = random.nextInt(5)
         var num2 = random.nextInt(5)
-        if(num1 == num2){
-            while(num1 == num2){
+        if (num1 == num2) {
+            while (num1 == num2) {
                 num2 = random.nextInt(5)
             }
         }
@@ -285,13 +269,6 @@ class MainFragment : Fragment(), NavigationView.OnNavigationItemSelectedListener
         }
         return true
     }
-    /*fun onBackPressed() {
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
-            drawerLayout.closeDrawers()
-        }else{
-            super.onBackPressed()
-        }
-    }*/
 
     private fun alertLoginRequired() {
         AlertDialog.Builder(context)
