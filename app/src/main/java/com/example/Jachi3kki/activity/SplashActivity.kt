@@ -5,11 +5,11 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.example.Jachi3kki.OuterDB.Category
 import com.example.Jachi3kki.InternalDB.AppDatabase
 import com.example.Jachi3kki.InternalDB.FridgeIngredient
-import com.example.Jachi3kki.R
+import com.example.Jachi3kki.OuterDB.Category
 import com.example.Jachi3kki.OuterDB.recipeInfo
+import com.example.Jachi3kki.R
 import kotlinx.android.synthetic.main.splash_view.*
 
 
@@ -44,6 +44,6 @@ class SplashActivity : AppCompatActivity() {
             val intent = Intent(baseContext, MainActivity::class.java)
             startActivity(intent)
             finish()
-        }, 3400)
+        }, 3150)
     }
 }
