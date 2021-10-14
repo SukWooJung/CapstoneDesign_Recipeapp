@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:background="@android:color/transparent">
 
-    <com.example.Jachi3kki.DroidSpeech.RecognitionProgressView
+    <com.c4project.Jachi3kki.DroidSpeech.RecognitionProgressView
         android:id="@+id/recognitionProgressView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

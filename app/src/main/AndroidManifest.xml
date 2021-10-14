@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.Jachi3kki">
+    package="com.c4project.Jachi3kki">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
@@ -10,7 +10,7 @@
     </queries>
 
     <application
-        android:name=".globalApplication.GlobalApplication"
+        android:name="com.c4project.Jachi3kki.globalApplication.GlobalApplication"
         android:allowBackup="true"
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
@@ -21,17 +21,17 @@
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key" />
-        <activity android:name=".activity.SplashActivity">
+        <activity android:name="com.c4project.Jachi3kki.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.PagerActivity" />
+        <activity android:name="com.c4project.Jachi3kki.activity.MainActivity" />
+        <activity android:name="com.c4project.Jachi3kki.activity.PagerActivity" />
 
-        <receiver android:name=".activity.MyBroadcastReceiver"
+        <receiver android:name="com.c4project.Jachi3kki.activity.MyBroadcastReceiver"
             android:enabled="true"
             android:exported="true">
         </receiver>

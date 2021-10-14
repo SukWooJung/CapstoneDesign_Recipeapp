@@ -5,11 +5,19 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'kotlin-kapt'
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('C:\\Users\\pvd\\release_key.keystore')
+            storePassword 'wkcnl3Rl'
+            keyAlias 'alias_name'
+            keyPassword 'wkcnl3Rl'
+        }
+    }
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.example.Jachi3kki"
+        applicationId "com.c4project.Jachi3kki"
         minSdkVersion 16
         targetSdkVersion 30
         versionCode 1

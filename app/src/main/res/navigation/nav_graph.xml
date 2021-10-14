@@ -6,7 +6,7 @@
     app:startDestination="@id/mainFragment">
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.Jachi3kki.fragment.MainFragment"
+        android:name="com.c4project.Jachi3kki.fragment.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
         <action
@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/bookmarkFragment"
-        android:name="com.example.Jachi3kki.fragment.BookmarkFragment"
+        android:name="com.c4project.Jachi3kki.fragment.BookmarkFragment"
         android:label="fragment_bookmark"
         tools:layout="@layout/fragment_bookmark" >
         <action
@@ -38,13 +38,13 @@
     </fragment>
     <fragment
         android:id="@+id/ingredientFragment"
-        android:name="com.example.Jachi3kki.fragment.IngredientFragment"
+        android:name="com.c4project.Jachi3kki.fragment.IngredientFragment"
         android:label="fragment_ingredient"
         tools:layout="@layout/fragment_ingredient">
 
         <argument
             android:name="item"
-            app:argType="com.example.Jachi3kki.Class.SelectedItems"/>
+            app:argType="com.c4project.Jachi3kki.Class.SelectedItems"/>
 
         <action
             android:id="@+id/action_ingredientFragment_to_recipeFragment"
@@ -53,7 +53,7 @@
 
     <fragment
         android:id="@+id/FridgeFragment"
-        android:name="com.example.Jachi3kki.fragment.FridgeFragment"
+        android:name="com.c4project.Jachi3kki.fragment.FridgeFragment"
         android:label="fragment_fridge"
         tools:layout="@layout/fragment_fridge" >
         <action
@@ -65,7 +65,7 @@
             app:destination="@id/addFragment" />
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.Jachi3kki.fragment.SearchFragment"
+        android:name="com.c4project.Jachi3kki.fragment.SearchFragment"
         android:label="fragment_search"
         tools:layout="@layout/fragment_search">
 
@@ -80,7 +80,7 @@
 
     <fragment
         android:id="@+id/vitaminFragment"
-        android:name="com.example.Jachi3kki.fragment.VitaminFragment"
+        android:name="com.c4project.Jachi3kki.fragment.VitaminFragment"
         android:label="fragment_vitamin"
         tools:layout="@layout/fragment_vitamin" >
         <action
@@ -89,7 +89,7 @@
     </fragment>
     <fragment
         android:id="@+id/recipeFragment"
-        android:name="com.example.Jachi3kki.fragment.RecipeFragment"
+        android:name="com.c4project.Jachi3kki.fragment.RecipeFragment"
         android:label="fragment_recipe"
         tools:layout="@layout/fragment_recipe" >
         <action
@@ -103,7 +103,7 @@
     </fragment>
     <fragment
         android:id="@+id/addFragment"
-        android:name="com.example.Jachi3kki.fragment.AddFragment"
+        android:name="com.c4project.Jachi3kki.fragment.AddFragment"
         android:label="fragment_add"
         tools:layout="@layout/fragment_add"
         app:startDestination="@id/action_alignmentFragment_to_recipeFragment">
@@ -113,7 +113,7 @@
     </fragment>
     <fragment
         android:id="@+id/alignmentFragment"
-        android:name="com.example.Jachi3kki.fragment.AlignmentFragment"
+        android:name="com.c4project.Jachi3kki.fragment.AlignmentFragment"
         android:label="fragment_alignment"
         tools:layout="@layout/fragment_alignment"
         app:startDestination="@id/action_alignmentFragment_to_recipeFragment">
@@ -130,7 +130,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailFragment"
-        android:name="com.example.Jachi3kki.fragment.DetailFragment"
+        android:name="com.c4project.Jachi3kki.fragment.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
         <action
@@ -165,7 +165,7 @@
         app:popUpTo="@id/mainFragment" />
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.Jachi3kki.fragment.LoginFragment"
+        android:name="com.c4project.Jachi3kki.fragment.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -174,7 +174,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchResultFragment"
-        android:name="com.example.Jachi3kki.fragment.SearchResultFragment"
+        android:name="com.c4project.Jachi3kki.fragment.SearchResultFragment"
         android:label="SearchResultFragment" >
         <argument
             android:name="keyword"
